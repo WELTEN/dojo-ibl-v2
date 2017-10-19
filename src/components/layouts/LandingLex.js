@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 import { login, loginGoogle, resetPassword } from '../../helpers/auth'
 
-import './../../../node_modules/startbootstrap-freelancer/vendor/bootstrap/css/bootstrap.min.css';
+// import './../../../node_modules/startbootstrap-freelancer/vendor/bootstrap/css/bootstrap.min.css';
 // import './../../../node_modules/startbootstrap-freelancer/vendor/font-awesome/css/font-awesome.min.css';
 //
 // // import './../../../node_modules/startbootstrap-freelancer/vendor/popper/popper.min.js';
 // // import './../../../node_modules/startbootstrap-freelancer/vendor/jquery-easing/jquery.easing.min.js';
-import './../../styles/freelance.css';
+// import './../../styles/freelance.css';
 
 function setErrorMsg(error) {
   return {
