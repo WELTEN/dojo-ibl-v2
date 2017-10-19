@@ -7,7 +7,10 @@ import LandingLex from './components/layouts/LandingLex';
 import Projects from './components/views/Projects';
 import Groups from './components/views/Groups';
 
-
+import './../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import './../node_modules/font-awesome/css/font-awesome.css'
+import './../node_modules/animate.css/animate.min.css'
+import './styles/App.css';
 
 import { firebaseAuth } from './fire.js'
 
@@ -66,8 +69,8 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <Switch>
-            <PublicRoute path='/home' component={LandingLex} />
-            <PublicRoute path='/login' component={Login} />
+            <Route path='/home' component={LandingLex} />
+            <Route path='/login' component={Login} />
               <Main>
                 <Switch>
                   <PrivateRoute authed={this.state.authed} path="/projects" component={Projects}> </PrivateRoute>

@@ -5,11 +5,6 @@ import Footer from '../common/Footer';
 import TopHeader from '../common/TopHeader';
 import { correctHeight, detectBody } from './Helpers';
 
-import './../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import './../../../node_modules/font-awesome/css/font-awesome.css'
-import './../../../node_modules/animate.css/animate.min.css'
-import './../../styles/App.css';
-
 import $ from 'jquery';
 
 class Main extends React.Component {
