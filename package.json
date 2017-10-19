@@ -1,0 +1,26 @@
+{
+  "name": "dojo-ibl-v2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "animate": "^1.0.0",
+    "animate.css-js": "0.0.9",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "jest-cli": "^21.2.1",
+    "jquery": "^3.2.1",
+    "pace": "0.0.4",
+    "react": "^16.0.0",
+    "react-bootstrap": "^0.31.3",
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "^1.0.14",
+    "startbootstrap-freelancer": "^4.0.0-beta"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
