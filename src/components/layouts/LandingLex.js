@@ -1,13 +1,225 @@
 import React, { Component } from 'react';
 
 import { login, loginGoogle, resetPassword } from '../../helpers/auth'
+import Aux from 'react-aux';
+import glamorous from 'glamorous';
+import mockup from './mockup.png';
+import PropTypes from 'prop-types';
 
-import './../../../node_modules/startbootstrap-freelancer/vendor/bootstrap/css/bootstrap.min.css';
-// import './../../../node_modules/startbootstrap-freelancer/vendor/font-awesome/css/font-awesome.min.css';
-//
-// // import './../../../node_modules/startbootstrap-freelancer/vendor/popper/popper.min.js';
-// // import './../../../node_modules/startbootstrap-freelancer/vendor/jquery-easing/jquery.easing.min.js';
-import './../../styles/freelance.css';
+const Intro = glamorous.section({
+  position: 'relative',
+  width: '100vw',
+  height: '100vh',
+  backgroundColor: '#F2F2F2'
+});
+
+const Content = glamorous.section({
+  position: 'relative',
+  top: '50%',
+  transform: 'translateY(-50%)',
+});
+
+const ContentWrapper = glamorous.div({
+  float: 'right',
+  maxWidth: 400
+});
+
+const MockupImg = glamorous.img({
+  position: 'absolute',
+  top: '50%',
+  left: -500,
+  transform: 'translate(20vw, -50%)',
+  width: '70%'
+});
+
+const Title = glamorous.h1({
+  marginTop: 0,
+  marginBottom: 16,
+  fontSize: 42
+});
+
+const Text = glamorous.p({
+  marginBottom: 32,
+  fontSize: 16
+});
+
+const Button = glamorous.a({
+  padding: '6px 12px',
+  backgroundColor: '#FFFFFF',
+  textTransform: 'uppercase',
+  fontWeight: 600,
+  fontSize: 16,
+  transition: 'all .2s ease-in-out',
+  ':hover': {
+    color: '#1AB394',
+    textDecoration: 'none'
+  }
+});
+
+const RegisterButton = glamorous(Button)({
+  marginLeft: 12,
+  color: '#FFFFFF',
+  backgroundColor: '#1AB394',
+  ':hover': {
+    color: '#FFFFFF',
+    backgroundColor: '#18A689'
+  }
+});
+
+const StyledSection = glamorous.section({
+  paddingTop: 48,
+  paddingBottom: 48,
+  backgroundColor: '#F2F2F2'
+});
+
+const Section = (props) => (
+  <StyledSection {...props}>
+    <div className="container">
+      {props.children}
+    </div>
+  </StyledSection>
+);
+
+const CardGrid = glamorous.section({
+  marginLeft: -24,
+  marginRight: -24,
+  display: 'flex'
+});
+
+const StyledCard = glamorous.article({
+  float: 'left',
+  marginTop: 24,
+  marginBottom: 24,
+  marginLeft: 24,
+  marginRight: 24,
+  textAlign: 'center',
+  border: '2px solid #BDBDBD',
+  borderRadius: 12,
+  overflow: 'hidden',
+  flex: 10
+}, ({ big }) => {
+  if (big) return [{
+    marginTop: 0,
+    marginBottom: 0,
+    borderColor: '#1AB394',
+    flex: 11
+  }];
+});
+
+const CardTitle = glamorous.h2({
+  margin: 0,
+  paddingTop: 12,
+  paddingBottom: 12,
+  color: '#000000',
+  backgroundColor: '#E0E0E0',
+}, ({ big }) => {
+  if (big) return [{
+    color: '#FFFFFF',
+    backgroundColor: '#1AB394'
+  }]
+});
+
+const CardContent = glamorous.section({
+  padding: 24,
+  paddingBottom: 0
+});
+
+const CardList = glamorous.ul({
+  margin: 0,
+  padding: 0
+});
+
+const CardListItem = glamorous.li({
+  paddingTop: 6,
+  paddingBottom: 6,
+  borderBottom: '2px solid #E0E0E0',
+  ':first-child': {
+    borderTop: '2px solid #E0E0E0'
+  }
+});
+
+const CardSignup = glamorous.a({
+  paddingTop: 24,
+  paddingBottom: 24,
+  color: '#1AB394',
+  display: 'block',
+  transition: 'all .2s ease-in-out',
+  ':hover': {
+    textDecoration: 'none',
+    color: '#000000'
+  }
+}, ({ big }) => {
+  if (big) return [{ paddingTop: 48, paddingBottom: 48 }];
+});
+
+const PriceCard = ({
+  title,
+  description,
+  price,
+  features,
+  additionalFeatures,
+  link,
+  big
+}) => (
+  <StyledCard big={big}>
+    <CardTitle big={big}>{title}</CardTitle>
+    <CardContent>
+      <p>{description}</p>
+      <CardList>
+        <CardListItem><strong>${price}</strong>/month</CardListItem>
+        {features.map((feature, index) =>
+          <CardListItem key={index}>{feature}</CardListItem>
+        )}
+        {additionalFeatures && additionalFeatures.map((feature, index) =>
+          <CardListItem key={index}><strong>{feature}</strong></CardListItem>
+        )}
+      </CardList>
+    </CardContent>
+    <CardSignup big={big} href={link}>Signup</CardSignup>
+  </StyledCard>
+);
+
+PriceCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  features: PropTypes.arrayOf(PropTypes.string).isRequired,
+  additionalFeatures: PropTypes.arrayOf(PropTypes.string),
+  link: PropTypes.string.isRequired,
+  big: PropTypes.bool
+};
+
+const FeatureGrid = glamorous.section({
+  display: 'flex',
+  flexWrap: 'wrap'
+});
+
+const StyledFeature = glamorous.article({
+  padding: 24,
+  width: '50%',
+  boxSizing: 'border-box'
+});
+
+const FeatureTitle = glamorous.h2({ color: '#1AB394' });
+
+const Feature = ({ title, description }) => (
+  <StyledFeature>
+    <FeatureTitle>{title}</FeatureTitle>
+    <p>{description}</p>
+  </StyledFeature>
+);
+
+Feature.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
+};
+
+const Footer = glamorous.footer({
+  paddingTop: 12,
+  paddingBottom: 12,
+  color: '#FFFFFF',
+  backgroundColor: '#2F4050'
+});
 
 function setErrorMsg(error) {
   return {
@@ -15,7 +227,7 @@ function setErrorMsg(error) {
   }
 }
 
-class LandingLex extends Component {
+export default class LandingLex extends Component {
   state = { loginMessage: null }
 
   buttonGoogle = (e) => {
@@ -42,245 +254,79 @@ class LandingLex extends Component {
 
   render () {
     return (
-      <div>
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <Aux>
+        <Intro>
+          <MockupImg src={mockup} alt="Mockup" />
+          <Content className="container">
+            <ContentWrapper>
+              <Title>Welcome to Dojo-IBL</Title>
+              <Text>Some text Some Text Some Text Some Text</Text>
+              <div>
+                <Button href="/login">Login</Button>
+                <RegisterButton href="/register">Register</RegisterButton>
+              </div>
+            </ContentWrapper>
+          </Content>
+        </Intro>
+        <Section>
+          <Title>Pricing</Title>
+          <Text>The prices</Text>
+          <CardGrid>
+            <PriceCard
+              title="Basic"
+              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+              price={16}
+              features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
+              link="#"
+            />
+            <PriceCard
+              title="Standard"
+              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+              price={22}
+              features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
+              additionalFeatures={['Support platform']}
+              link="#"
+              big
+            />
+            <PriceCard
+              title="Premium"
+              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+              price={160}
+              features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
+              link="#"
+            />
+          </CardGrid>
+        </Section>
+        <Section>
+          <Title css={{ textAlign: 'center' }}>Features</Title>
+          <Text css={{ textAlign: 'center' }}>
+            The features
+          </Text>
+          <FeatureGrid>
+            <Feature
+              title="Feature#1"
+              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus. Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus. Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+            />
+            <Feature
+              title="Feature#1"
+              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+            />
+            <Feature
+              title="Feature#1"
+              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+            />
+            <Feature
+              title="Feature#1"
+              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+            />
+          </FeatureGrid>
+        </Section>
+        <Footer>
           <div className="container">
-            <a className="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a>
-            <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-              Menu
-              <i className="fa fa-bars"></i>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarResponsive">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#about">About</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#contact">Contact</a>
-                </li>
-              </ul>
-            </div>
+            DojoIBL &copy; 2015-2017
           </div>
-        </nav>
-
-        <header className="masthead">
-          <div className="container">
-            <img className="img-fluid" src="img/profile.png" alt="" />
-            <div className="intro-text">
-              <span className="name">Start Bootstrap</span>
-              <hr className="star-light" />
-              <span className="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-            </div>
-          </div>
-        </header>
-
-        <section id="portfolio">
-          <div className="container">
-            <h2 className="text-center">Portfolio</h2>
-            <hr className="star-primary" />
-            <div className="row">
-              <div className="col-sm-4 portfolio-item">
-                <a className="portfolio-link" href="#portfolioModal1" data-toggle="modal">
-                  <div className="caption">
-                    <div className="caption-content">
-                      <i className="fa fa-search-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img className="img-fluid" src="img/portfolio/cabin.png" alt="" />
-                </a>
-              </div>
-              <div className="col-sm-4 portfolio-item">
-                <a className="portfolio-link" href="#portfolioModal2" data-toggle="modal">
-                  <div className="caption">
-                    <div className="caption-content">
-                      <i className="fa fa-search-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img className="img-fluid" src="img/portfolio/cake.png" alt="" />
-                </a>
-              </div>
-              <div className="col-sm-4 portfolio-item">
-                <a className="portfolio-link" href="#portfolioModal3" data-toggle="modal">
-                  <div className="caption">
-                    <div className="caption-content">
-                      <i className="fa fa-search-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img className="img-fluid" src="img/portfolio/circus.png" alt="" />
-                </a>
-              </div>
-              <div className="col-sm-4 portfolio-item">
-                <a className="portfolio-link" href="#portfolioModal4" data-toggle="modal">
-                  <div className="caption">
-                    <div className="caption-content">
-                      <i className="fa fa-search-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img className="img-fluid" src="img/portfolio/game.png" alt="" />
-                </a>
-              </div>
-              <div className="col-sm-4 portfolio-item">
-                <a className="portfolio-link" href="#portfolioModal5" data-toggle="modal">
-                  <div className="caption">
-                    <div className="caption-content">
-                      <i className="fa fa-search-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img className="img-fluid" src="img/portfolio/safe.png" alt="" />
-                </a>
-              </div>
-              <div className="col-sm-4 portfolio-item">
-                <a className="portfolio-link" href="#portfolioModal6" data-toggle="modal">
-                  <div className="caption">
-                    <div className="caption-content">
-                      <i className="fa fa-search-plus fa-3x"></i>
-                    </div>
-                  </div>
-                  <img className="img-fluid" src="img/portfolio/submarine.png" alt="" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="success" id="about">
-          <div className="container">
-            <h2 className="text-center">About</h2>
-            <hr className="star-light" />
-            <div className="row">
-              <div className="col-lg-4 ml-auto">
-                <p>Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional LESS stylesheets for easy customization.</p>
-              </div>
-              <div className="col-lg-4 mr-auto">
-                <p>Whether you are a student looking to showcase your work, a professional looking to attract clients, or a graphic artist looking to share your projects, this template is the perfect starting point!</p>
-              </div>
-              <div className="col-lg-8 mx-auto text-center">
-                <a href="#" className="btn btn-lg btn-outline">
-                  <i className="fa fa-download"></i>
-                  Download Theme
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="contact">
-          <div className="container">
-            <h2 className="text-center">Contact Me</h2>
-            <hr className="star-primary" />
-            <div className="row">
-              <div className="col-lg-8 mx-auto">
-                /* To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. */
-                /* The form should work on most web servers, but if the form is not working you may need to configure your web server differently. */
-                <form name="sentMessage" id="contactForm" noValidate>
-                  <div className="control-group">
-                    <div className="form-group floating-label-form-group controls">
-                      <label>Name</label>
-                      <input className="form-control" id="name" type="text" placeholder="Name" required data-validation-required-message="Please enter your name." />
-                      <p className="help-block text-danger"></p>
-                    </div>
-                  </div>
-                  <div className="control-group">
-                    <div className="form-group floating-label-form-group controls">
-                      <label>Email Address</label>
-                      <input className="form-control" id="email" type="email" placeholder="Email Address" required data-validation-required-message="Please enter your email address." />
-                      <p className="help-block text-danger"></p>
-                    </div>
-                  </div>
-                  <div className="control-group">
-                    <div className="form-group floating-label-form-group controls">
-                      <label>Phone Number</label>
-                      <input className="form-control" id="phone" type="tel" placeholder="Phone Number" required data-validation-required-message="Please enter your phone number." />
-                      <p className="help-block text-danger"></p>
-                    </div>
-                  </div>
-                  <div className="control-group">
-                    <div className="form-group floating-label-form-group controls">
-                      <label>Message</label>
-                      <textarea className="form-control" id="message" rows="5" placeholder="Message" required data-validation-required-message="Please enter a message."></textarea>
-                      <p className="help-block text-danger"></p>
-                    </div>
-                  </div>
-                  <br />
-                  <div id="success"></div>
-                  <div className="form-group">
-                    <button type="submit" className="btn btn-success btn-lg" id="sendMessageButton">Send</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <footer className="text-center">
-          <div className="footer-above">
-            <div className="container">
-              <div className="row">
-                <div className="footer-col col-md-4">
-                  <h3>Location</h3>
-                  <p>3481 Melrose Place
-                    <br />Beverly Hills, CA 90210</p>
-                </div>
-                <div className="footer-col col-md-4">
-                  <h3>Around the Web</h3>
-                  <ul className="list-inline">
-                    <li className="list-inline-item">
-                      <a className="btn-social btn-outline" href="#">
-                        <i className="fa fa-fw fa-facebook"></i>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a className="btn-social btn-outline" href="#">
-                        <i className="fa fa-fw fa-google-plus"></i>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a className="btn-social btn-outline" href="#">
-                        <i className="fa fa-fw fa-twitter"></i>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a className="btn-social btn-outline" href="#">
-                        <i className="fa fa-fw fa-linkedin"></i>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a className="btn-social btn-outline" href="#">
-                        <i className="fa fa-fw fa-dribbble"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="footer-col col-md-4">
-                  <h3>About Freelancer</h3>
-                  <p>Freelance is a free to use, open source Bootstrap theme created by
-                    <a href="http://startbootstrap.com">Start Bootstrap</a>.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="footer-below">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12">
-                  Copyright &copy; Your Website 2017
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
-
-        <div className="scroll-top d-lg-none">
-          <a className="btn btn-primary js-scroll-trigger" href="#page-top">
-            <i className="fa fa-chevron-up"></i>
-          </a>
-        </div>
-      </div>
-    )
+        </Footer>
+      </Aux>
+    );
   }
 }
-
-export default LandingLex
