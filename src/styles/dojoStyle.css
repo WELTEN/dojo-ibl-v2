@@ -1,0 +1,16 @@
+.nav.nav-tabs li.active > a{
+  background: #2f4050;
+  padding: 10px 15px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.tab-content{
+  background-color: white;
+  overflow: hidden;
+  padding: 2em;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
-import { Link } from 'react-router-dom';
-import { fire } from '../../fire.js';
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
+
+import { Link, withRouter } from 'react-router-dom';
+import { fire, db } from '../../fire.js';
 import IboxContent from '../common/IboxContent';
 
 class Projects extends Component {
@@ -13,8 +16,8 @@ class Projects extends Component {
 
   componentWillMount(){
     /* Create reference to messages in Firebase Database */
-    let projectsRef = fire.database().ref('projects').orderByKey();
-    projectsRef.limitToLast(25).on('value', function(dataSnapshot) {
+    let projectsRef = db.ref('projects').orderByKey();
+    projectsRef.on('value', function(dataSnapshot) {
         var projects = [];
         dataSnapshot.forEach(function(childSnapshot) {
             var project = childSnapshot.val();
@@ -29,61 +32,50 @@ class Projects extends Component {
 
     }.bind(this));
   }
-
   render() {
-    var projectItems = this.state.projects.map((project) => {
 
-      return (
-        <tr key={project.key}>
-          <td>
-              <a href="#/project/{ game.gameId }/edit/structure">{ project.title }</a>
-          </td>
-          <td>{ project.description }</td>
-          <td>
-          </td>
-          <td className="text-right">
-              <div className="btn-group">
-                  <button data-toggle="dropdown" className="btn btn-default btn-sm dropdown-toggle">Action <span className="caret"></span></button>
-                  <ul className="dropdown-menu">
-                      <li><Link to={'/project/'+project.key }>Clone</Link></li>
-                      <li className="divider"></li>
-                      <li><Link to={'/project/'+project.key }>Remove</Link></li>
-                  </ul>
-              </div>
-              <div className="btn-group">
-                  <a href="#/project/{ project.gameId }/edit/structure" className="btn-white btn btn-sm"><i className="fa fa-pencil"/>Edit</a>
-              </div>
-          </td>
-        </tr>
-      )
-    });
 
+    const columns = [{
+      Header: 'Name',
+      accessor: 'title' // String-based value accessors!
+    }]
     return (
-      <IboxContent title="Projects">
-        <table className="footable table table-stripped toggle-arrow-tiny" data-page-size="10">
-          <thead>
-            <tr>
-                <th data-toggle="true">Inquiry Name</th>
-                <th data-hide="phone">Description</th>
-                <th data-hide="phone">Date</th>
-                <th className="text-right" data-sort-ignore="true">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            { projectItems }
-          </tbody>
-          <tfoot>
-            <tr>
-                <td colSpan="6">
-                    <ul className="pagination pull-right"></ul>
-                </td>
-            </tr>
-          </tfoot>
-        </table>
-      </IboxContent>
+      <div>
+        <div className="row wrapper page-heading m-t">
+          <Link className="btn btn-w-m btn-info put-item-timeline-right" to="/catalogue"><i className="fa fa-plus"></i> <span className="nav-label">Create new project</span></Link>
+        </div>
+        <IboxContent title="Projects">
+          <ReactTable
+            data={ this.state.projects }
+            columns={columns}
+            getTdProps={(state, rowInfo, column, instance) => {
+              return {
+                onClick: (e, handleOriginal) => {
+                  // console.log('A Td Element was clicked!')
+                  // console.log('it produced this event:', e)
+                  // console.log('It was in this column:', column)
+                  // console.log('It was in this row:', rowInfo)
+                  // console.log('It was in this table instance:', instance)
+
+                  this.props.history.push('/project/'+ rowInfo.original.key);
+
+                  // IMPORTANT! React-Table uses onClick internally to trigger
+                  // events like expanding SubComponents and pivots.
+                  // By default a custom 'onClick' handler will override this functionality.
+                  // If you want to fire the original onClick handler, call the
+                  // 'handleOriginal' function.
+                  if (handleOriginal) {
+                    handleOriginal()
+                  }
+                }
+              }
+            }}
+          />
+        </IboxContent>
+      </div>
       )
   }
 
 }
 
-export default Projects
+export default withRouter(Projects)

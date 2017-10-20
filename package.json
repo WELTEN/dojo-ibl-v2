@@ -6,6 +6,7 @@
     "animate": "^1.0.0",
     "animate.css-js": "0.0.9",
     "bootstrap": "^3.3.7",
+    "draft-js": "^0.10.3",
     "font-awesome": "^4.7.0",
     "jest-cli": "^21.2.1",
     "jquery": "^3.2.1",
@@ -13,8 +14,10 @@
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
+    "react-draft-wysiwyg": "^1.10.12",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.0.14",
+    "react-table": "^6.6.0",
     "startbootstrap-freelancer": "^4.0.0-beta",
     "styled-components": "^2.2.1"
   },

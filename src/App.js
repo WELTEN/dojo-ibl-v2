@@ -5,12 +5,16 @@ import Login from './components/layouts/Login';
 import LandingLex from './components/layouts/LandingLex';
 
 import Projects from './components/views/Projects';
+import Project from './components/views/Project';
+import ProjectsCatalogue from './components/views/ProjectsCatalogue';
 import Groups from './components/views/Groups';
 
 import './../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './../node_modules/font-awesome/css/font-awesome.css'
 import './../node_modules/animate.css/animate.min.css'
+
 import './styles/App.css';
+import './styles/dojoStyle.css';
 
 import { firebaseAuth } from './fire.js'
 
@@ -74,6 +78,8 @@ class App extends Component {
               <Main>
                 <Switch>
                   <PrivateRoute authed={this.state.authed} path="/projects" component={Projects}> </PrivateRoute>
+                  <PrivateRoute authed={this.state.authed} path="/project/:projectId" component={Project}> </PrivateRoute>
+                  <PrivateRoute authed={this.state.authed} path="/catalogue" component={ProjectsCatalogue}> </PrivateRoute>
                   <PrivateRoute authed={this.state.authed} path="/groups" component={Groups}> </PrivateRoute>
                 </Switch>
               </Main>

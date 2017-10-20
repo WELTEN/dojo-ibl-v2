@@ -11,7 +11,11 @@ var config = {
 
 export const fire = firebase.initializeApp(config);
 
-export const ref = firebase.database().ref();
+export const db = firebase.database();
+
+export const fireba = firebase;
+
+export const auth = firebase.auth(); //the firebase auth namespace
 
 export const firebaseAuth = firebase.auth;
 

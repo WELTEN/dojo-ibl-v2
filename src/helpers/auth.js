@@ -1,4 +1,4 @@
-import { ref, firebaseAuth } from '../fire'
+import { db, firebaseAuth } from '../fire'
 
 export function auth (email, pw) {
   return firebaseAuth().createUserWithEmailAndPassword(email, pw)
@@ -15,11 +15,7 @@ export function login (email, pw) {
 
 export function loginGoogle () {
   var provider = new firebaseAuth.GoogleAuthProvider();
-  return firebaseAuth().signInWithPopup(provider).then(function(result) {
-      // if (result.credential) {
-      //     // This gives you a Google Access Token. You can use it to access the Google API.
-      // }
-  });
+  return firebaseAuth().signInWithPopup(provider).then(saveUser);
 }
 
 export function resetPassword (email) {
@@ -27,10 +23,10 @@ export function resetPassword (email) {
 }
 
 export function saveUser (user) {
-  // return ref.child(`users/${user.uid}/info`)
-  //   .set({
-  //     email: user.email,
-  //     uid: user.uid
-  //   })
-  //   .then(() => user)
+  return db.child(`users/${user.uid}/info`)
+    .set({
+      email: user.email,
+      uid: user.uid
+    })
+    .then(() => user)
 }
