@@ -27,7 +27,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'MarkLight', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   text-transform: uppercase; }
 
@@ -68,28 +68,30 @@ hr.star-primary:after {
   margin: 0 auto; }
 
 section {
-  padding: 100px 0; }
-  section h2 {
-    font-size: 3em;
-    margin: 0; }
+  padding: 0px 0; }
+
+section h2 {
+  font-size: 3em;
+  margin: 0; }
 
 section.success {
   color: white;
   background: #18BC9C; }
 
-@media (max-width: 767px) {
   section {
     padding: 75px 0; }
   section.first {
-    padding-top: 75px; } }
+    padding-top: 75px; }
 
-.scroll-top {
-  position: fixed;
-  z-index: 1049;
-  right: 2%;
-  bottom: 2%;
-  width: 50px;
-  height: 50px; }
+  .scroll-top {
+    position: fixed;
+    z-index: 1049;
+    right: 2%;
+    bottom: 2%;
+    width: 50px;
+    height: 50px;
+  }
+
   .scroll-top .btn {
     font-size: 16px;
     line-height: 28px;
@@ -98,40 +100,78 @@ section.success {
     text-align: center;
     border-radius: 100%; }
     .scroll-top .btn:focus {
-      outline: none; }
+      outline: none;
+    }
 
-#mainNav {
-  font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  border: none;
-  background: #2C3E50; }
+  .ml-auto, .mx-auto {
+    margin-left: auto!important;
+  }
+
+  #mainNav {
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    background: #2C3E50;
+  }
   #mainNav a:focus {
-    outline: none; }
+    outline: none;
+  }
+
+  #mainNav.navbar{
+    margin-bottom: 0!important;
+  }
+
   #mainNav .navbar-brand {
-    font-size: 1.1rem;
-    color: white; }
-    #mainNav .navbar-brand.active, #mainNav .navbar-brand:active, #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
-      color: white; }
+    font-size: 32px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    color: white;
+  }
+
+  #mainNav .navbar-brand.active, #mainNav .navbar-brand:active, #mainNav .navbar-brand:focus, #mainNav .navbar-brand:hover {
+    color: white;
+  }
+
   #mainNav .navbar-nav {
-    letter-spacing: 1px; }
-    #mainNav .navbar-nav li.nav-item a.nav-link {
-      color: white; }
-      #mainNav .navbar-nav li.nav-item a.nav-link:hover {
-        color: #18BC9C;
-        outline: none; }
-      #mainNav .navbar-nav li.nav-item a.nav-link:active, #mainNav .navbar-nav li.nav-item a.nav-link:focus {
-        color: white; }
+    letter-spacing: 1px;
+    float: right;
+    margin: 1em;
+  }
+
+  .navbar-expand-lg .navbar-nav .nav-link {
+      margin-right: .5rem;
+      margin-left: .5rem;
+  }
+
+  #mainNav .navbar-nav li.nav-item a.nav-link {
+    color: white;
+    font-size: 16px;
+  }
+
+  #mainNav .navbar-nav li.nav-item a.nav-link:hover {
+    color: #18BC9C;
+    outline: none;
+  }
+
+  #mainNav .navbar-nav li.nav-item a.nav-link:active, #mainNav .navbar-nav li.nav-item a.nav-link:focus {
+    color: white;
+  }
+
   #mainNav .navbar-toggler {
     font-size: 14px;
     padding: 11px;
     text-transform: uppercase;
     color: white;
-    border-color: white; }
-    #mainNav .navbar-toggler:focus, #mainNav .navbar-toggler:hover {
-      color: white;
-      border-color: #18BC9C;
-      background-color: #18BC9C; }
+    border-color: white;
+  }
+
+  #mainNav .navbar-toggler:focus, #mainNav .navbar-toggler:hover {
+    color: white;
+    border-color: #18BC9C;
+    background-color: #18BC9C;
+  }
 
 @media (min-width: 992px) {
   #mainNav {
@@ -140,51 +180,104 @@ section.success {
     -webkit-transition: padding-top 0.3s, padding-bottom 0.3s;
     -moz-transition: padding-top 0.3s, padding-bottom 0.3s;
     transition: padding-top 0.3s, padding-bottom 0.3s; }
-    #mainNav .navbar-brand {
-      font-size: 2em;
-      -webkit-transition: all 0.3s;
-      -moz-transition: all 0.3s;
-      transition: all 0.3s; }
-    #mainNav .navbar-nav > li.nav-item > a.nav-link.active {
-      color: white;
-      border-radius: 3px;
-      background: #18BC9C; }
-      #mainNav .navbar-nav > li.nav-item > a.nav-link.active:active, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
-        color: white;
-        background: #18BC9C; }
+  #mainNav .navbar-nav > li.nav-item > a.nav-link.active {
+    color: white;
+    border-radius: 3px;
+    background: #18BC9C; }
+  #mainNav .navbar-nav > li.nav-item > a.nav-link.active:active, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
+    color: white;
+    background: #18BC9C; }
   #mainNav.navbar-shrink {
     padding-top: 10px;
     padding-bottom: 10px; }
-    #mainNav.navbar-shrink .navbar-brand {
-      font-size: 1.5em; } }
+  #mainNav.navbar-shrink .navbar-brand {
+    font-size: 1.5em; }
+}
 
-header.masthead {
-  padding-top: 100px;
-  padding-bottom: 50px;
-  text-align: center;
-  color: white;
-  background: #18BC9C; }
+  header.masthead {
+    padding-top: 100px;
+    padding-bottom: 50px;
+    text-align: center;
+    color: white;
+    background: rgb(138, 104, 198);
+  }
+
   header.masthead img {
     display: block;
-    margin: 0 auto 20px; }
+    margin: 0 auto 57px;
+    width: 19em;
+  }
+
   header.masthead .intro-text .name {
     font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 2em;
     font-weight: 700;
     display: block;
-    text-transform: uppercase; }
+  }
+
   header.masthead .intro-text .skills {
     font-size: 1.25em;
-    font-weight: 300; }
+    font-weight: 300;
+  }
 
-@media (min-width: 768px) {
-  header.masthead {
-    padding-top: 200px;
-    padding-bottom: 100px; }
-    header.masthead .intro-text .name {
-      font-size: 4.75em; }
-    header.masthead .intro-text .skills {
-      font-size: 1.75em; } }
+  .contact {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    text-align: center;
+    color: black;
+    background: white;
+    float: none !important;
+  }
+
+    .contact .ml-auto, .mx-auto {
+      margin-left: auto!important;
+          float: none !important;
+  }
+
+    .contact  .mr-auto, .mx-auto {
+      margin-right: auto!important;
+          float: none !important;
+  }
+
+  section.services {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    text-align: center;
+    color: white;
+    background: rgb(138, 104, 198);
+  }
+
+  section.services img {
+    display: block;
+    margin: 0 auto 57px;
+    width: 19em;
+  }
+
+  section.services .intro-text .name {
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    font-weight: 700;
+    display: block;
+  }
+
+  section.services .intro-text .skills {
+    font-size: 1.25em;
+    font-weight: 300;
+  }
+
+  section.portfolio{
+    background-color: white;
+  }
+
+  header.masthead .intro-text .name {
+    font-size: 4.75em;
+  }
+  header.masthead .intro-text .skills {
+    font-size: 1.75em;
+  }
+
+
+
 
 #portfolio .portfolio-item {
   right: 0;

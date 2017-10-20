@@ -5,6 +5,205 @@ import Aux from 'react-aux';
 import glamorous from 'glamorous';
 import mockup from './mockup.png';
 import PropTypes from 'prop-types';
+import '../../styles/freelance.css';
+import logo_black from '../../img/LEX20171030_Logo_Zwart_RGB.png'
+import logo_orange from '../../img/LEX20171030_Logo_Wit+Oranje_RGB.png'
+import Scroll from 'react-scroll';
+import Contact from './Landing/Contact'
+
+let Link       = Scroll.Link;
+let Element    = Scroll.Element;
+let scroll    = Scroll.animateScroll;
+
+export default class LandingLex extends Component {
+  state = { loginMessage: null }
+
+  buttonGoogle = (e) => {
+    e.preventDefault()
+    loginGoogle()
+      .catch((error) => {
+          this.setState(setErrorMsg('Invalid username/password.'))
+        })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    login(this.email.value, this.pw.value)
+      .catch((error) => {
+          this.setState(setErrorMsg('Invalid username/password.'))
+        })
+  }
+
+  resetPassword = () => {
+    resetPassword(this.email.value)
+      .then(() => this.setState(setErrorMsg(`Password reset email sent to ${this.email.value}.`)))
+      .catch((error) => this.setState(setErrorMsg(`Email address not found.`)))
+  }
+
+  render () {
+    return (
+      <Aux>
+        <nav className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+          <div className="container">
+            <a className="navbar-brand js-scroll-trigger" href="#page-top">DLex</a>
+
+            <div className="collapse navbar-collapse" id="navbarResponsive">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link className="nav-link js-scroll-trigger" activeClass="active" to="pricing" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
+                    Pricing
+                  </Link>                </li>
+                <li className="nav-item">
+                  <Link className="nav-link js-scroll-trigger" activeClass="active" to="services" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
+                    Services
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link js-scroll-trigger" activeClass="active" to="contact" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
+                    Contact
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link js-scroll-trigger" href="/login">Access</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <header className="masthead">
+          <div className="container">
+            <img className="img-fluid" src={logo_orange} alt="" />
+            <div className="intro-text">
+              <span className="name">Learning Xperience</span>
+              <hr className="star-light" />
+              <span className="skills">Student Centered - Learning Process - Personalized Experiences</span>
+            </div>
+          </div>
+        </header>
+
+        <Element name="pricing" className="element">
+          <Section className="portfolio">
+            <h2 className="text-center">Pricing</h2>
+            <hr className="star-primary" />
+            <CardGrid>
+              <PriceCard
+                title="Basic"
+                description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+                price={16}
+                features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
+                link="#"
+              />
+              <PriceCard
+                title="Standard"
+                description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+                price={22}
+                features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
+                additionalFeatures={['Support platform']}
+                link="#"
+                big
+              />
+              <PriceCard
+                title="Premium"
+                description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
+                price={160}
+                features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
+                link="#"
+              />
+            </CardGrid>
+          </Section>
+        </Element>
+
+        <Element name="services" className="element">
+          <Section className="services">
+            <h2 className="text-center">Services</h2>
+            <hr className="star-primary" />
+            <FeatureGrid>
+              <Feature
+                title="Experience"
+                description="We bring experience in Agile Learning for education..."
+              />
+              <Feature
+                title="Instruments"
+                description="We use instruments..."
+              />
+              <Feature
+                title="Research"
+                description="We do research about "
+              />
+              <Feature
+                title="Technology"
+                description="We provide the technology "
+              />
+            </FeatureGrid>
+          </Section>
+        </Element>
+        <Element name="contact" className="element">
+          <Contact />
+        </Element>
+
+
+
+        <footer className="text-center">
+          <div className="footer-above">
+            <div className="container">
+              <div className="row">
+                <div className="footer-col col-md-4">
+                  <h3>Location</h3>
+                  <p>Ágora Roermond
+                    <br/>Oranjelaan 300, 6043 GL Roermond</p>
+                </div>
+                <div className="footer-col col-md-4">
+                  <h3>Around the Web</h3>
+                  <ul className="list-inline">
+                    <li className="list-inline-item">
+                      <a className="btn-social btn-outline" href="#">
+                        <i className="fa fa-fw fa-facebook"></i>
+                      </a>
+                    </li>
+                    <li className="list-inline-item">
+                      <a className="btn-social btn-outline" href="#">
+                        <i className="fa fa-fw fa-google-plus"></i>
+                      </a>
+                    </li>
+                    <li className="list-inline-item">
+                      <a className="btn-social btn-outline" href="#">
+                        <i className="fa fa-fw fa-twitter"></i>
+                      </a>
+                    </li>
+                    <li className="list-inline-item">
+                      <a className="btn-social btn-outline" href="#">
+                        <i className="fa fa-fw fa-linkedin"></i>
+                      </a>
+                    </li>
+                    <li className="list-inline-item">
+                      <a className="btn-social btn-outline" href="#">
+                        <i className="fa fa-fw fa-dribbble"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="footer-col col-md-4">
+                  <h3>DLex</h3>
+                  <p>DLex is a company crafted with love in the NL.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="footer-below">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-12">
+                  Copyright © DLex 2017
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </Aux>
+    );
+  }
+}
+
 
 const Intro = glamorous.section({
   position: 'relative',
@@ -51,7 +250,7 @@ const Button = glamorous.a({
   fontSize: 16,
   transition: 'all .2s ease-in-out',
   ':hover': {
-    color: '#1AB394',
+    color: 'rgb(138, 104, 198)',
     textDecoration: 'none'
   }
 });
@@ -59,7 +258,7 @@ const Button = glamorous.a({
 const RegisterButton = glamorous(Button)({
   marginLeft: 12,
   color: '#FFFFFF',
-  backgroundColor: '#1AB394',
+  backgroundColor: '#F8812D',
   ':hover': {
     color: '#FFFFFF',
     backgroundColor: '#18A689'
@@ -93,7 +292,7 @@ const StyledCard = glamorous.article({
   marginLeft: 24,
   marginRight: 24,
   textAlign: 'center',
-  border: '2px solid #BDBDBD',
+  border: '1px solid #BDBDBD',
   borderRadius: 12,
   overflow: 'hidden',
   flex: 10
@@ -101,7 +300,7 @@ const StyledCard = glamorous.article({
   if (big) return [{
     marginTop: 0,
     marginBottom: 0,
-    borderColor: '#1AB394',
+    borderColor: 'rgb(138, 104, 198)',
     flex: 11
   }];
 });
@@ -115,7 +314,7 @@ const CardTitle = glamorous.h2({
 }, ({ big }) => {
   if (big) return [{
     color: '#FFFFFF',
-    backgroundColor: '#1AB394'
+    backgroundColor: 'rgb(138, 104, 198)'
   }]
 });
 
@@ -141,7 +340,7 @@ const CardListItem = glamorous.li({
 const CardSignup = glamorous.a({
   paddingTop: 24,
   paddingBottom: 24,
-  color: '#1AB394',
+  color: 'rgb(138, 104, 198)',
   display: 'block',
   transition: 'all .2s ease-in-out',
   ':hover': {
@@ -200,7 +399,7 @@ const StyledFeature = glamorous.article({
   boxSizing: 'border-box'
 });
 
-const FeatureTitle = glamorous.h2({ color: '#1AB394' });
+const FeatureTitle = glamorous.h2({ fontWeight: '400', color: 'white' });
 
 const Feature = ({ title, description }) => (
   <StyledFeature>
@@ -224,109 +423,5 @@ const Footer = glamorous.footer({
 function setErrorMsg(error) {
   return {
     loginMessage: error
-  }
-}
-
-export default class LandingLex extends Component {
-  state = { loginMessage: null }
-
-  buttonGoogle = (e) => {
-    e.preventDefault()
-    loginGoogle()
-      .catch((error) => {
-          this.setState(setErrorMsg('Invalid username/password.'))
-        })
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    login(this.email.value, this.pw.value)
-      .catch((error) => {
-          this.setState(setErrorMsg('Invalid username/password.'))
-        })
-  }
-
-  resetPassword = () => {
-    resetPassword(this.email.value)
-      .then(() => this.setState(setErrorMsg(`Password reset email sent to ${this.email.value}.`)))
-      .catch((error) => this.setState(setErrorMsg(`Email address not found.`)))
-  }
-
-  render () {
-    return (
-      <Aux>
-        <Intro>
-          <MockupImg src={mockup} alt="Mockup" />
-          <Content className="container">
-            <ContentWrapper>
-              <Title>Welcome to Dojo-IBL</Title>
-              <Text>Some text Some Text Some Text Some Text</Text>
-              <div>
-                <Button href="/login">Login</Button>
-                <RegisterButton href="/register">Register</RegisterButton>
-              </div>
-            </ContentWrapper>
-          </Content>
-        </Intro>
-        <Section>
-          <Title>Pricing</Title>
-          <Text>The prices</Text>
-          <CardGrid>
-            <PriceCard
-              title="Basic"
-              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
-              price={16}
-              features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
-              link="#"
-            />
-            <PriceCard
-              title="Standard"
-              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
-              price={22}
-              features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
-              additionalFeatures={['Support platform']}
-              link="#"
-              big
-            />
-            <PriceCard
-              title="Premium"
-              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
-              price={160}
-              features={['Dashboards', 'Projects view', 'Contacts', 'Calendar', 'ReactJS']}
-              link="#"
-            />
-          </CardGrid>
-        </Section>
-        <Section>
-          <Title css={{ textAlign: 'center' }}>Features</Title>
-          <Text css={{ textAlign: 'center' }}>
-            The features
-          </Text>
-          <FeatureGrid>
-            <Feature
-              title="Feature#1"
-              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus. Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus. Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
-            />
-            <Feature
-              title="Feature#1"
-              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
-            />
-            <Feature
-              title="Feature#1"
-              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
-            />
-            <Feature
-              title="Feature#1"
-              description="Lorem ipsum dolor sit amet, illum fastidii dissentias quo ne. Sea ne sint animal iisque, nam an soluta sensibus."
-            />
-          </FeatureGrid>
-        </Section>
-        <Footer>
-          <div className="container">
-            DojoIBL &copy; 2015-2017
-          </div>
-        </Footer>
-      </Aux>
-    );
   }
 }
