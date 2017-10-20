@@ -16,7 +16,23 @@ let Element    = Scroll.Element;
 let scroll    = Scroll.animateScroll;
 
 export default class LandingLex extends Component {
-  state = { loginMessage: null }
+  state = {
+    loginMessage: null,
+    fixed: false
+  };
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = (e) => {
+    const scrollTop = document.documentElement.scrollTop;
+    this.setState({ fixed: scrollTop >= 100 });
+  }
 
   buttonGoogle = (e) => {
     e.preventDefault()
@@ -41,18 +57,20 @@ export default class LandingLex extends Component {
   }
 
   render () {
+    const fixed = this.state.fixed;
     return (
       <Aux>
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <Nav fixed={fixed} className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
           <div className="container">
-            <a className="navbar-brand js-scroll-trigger" href="#page-top">DLex</a>
+            <NavTitle fixed={fixed} className="navbar-brand" href="#page-top">DLex</NavTitle>
 
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
                   <Link className="nav-link js-scroll-trigger" activeClass="active" to="pricing" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
                     Pricing
-                  </Link>                </li>
+                  </Link>
+                </li>
                 <li className="nav-item">
                   <Link className="nav-link js-scroll-trigger" activeClass="active" to="services" spy={true} smooth={true} offset={50} duration={500} onSetActive={this.handleSetActive}>
                     Services
@@ -69,8 +87,8 @@ export default class LandingLex extends Component {
               </ul>
             </div>
           </div>
-        </nav>
-        <header className="masthead">
+        </Nav>
+        <Header className="masthead">
           <div className="container">
             <img className="img-fluid" src={logo_orange} alt="" />
             <div className="intro-text">
@@ -79,7 +97,7 @@ export default class LandingLex extends Component {
               <span className="skills">Student Centered - Learning Process - Personalized Experiences</span>
             </div>
           </div>
-        </header>
+        </Header>
 
         <Element name="pricing" className="element">
           <Section className="portfolio">
@@ -204,6 +222,25 @@ export default class LandingLex extends Component {
   }
 }
 
+const Nav = glamorous.nav({
+  position: 'fixed !important',
+  width: '100%'
+}, ({ fixed }) => {
+  if (fixed) return [{
+    paddingTop: '10px !important',
+    paddingBottom: '10px !important'
+  }];
+});
+
+const NavTitle = glamorous.a(({ fixed }) => {
+  if (fixed) return [{
+    fontSize: '24px !important'
+  }];
+});
+
+const Header = glamorous.header({
+  paddingTop: '200px !important'
+});
 
 const Intro = glamorous.section({
   position: 'relative',
