@@ -1,7 +1,7 @@
 .nav.nav-tabs li.active > a{
   background: #2f4050;
-  padding: 10px 15px;
-  font-weight: bold;
+  padding: 10px;
+  font-weight: 600;
   color: #fff;
   border-radius: 5px 5px 0px 0px;
 }

@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import Rebase from 're-base';
 
 var config = {
     apiKey: "AIzaSyBRRKRZ068429qJphWdbrOd8oyLY6zPgCU",
@@ -20,3 +21,5 @@ export const auth = firebase.auth(); //the firebase auth namespace
 export const firebaseAuth = firebase.auth;
 
 export default fire;
+
+export const base = Rebase.createClass(db);

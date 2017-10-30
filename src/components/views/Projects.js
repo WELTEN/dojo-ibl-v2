@@ -6,6 +6,7 @@ import 'react-table/react-table.css'
 import { Link, withRouter } from 'react-router-dom';
 import { fire, db } from '../../fire.js';
 import IboxContent from '../common/IboxContent';
+import matchSorter from 'match-sorter'
 
 class Projects extends Component {
 
@@ -36,8 +37,17 @@ class Projects extends Component {
 
 
     const columns = [{
-      Header: 'Name',
-      accessor: 'title' // String-based value accessors!
+      Header: 'Project title',
+      accessor: 'title',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ["title"] }),
+      filterAll: true
+    },{
+      Header: 'Project description',
+      accessor: 'description',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ["description"] }),
+      filterAll: true
     }]
     return (
       <div>
@@ -48,6 +58,10 @@ class Projects extends Component {
           <ReactTable
             data={ this.state.projects }
             columns={columns}
+            defaultPageSize={10}
+            filterable
+            defaultFilterMethod={(filter, row) =>
+              String(row[filter.id]) === filter.value}
             getTdProps={(state, rowInfo, column, instance) => {
               return {
                 onClick: (e, handleOriginal) => {

@@ -1721,15 +1721,17 @@ a.DTTT_button:hover:not(.DTTT_disabled) {
   width: 23%;
   min-width: 20em;
   padding: 10px;
+  border-radius: 9px;
 }
 .show-grid aside {
   border: 1px solid #ddd;
   margin: 5px;
   width: 23%;
   padding: 10px;
+  border-radius: 9px;
 }
 .show-grid {
-  margin: 15px 0;
+  margin: 0px 0;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -5328,7 +5330,7 @@ table.issue-tracker tbody tr td {
   border: 1px solid #e7eaec;
   margin: 0px 0 10px 0;
   padding: 10px;
-  border-radius: 2px;
+  border-radius: 6px;
 }
 .agile-list li:hover {
   cursor: pointer;
@@ -9529,7 +9531,7 @@ iframe {
   padding-bottom: 56.25%;
 }
 
-/* 4x3 Aspect Ratio */ 
+/* 4x3 Aspect Ratio */
 .intrinsic-container-4x3 {
   padding-bottom: 75%;
 }
