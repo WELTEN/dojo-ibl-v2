@@ -1,21 +1,30 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: '#23C6C8',
+    accent1Color: '#2F4050'
   }
-}
+});
+
+const App = () => (
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route component={NotFound} />
+      </Switch>
+    </Router>
+  </MuiThemeProvider>
+);
 
 export default App;
