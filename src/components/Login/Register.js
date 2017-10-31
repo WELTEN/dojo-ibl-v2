@@ -4,64 +4,58 @@ import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import { red500, grey500 } from 'material-ui/styles/colors';
-import Link from '../Link';
+import { red500, grey200 } from 'material-ui/styles/colors';
+import { Title } from './index';
 
-const BottomText = glamorous.div({
-  marginTop: 4,
-  fontSize: 12
+const RegisterSection = glamorous.section({
+  width: 0,
+  backgroundColor: grey200,
+  boxSizing: 'border-box',
+  transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
+}, ({ open }) => {
+  if (open) return { padding: 48, width: 400 };
 });
 
-const ErrorText = glamorous(BottomText)({
-  color: red500
-});
-
-const NoAccount = glamorous(BottomText)({
-  color: grey500
-});
-
-export default class EmailPasswordLogin extends Component {
+export default class Register extends Component {
   static propTypes = {
-    onRegisterOpen: PropTypes.func.isRequired
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired
   };
 
   state = {
+    name: '',
     email: '',
     password: '',
     emailError: '',
-    passwordError: '',
-    error: ''
+    passwordError: ''
   };
 
+  handleNameChange = e => this.setState({ name: e.target.value });
   handleEmailChange = e => this.setState({ email: e.target.value });
   handlePasswordChange = e => this.setState({ password: e.target.value });
 
-  onLogin = () => {
+  onRegister = () => {
     const { email, password } = this.state;
-    firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
       this.setState({
         emailError: '',
-        passwordError: '',
-        error: ''
+        passwordError: ''
       });
       switch (error.code) {
-        case 'auth/invalid-email': {
-          this.setState({ emailError: error.message });
-          break;
-        }
-        case 'auth/wrong-password': {
+        case 'auth/weak-password': {
           this.setState({ passwordError: error.message });
           break;
         }
         default: {
-          this.setState({ error: error.message });
+          this.setState({ emailError: error.message });
         }
       }
     });
   };
 
   render = () => (
-    <div>
+    <RegisterSection open={this.props.open}>
+      <Title>Register</Title>
       <TextField
         floatingLabelText="Email"
         value={this.state.email}
@@ -78,18 +72,11 @@ export default class EmailPasswordLogin extends Component {
         fullWidth
       />
       <RaisedButton
-        label="Login"
-        onClick={this.onLogin}
+        label="Register"
+        onClick={this.onRegister}
         secondary
         fullWidth
       />
-      {this.state.error &&
-        <ErrorText>{this.state.error}</ErrorText>
-      }
-      <NoAccount>
-        {`Don't have an account? `}
-        <Link onClick={this.props.onRegisterOpen}>Create one</Link>
-      </NoAccount>
-    </div>
+    </RegisterSection>
   );
 }
