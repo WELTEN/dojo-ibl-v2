@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import { red500, grey500 } from 'material-ui/styles/colors';
 import Link from '../Link';
+import InputField from './InputField';
 
 const BottomText = glamorous.div({
-  marginTop: 4,
+  marginTop: 12,
   fontSize: 12
 });
 
@@ -17,6 +17,7 @@ const ErrorText = glamorous(BottomText)({
 });
 
 const NoAccount = glamorous(BottomText)({
+  marginBottom: 12,
   color: grey500
 });
 
@@ -62,24 +63,23 @@ export default class EmailPasswordLogin extends Component {
 
   render = () => (
     <div>
-      <TextField
-        floatingLabelText="Email"
+      <InputField
+        label="Email"
         value={this.state.email}
         onChange={this.handleEmailChange}
         errorText={this.state.emailError}
-        fullWidth
       />
-      <TextField
-        floatingLabelText="Password"
+      <InputField
+        label="Password"
         value={this.state.password}
         onChange={this.handlePasswordChange}
         errorText={this.state.passwordError}
         type="password"
-        fullWidth
       />
       <RaisedButton
         label="Login"
         onClick={this.onLogin}
+        style={{ marginTop: 12 }}
         secondary
         fullWidth
       />

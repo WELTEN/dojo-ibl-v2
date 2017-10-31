@@ -26,7 +26,9 @@ const LoginSection = glamorous.section({
 });
 
 export const Title = glamorous.h1({
-  fontSize: 36
+  margin: 0,
+  fontSize: 32,
+  fontWeight: 300
 });
 
 export default class Login extends Component {

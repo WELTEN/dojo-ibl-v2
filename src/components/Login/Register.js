@@ -3,17 +3,29 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import { red500, grey200 } from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import Close from 'material-ui/svg-icons/navigation/close';
+import { white } from 'material-ui/styles/colors';
 import { Title } from './index';
+import InputField from './InputField';
+import { transition, accentColor } from '../../styles';
 
 const RegisterSection = glamorous.section({
+  position: 'relative',
   width: 0,
-  backgroundColor: grey200,
+  color: white,
+  backgroundColor: accentColor,
   boxSizing: 'border-box',
-  transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
+  transition,
+  overflow: 'hidden'
 }, ({ open }) => {
   if (open) return { padding: 48, width: 400 };
+});
+
+const CloseButton = glamorous(IconButton)({
+  position: 'absolute !important',
+  top: 36,
+  right: 36
 });
 
 export default class Register extends Component {
@@ -26,6 +38,7 @@ export default class Register extends Component {
     name: '',
     email: '',
     password: '',
+    nameError: '',
     emailError: '',
     passwordError: ''
   };
@@ -35,9 +48,24 @@ export default class Register extends Component {
   handlePasswordChange = e => this.setState({ password: e.target.value });
 
   onRegister = () => {
-    const { email, password } = this.state;
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
+    const { name, email, password } = this.state;
+
+    if (!name.trim()) {
       this.setState({
+        nameError: 'Name should be given.',
+        emailError: '',
+        passwordError: ''
+      });
+      return;
+    }
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+      user.updateProfile({
+        displayName: name
+      });
+    }).catch((error) => {
+      this.setState({
+        nameError: '',
         emailError: '',
         passwordError: ''
       });
@@ -55,26 +83,37 @@ export default class Register extends Component {
 
   render = () => (
     <RegisterSection open={this.props.open}>
+      <CloseButton iconStyle={{ color: white }} onClick={this.props.onClose}>
+        <Close />
+      </CloseButton>
       <Title>Register</Title>
-      <TextField
-        floatingLabelText="Email"
+      <InputField
+        label="Name"
+        value={this.state.name}
+        onChange={this.handleNameChange}
+        errorText={this.state.nameError}
+        white
+      />
+      <InputField
+        label="Email"
         value={this.state.email}
         onChange={this.handleEmailChange}
         errorText={this.state.emailError}
-        fullWidth
+        white
       />
-      <TextField
-        floatingLabelText="Password"
+      <InputField
+        label="Password"
         value={this.state.password}
         onChange={this.handlePasswordChange}
         errorText={this.state.passwordError}
         type="password"
-        fullWidth
+        white
       />
       <RaisedButton
         label="Register"
         onClick={this.onRegister}
-        secondary
+        style={{ marginTop: 12 }}
+        primary
         fullWidth
       />
     </RegisterSection>

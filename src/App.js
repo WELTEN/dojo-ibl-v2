@@ -8,11 +8,12 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+import { primaryColor, accentColor } from './styles';
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: '#23C6C8',
-    accent1Color: '#2F4050'
+    primary1Color: primaryColor,
+    accent1Color: accentColor
   }
 });
 
