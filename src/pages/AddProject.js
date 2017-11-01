@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import glamorous from 'glamorous';
 import PageTitle from '../components/PageTitle';
 import {
   Step,
@@ -6,6 +7,12 @@ import {
   StepLabel,
 } from 'material-ui/Stepper'
 import TemplateChooser from '../components/AddProject/TemplateChooser';
+
+const StepContent = glamorous.section({
+  paddingLeft: 14,
+  paddingRight: 14,
+  boxSizing: 'border-box'
+});
 
 export default class AddProject extends Component {
   state = {
@@ -51,7 +58,7 @@ export default class AddProject extends Component {
       <PageTitle>Add project</PageTitle>
       <Stepper activeStep={this.state.stepIndex}>
         <Step>
-          <StepLabel>Select template</StepLabel>
+          <StepLabel>Choose template</StepLabel>
         </Step>
         <Step>
           <StepLabel>Enter project title</StepLabel>
@@ -60,9 +67,9 @@ export default class AddProject extends Component {
           <StepLabel>Customize project</StepLabel>
         </Step>
       </Stepper>
-      <div>
+      <StepContent>
         {this.getStepContent()}
-      </div>
+      </StepContent>
     </div>
   );
 }
