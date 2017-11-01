@@ -2,7 +2,9 @@ import React from 'react';
 import PageTitle from '../components/PageTitle';
 
 const Home = () => (
-  <PageTitle>Groups</PageTitle>
+  <div>
+    <PageTitle>Groups</PageTitle>
+  </div>
 );
 
 export default Home;
