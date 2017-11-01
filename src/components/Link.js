@@ -16,15 +16,15 @@ const linkStyles = {
 const StyledA = glamorous.a(linkStyles);
 const StyledLink = glamorous(RouterLink)(linkStyles);
 
-const Link = ({ to, onClick, children }) => {
+const Link = ({ to, onClick, children, ...props }) => {
   if (onClick) {
-    return <StyledA onClick={onClick}>{children}</StyledA>;
+    return <StyledA onClick={onClick} {...props}>{children}</StyledA>;
   }
 
   if (to.startsWith('http://') || to.startsWith('https://')) {
-    return <StyledA href={to}>{children}</StyledA>;
+    return <StyledA href={to} {...props}>{children}</StyledA>;
   } else {
-    return <StyledLink to={to}>{children}</StyledLink>
+    return <StyledLink to={to} {...props}>{children}</StyledLink>
   }
 };
 
