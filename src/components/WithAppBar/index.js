@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import AppBar from 'material-ui/AppBar';
 import Aux from 'react-aux';
 import LogoutButton from './LogoutButton';
 import MenuDrawer from './MenuDrawer';
 import * as firebase from 'firebase';
 
+const PageContent = glamorous.main({
+  paddingTop: 24,
+  paddingBottom: 24,
+  paddingLeft: 64,
+  paddingRight: 64
+});
+
 export default class WithAppBar extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    showGroupInfo: PropTypes.bool
+    title: PropTypes.string.isRequired
   };
 
   state = { drawerOpen: false };
@@ -30,6 +37,9 @@ export default class WithAppBar extends Component {
         open={this.state.drawerOpen}
         onChange={this.onChangeDrawer}
       />
+      <PageContent>
+        {this.props.children}
+      </PageContent>
     </Aux>
   );
 }

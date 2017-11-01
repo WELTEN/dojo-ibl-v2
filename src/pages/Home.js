@@ -1,12 +1,12 @@
 import React from 'react';
 import WithLogin from '../components/WithLogin';
-import * as firebase from 'firebase';
 import WithAppBar from '../components/WithAppBar/index';
+import PageTitle from '../components/PageTitle';
 
 const Home = () => (
   <WithLogin>
     <WithAppBar title="Home">
-      <h1 onClick={() => firebase.auth().signOut()}>home</h1>
+      <PageTitle>Groups</PageTitle>
     </WithAppBar>
   </WithLogin>
 );
