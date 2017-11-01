@@ -8,6 +8,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
+import AddProject from './pages/AddProject';
 import NotFound from './pages/NotFound';
 import WithLogin from './components/WithLogin';
 import WithAppBar from './components/WithAppBar/index';
@@ -24,9 +25,9 @@ const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <Router>
       <Switch>
-        <Route path="/" render={({ location }) => (
+        <Route render={({ location }) => (
           <WithLogin>
-            <WithAppBar title="Home">
+            <WithAppBar title="DojoIBL">
               <Switch>
                 <Route
                   location={location}
@@ -41,6 +42,13 @@ const App = () => (
                   exact
                   path="/projects"
                   component={Projects}
+                />
+                <Route
+                  location={location}
+                  key={location.key}
+                  exact
+                  path="/projects/add"
+                  component={AddProject}
                 />
               </Switch>
             </WithAppBar>
