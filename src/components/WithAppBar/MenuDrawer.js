@@ -22,12 +22,20 @@ const MenuDrawer = ({ open, onChange }) => (
     onRequestChange={onChange}
   >
     <DrawerHeader />
-    <MenuItem leftIcon={<Group />}>
-      <MenuLink to="/">Groups</MenuLink>
-    </MenuItem>
-    <MenuItem leftIcon={<Folder />}>
-      <MenuLink to="/projects">Projects</MenuLink>
-    </MenuItem>
+    <MenuLink to="/">
+      <MenuItem
+        primaryText="Groups"
+        leftIcon={<Group />}
+        onClick={() => onChange(false)}
+      />
+    </MenuLink>
+    <MenuLink to="/projects">
+      <MenuItem
+        primaryText="Projects"
+        leftIcon={<Folder />}
+        onClick={() => onChange(false)}
+      />
+    </MenuLink>
   </Drawer>
 );
 
