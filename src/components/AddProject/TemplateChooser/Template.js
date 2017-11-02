@@ -5,19 +5,35 @@ import Paper from 'material-ui/Paper';
 import { white, blue500 } from 'material-ui/styles/colors';
 import { flattenFirebaseList } from '../../../lib/Firebase';
 import TemplatePhases from './TemplatePhases';
+import FlatButton from 'material-ui/FlatButton';
 
-const Item = glamorous(Paper)({
+const ItemContainer = glamorous.div({
   marginBottom: 24,
-  padding: 18,
   maxWidth: 'calc(33.3333% - 16px)',
   flex: 1
 });
+
+const Item = glamorous(Paper)({
+  padding: 18,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between'
+})
 
 const Header = glamorous.header({
   marginBottom: 12,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between'
+});
+
+const Field = glamorous.div({
+  marginBottom: 16
+});
+
+const FieldTitle = glamorous.h5({
+  marginTop: 0,
+  marginBottom: 8
 });
 
 const Name = glamorous.h3({
@@ -34,16 +50,40 @@ const Lang = glamorous.span({
   borderRadius: 2,
 });
 
+const ChooseButton = glamorous(FlatButton)({ alignSelf: 'flex-start' });
+
 const Template = ({ template, onChoose }) => (
-  <Item>
-    <Header>
-      <Name>{template.name}</Name>
-      <Lang>{template.language}</Lang>
-    </Header>
-    <div>{template.description}</div>
-    <div>{template.author}</div>
-    <TemplatePhases phases={flattenFirebaseList(template.phases)} />
-  </Item>
+  <ItemContainer>
+    <Item>
+      <div>
+        <Header>
+          <Name>{template.name}</Name>
+          <Lang>{template.language}</Lang>
+        </Header>
+        {template.description &&
+          <Field>
+            <FieldTitle>Description</FieldTitle>
+            {template.description}
+          </Field>
+        }
+        {template.author &&
+          <Field>
+            <FieldTitle>Author</FieldTitle>
+            {template.author}
+          </Field>
+        }
+        <Field>
+          <FieldTitle>Phases</FieldTitle>
+          <TemplatePhases phases={flattenFirebaseList(template.phases)} />
+        </Field>
+      </div>
+      <ChooseButton
+        label="Choose this template"
+        onClick={() => onChoose(template.key)}
+        primary
+      />
+    </Item>
+  </ItemContainer>
 );
 
 Template.propTypes = {

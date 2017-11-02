@@ -4,7 +4,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-h1, h3, h4 {
+h1, h3, h4, h5 {
   color: #757575;
   font-weight: 400;
 }
@@ -15,4 +15,8 @@ h1 {
 
 h3 {
   font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 14px;
 }

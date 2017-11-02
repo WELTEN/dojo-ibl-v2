@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
+import Chip from 'material-ui/Chip';
+
+const StyledChip = glamorous(Chip)({
+  margin: '4px !important'
+});
 
 const TemplatePhase = ({ name }) => (
-  <div>{name}</div>
+  <StyledChip>{name}</StyledChip>
 );
 
 TemplatePhase.propTypes = {

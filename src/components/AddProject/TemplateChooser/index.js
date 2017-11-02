@@ -13,26 +13,27 @@ export default class TemplateChooser extends Component {
 
   state = {
     loading: true,
-    templates: []
+    templates: {}
   };
 
   componentDidMount = () => {
     firebase.database().ref('templates').once('value', (snapshot) => {
       this.setState({
         loading: false,
-        templates: flattenFirebaseList(snapshot.val())
+        templates: snapshot.val()
       });
     });
   };
 
   onChoose = (template) => {
     console.log(template)
+    console.log(this.state.templates[template])
   };
 
   render = () => (
     <WithLoadingSpinner loading={this.state.loading}>
       <TemplateOverview
-        templates={this.state.templates}
+        templates={flattenFirebaseList(this.state.templates)}
         onChoose={this.onChoose}
       />
       <StepButtons
