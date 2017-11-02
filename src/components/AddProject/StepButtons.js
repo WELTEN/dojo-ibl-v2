@@ -4,8 +4,11 @@ import glamorous from 'glamorous';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const ButtonContainer = glamorous.footer({ marginTop: 24 });
-const PrevButton = glamorous(FlatButton)({ marginRight: '12px !important' });
+export const ButtonContainer = glamorous.footer({ marginTop: 24 });
+
+export const PrevButton = glamorous(FlatButton)({
+  marginRight: '12px !important'
+});
 
 const StepButtons = ({ onPrev, onNext, last }) => (
   <ButtonContainer>
