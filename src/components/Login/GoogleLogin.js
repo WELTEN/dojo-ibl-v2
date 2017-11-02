@@ -5,7 +5,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 export default class GoogleLogin extends Component {
   onLogin = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider);
+    firebase.auth().signInWithPopup(provider).then(({ user }) => {
+      firebase.database().ref(`users/${user.uid}`).set({
+        displayName: user.displayName,
+        email: user.email
+      });
+    });
   };
 
   render = () => (

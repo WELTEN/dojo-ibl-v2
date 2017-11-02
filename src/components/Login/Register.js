@@ -63,6 +63,10 @@ export default class Register extends Component {
       user.updateProfile({
         displayName: name
       });
+      firebase.database().ref(`users/${user.uid}`).set({
+        displayName: name,
+        email: user.email
+      });
     }).catch((error) => {
       this.setState({
         nameError: '',
@@ -86,7 +90,7 @@ export default class Register extends Component {
       <CloseButton iconStyle={{ color: white }} onClick={this.props.onClose}>
         <Close />
       </CloseButton>
-      <Title>Register</Title>
+      <Title css={{ color: white }}>Register</Title>
       <InputField
         label="Name"
         value={this.state.name}

@@ -7,6 +7,8 @@ import {
   StepLabel,
 } from 'material-ui/Stepper'
 import TemplateChooser from '../components/AddProject/TemplateChooser';
+import SetTitle from '../components/AddProject/SetTitle';
+import CustomizeProject from '../components/AddProject/CustomizeProject';
 
 const StepContent = glamorous.section({
   paddingLeft: 14,
@@ -42,13 +44,30 @@ export default class AddProject extends Component {
 
     switch (this.state.stepIndex) {
       case 1: {
-        return 'egdfg'
+        return (
+          <SetTitle
+            onPrev={this.handlePrev}
+            onNext={this.handleNext}
+            projectKey={this.state.projectKey}
+          />
+        );
       }
       case 2: {
-        return 'dsf'
+        return (
+          <CustomizeProject
+            onPrev={this.handlePrev}
+            onNext={this.handleNext}
+            projectKey={this.state.projectKey}
+          />
+        );
       }
       default: {
-        return <TemplateChooser onNext={this.handleNext} />
+        return (
+          <TemplateChooser
+            onNext={this.handleNext}
+            setProjectKey={this.setProjectKey}
+          />
+        );
       }
     }
   };

@@ -7,11 +7,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 const ButtonContainer = glamorous.footer({ marginTop: 24 });
 const PrevButton = glamorous(FlatButton)({ marginRight: '12px !important' });
 
-const StepButtons = ({ onPrev, onNext, prevDisabled, last }) => (
+const StepButtons = ({ onPrev, onNext, last }) => (
   <ButtonContainer>
     <PrevButton
       label="Back"
-      disabled={prevDisabled}
+      disabled={!onPrev}
       onClick={onPrev}
     />
     <RaisedButton
@@ -25,7 +25,6 @@ const StepButtons = ({ onPrev, onNext, prevDisabled, last }) => (
 StepButtons.propTypes = {
   onPrev: PropTypes.func,
   onNext: PropTypes.func.isRequired,
-  prevDisabled: PropTypes.bool,
   last: PropTypes.bool
 };
 
