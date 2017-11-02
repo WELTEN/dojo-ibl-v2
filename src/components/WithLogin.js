@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Login from './Login/index';
+import Login from './Login';
 import LinearProgress from 'material-ui/LinearProgress';
 import * as firebase from 'firebase';
 

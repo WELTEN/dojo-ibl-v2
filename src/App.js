@@ -11,7 +11,7 @@ import Projects from './pages/Projects';
 import AddProject from './pages/AddProject';
 import NotFound from './pages/NotFound';
 import WithLogin from './components/WithLogin';
-import WithAppBar from './components/WithAppBar/index';
+import WithAppBar from './components/WithAppBar';
 import { primaryColor, accentColor } from './styles';
 
 const muiTheme = getMuiTheme({
