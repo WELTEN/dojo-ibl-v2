@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import StepButtons from './StepButtons';
 import TextField from 'material-ui/TextField';
+
+const Text = glamorous.p({ margin: 0 });
 
 export default class SetTitle extends Component {
   static propTypes = {
@@ -63,7 +66,7 @@ export default class SetTitle extends Component {
 
   render = () => (
     <WithLoadingSpinner loading={this.state.loading}>
-      <p>{`Enter a title for the project you've just created.`}</p>
+      <Text>{`Enter a title for the project you've just created.`}</Text>
       <TextField
         floatingLabelText="Project title"
         value={this.state.value}

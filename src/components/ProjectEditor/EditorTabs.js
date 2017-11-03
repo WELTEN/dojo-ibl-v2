@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { grey300 } from 'material-ui/styles/colors';
 import { accentColor } from '../../styles';
+import Info from './Info';
 
 export default class EditorTabs extends Component {
   static propTypes = {
@@ -21,7 +22,7 @@ export default class EditorTabs extends Component {
         onChange={this.handleChange}
       >
         <Tab label="Info" value="info" style={tabStyle}>
-          <h1>Info</h1>
+          <Info project={this.props.project} />
         </Tab>
         <Tab label="Structure" value="structure" style={tabStyle}>
           <h1>Structure</h1>

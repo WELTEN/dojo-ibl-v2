@@ -14,14 +14,19 @@ export default class ProjectEditor extends Component {
     project: null
   };
 
+  getProjectRef = () =>
+    firebase.database().ref(`projects/${this.props.projectKey}`);
+
   componentDidMount = () => {
-    firebase.database().ref(`projects/${this.props.projectKey}`).on('value', (snapshot) => {
+    this.getProjectRef().on('value', (snapshot) => {
       this.setState({
         loading: false,
         project: snapshot.val()
       });
     });
   };
+
+  componentWillUnmount = () => this.getProjectRef().off();
 
   render = () => (
     <WithLoadingSpinner loading={this.state.loading}>
