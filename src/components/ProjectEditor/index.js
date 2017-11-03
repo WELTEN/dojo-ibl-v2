@@ -19,9 +19,12 @@ export default class ProjectEditor extends Component {
 
   componentDidMount = () => {
     this.getProjectRef().on('value', (snapshot) => {
+      const project = snapshot.val();
+      project.key = this.props.projectKey;
+
       this.setState({
         loading: false,
-        project: snapshot.val()
+        project
       });
     });
   };

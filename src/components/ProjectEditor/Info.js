@@ -1,40 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
+import LiveUpdatingTextField from '../LiveUpdatingTextField';
+import * as firebase from 'firebase';
 
-export default class Info extends Component {
-  static propTypes = {
-    project: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string
-    }).isRequired
-  };
+const getProjectRef = key => firebase.database().ref(`projects/${key}`);
 
-  state = {
-    title: this.props.project.title,
-    description: this.props.project.description
-  };
+const Info = ({ project }) => (
+  <div>
+    <LiveUpdatingTextField
+      floatingLabelText="Project title"
+      value={project.title}
+      getRef={() => getProjectRef(project.key).child('title')}
+      fullWidth
+    />
+    <LiveUpdatingTextField
+      floatingLabelText="Project description"
+      value={project.description}
+      getRef={() => getProjectRef(project.key).child('description')}
+      fullWidth
+      rows={5}
+      multiLine
+    />
+  </div>
+);
 
-  handleTitleChange = e => this.setState({ title: e.target.value });
-  handleDescription = e => this.setState({ description: e.target.value });
+Info.propTypes = {
+  project: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string
+  }).isRequired
+};
 
-  render = () => (
-    <div>
-      <TextField
-        floatingLabelText="Project title"
-        value={this.state.title}
-        onChange={this.handleTitleChange}
-        fullWidth
-      />
-      <br />
-      <TextField
-        floatingLabelText="Project description"
-        value={this.state.description}
-        onChange={this.handleDescriptionChange}
-        fullWidth
-        rows={5}
-        multiLine
-      />
-    </div>
-  );
-}
+export default Info;

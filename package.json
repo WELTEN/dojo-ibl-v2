@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "debounce": "^1.1.0",
     "firebase": "^4.6.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.0",
