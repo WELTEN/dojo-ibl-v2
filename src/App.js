@@ -13,11 +13,16 @@ import NotFound from './pages/NotFound';
 import WithLogin from './components/WithLogin';
 import WithAppBar from './components/WithAppBar';
 import { primaryColor, accentColor } from './styles';
+import { white, black } from 'material-ui/styles/colors';
 
 const muiTheme = getMuiTheme({
   palette: {
     primary1Color: primaryColor,
     accent1Color: accentColor
+  },
+  appBar: {
+    color: white,
+    textColor: black
   }
 });
 
