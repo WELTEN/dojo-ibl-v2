@@ -24,7 +24,11 @@ const Structure = ({ project }) => (
   <OverflowFix>
     <PhaseContainer>
       {Object.keys(project.phases || {}).map((phase) =>
-        <Phase phaseKey={phase} key={phase} />
+        <Phase
+          phaseKey={phase}
+          projectKey={project.key}
+          key={phase}
+        />
       )}
     </PhaseContainer>
   </OverflowFix>
@@ -32,6 +36,7 @@ const Structure = ({ project }) => (
 
 Structure.propTypes = {
   project: PropTypes.shape({
+    key: PropTypes.string.isRequired,
     phases: PropTypes.object
   }).isRequired
 };

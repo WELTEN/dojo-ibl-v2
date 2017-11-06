@@ -77,10 +77,7 @@ export default class TemplateChooser extends Component {
   createActivity = (activity, phaseKey) => {
     const key = firebase.database().ref('activities').push().getKey();
     firebase.database().ref(`phases/${phaseKey}/activities`).child(key).set(true);
-    firebase.database().ref(`activities/${key}`).set({
-      name: activity.name,
-      description: activity.description
-    });
+    firebase.database().ref(`activities/${key}`).set(activity);
     return key;
   };
 
