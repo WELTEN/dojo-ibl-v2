@@ -13,6 +13,7 @@ export default class Prompt extends Component {
     value: PropTypes.string,
     multiLine: PropTypes.bool,
     open: PropTypes.bool.isRequired,
+    emptyOnOk: PropTypes.bool,
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
   };
@@ -26,7 +27,7 @@ export default class Prompt extends Component {
   onOk = () => {
     if (!this.state.input.trim()) return this.props.onCancel();
     this.props.onOk(this.state.input);
-    this.setState({ input: '' });
+    if (this.props.emptyOnOk) this.setState({ input: '' });
   }
 
   render() {

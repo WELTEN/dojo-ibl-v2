@@ -8,6 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui/svg-icons/image/edit';
 import Close from 'material-ui/svg-icons/navigation/close';
 import Activities from './Activities';
+import Prompt from '../../Prompt';
 import Confirm from '../../Confirm';
 
 const Item = glamorous.div({
@@ -48,6 +49,7 @@ export default class Phase extends Component {
   state = {
     loading: true,
     phase: {},
+    editing: false,
     deleting: false
   };
 
@@ -63,6 +65,15 @@ export default class Phase extends Component {
   };
 
   componentWillUnmount = () => this.getRef().off();
+
+  onEdit = () => this.setState({ editing: true });
+
+  onEditSave = (name) => {
+    this.setState({ editing: false });
+    this.getRef().child('name').set(name);
+  };
+
+  onEditCancel = () => this.setState({ editing: false });
 
   onDelete = () => this.setState({ deleting: true });
 
@@ -85,7 +96,7 @@ export default class Phase extends Component {
       <WithLoadingSpinner loading={this.state.loading}>
         <Header>
           <Title>{this.state.phase.name}</Title>
-          <IconButton>
+          <IconButton onClick={this.onEdit}>
             <Edit />
           </IconButton>
           <IconButton iconStyle={{ color: red500 }} onClick={this.onDelete}>
@@ -98,6 +109,16 @@ export default class Phase extends Component {
             phaseKey={this.props.phaseKey}
           />
         )}
+        <Prompt
+          title="Rename phase"
+          msg="Enter a new name for the phase"
+          label="Name"
+          value={this.state.phase.name}
+          open={this.state.editing}
+          emptyOnOk={false}
+          onOk={this.onEditSave}
+          onCancel={this.onEditCancel}
+        />
         <Confirm
           title="Confirm phase deletion"
           msg="After you delete a phase, there's no way back!"
