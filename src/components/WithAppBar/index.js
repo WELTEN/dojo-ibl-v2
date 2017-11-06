@@ -10,8 +10,8 @@ import * as firebase from 'firebase';
 const PageContent = glamorous.main({
   paddingTop: 24,
   paddingBottom: 24,
-  paddingLeft: 64,
-  paddingRight: 64
+  paddingLeft: 48,
+  paddingRight: 48
 });
 
 export default class WithAppBar extends Component {

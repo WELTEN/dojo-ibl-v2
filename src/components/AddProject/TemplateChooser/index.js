@@ -78,7 +78,8 @@ export default class TemplateChooser extends Component {
     const key = firebase.database().ref('activities').push().getKey();
     firebase.database().ref(`phases/${phaseKey}/activities`).child(key).set(true);
     firebase.database().ref(`activities/${key}`).set({
-      name: activity.name
+      name: activity.name,
+      description: activity.description
     });
     return key;
   };
