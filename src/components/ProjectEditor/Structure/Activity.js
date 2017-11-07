@@ -8,7 +8,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import EditActivity from './EditActivity';
+import ActivityPrompt from './ActivityPrompt';
 import Confirm from '../../Confirm';
 import Aux from 'react-aux';
 
@@ -65,7 +65,16 @@ export default class Activity extends Component {
   componentWillUnmount = () => this.getRef().off();
 
   onEdit = () => setTimeout(() => this.setState({ editing: true }), 450);
-  onEditClose = () => this.setState({ editing: false });
+
+  onEditSave = (name, description) => {
+    this.setState({ editing: false });
+    firebase.database().ref(`activities/${this.props.activityKey}`).update({
+      name,
+      description
+    });
+  };
+
+  onEditCancel = () => this.setState({ editing: false });
 
   onDelete = () => setTimeout(() => this.setState({ deleting: true }), 450);
 
@@ -100,11 +109,14 @@ export default class Activity extends Component {
               <MenuItem primaryText="Edit" onClick={this.onEdit} />
               <MenuItem primaryText="Delete" onClick={this.onDelete} />
             </IconMenu>
-            <EditActivity
-              activity={this.state.activity}
-              activityKey={this.props.activityKey}
+            <ActivityPrompt
+              title="Edit activity"
+              msg="Change the activity name/description"
+              nameValue={this.state.activity.name}
+              descriptionValue={this.state.activity.description}
               open={this.state.editing}
-              onClose={this.onEditClose}
+              onOk={this.onEditSave}
+              onCancel={this.onEditCancel}
             />
             <Confirm
               title="Confirm activity deletion"

@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import * as firebase from 'firebase';
 
-export default class EditActivity extends Component {
+export default class ActivityPrompt extends Component {
   static propTypes = {
-    activity: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string
-    }).isRequired,
-    activityKey: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    msg: PropTypes.string.isRequired,
+    nameValue: PropTypes.string,
+    descriptionValue: PropTypes.string,
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    emptyOnOk: PropTypes.bool,
+    onOk: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired
   };
 
   state = {
-    name: this.props.activity.name,
-    description: this.props.activity.description || '',
+    name: this.props.nameValue || '',
+    description: this.props.descriptionValue || '',
     nameError: ''
   };
 
@@ -30,24 +30,21 @@ export default class EditActivity extends Component {
 
   onOk = () => {
     if (!this.state.name.trim()) {
-      this.setState({ nameError: 'Name can\'t be empty' });
+      this.setState({ nameError: 'Name can\'t be empty.' });
       return;
     }
     this.setState({ nameError: '' });
-
-    firebase.database().ref(`activities/${this.props.activityKey}`).update({
-      name: this.state.name,
-      description: this.state.description
-    });
-
-    this.props.onClose();
+    this.props.onOk(this.state.name, this.state.description);
+    if (this.props.emptyOnOk) this.setState({ name: '', description: '' });
   };
 
   render = () => {
+    const props = this.props;
+
     const actions = [
       <FlatButton
         label="Cancel"
-        onClick={this.props.onClose}
+        onClick={this.props.onCancel}
       />,
       <FlatButton
         label="Ok"
@@ -58,12 +55,12 @@ export default class EditActivity extends Component {
 
     return (
       <Dialog
-        title="Edit activity"
+        title={props.title}
         actions={actions}
-        open={this.props.open}
-        onRequestClose={this.props.onClose}
+        open={props.open}
+        onRequestClose={props.onCancel}
       >
-        Change the activity name/description.
+        {props.msg}
         <TextField
           floatingLabelText="Name"
           value={this.state.name}

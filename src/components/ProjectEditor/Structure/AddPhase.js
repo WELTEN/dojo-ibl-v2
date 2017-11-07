@@ -7,9 +7,7 @@ import * as firebase from 'firebase';
 import Aux from 'react-aux';
 import Prompt from '../../Prompt';
 
-const AddButton = glamorous(IconButton)({
-  marginTop: '12px !important'
-});
+const AddButton = glamorous(IconButton)({ marginTop: '12px !important' });
 
 export default class AddPhase extends Component {
   static propTypes = {
