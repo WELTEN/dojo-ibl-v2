@@ -38,11 +38,12 @@ export default class Prompt extends Component {
 
   onOk = () => {
     if (!this.state.input.trim()) {
-      this.setState({ error: 'Value can\'t be empty' });
+      this.setState({ error: 'Value can\'t be empty.' });
       return;
     }
     this.setState({ error: '' });
     this.props.onOk(this.state.input);
+    if (this.props.emptyOnOk) this.setState({ input: '' });
   };
 
   onCancel = () => {

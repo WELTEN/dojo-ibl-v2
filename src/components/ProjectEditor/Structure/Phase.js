@@ -115,7 +115,6 @@ export default class Phase extends Component {
           label="Name"
           value={this.state.phase.name}
           open={this.state.editing}
-          emptyOnOk={false}
           onOk={this.onEditSave}
           onCancel={this.onEditCancel}
         />

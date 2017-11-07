@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import Phase from './Phase';
+import AddPhase from './AddPhase';
 
 const OverflowFix = glamorous.div({
   marginBottom: -12,
@@ -30,6 +31,7 @@ const Structure = ({ project }) => (
           key={phase}
         />
       )}
+      <AddPhase projectKey={project.key} />
     </PhaseContainer>
   </OverflowFix>
 );
