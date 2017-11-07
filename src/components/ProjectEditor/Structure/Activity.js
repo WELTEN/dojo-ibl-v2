@@ -2,18 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import * as firebase from 'firebase';
-import WithLoadingSpinner from '../../WithLoadingSpinner';
+import LoadingSpinner from '../../LoadingSpinner';
 import Paper from 'material-ui/Paper';
-import { red500 } from 'material-ui/styles/colors';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
-import Close from 'material-ui/svg-icons/navigation/close';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import EditActivity from './EditActivity';
 import Confirm from '../../Confirm';
+import Aux from 'react-aux';
 
 const Item = glamorous(Paper)({
   position: 'relative',
   marginBottom: 12,
   padding: 12,
-  cursor: 'pointer',
   ':last-child': {
     marginBottom: 0
   }
@@ -30,7 +32,7 @@ const Description = glamorous.p({
   fontSize: 14
 });
 
-const DeleteButton = glamorous(IconButton)({
+const ActionsButton = glamorous(IconButton)({
   position: 'absolute !important',
   bottom: 0,
   right: 0
@@ -45,6 +47,7 @@ export default class Activity extends Component {
   state = {
     loading: true,
     activity: {},
+    editing: false,
     deleting: false
   };
 
@@ -61,7 +64,10 @@ export default class Activity extends Component {
 
   componentWillUnmount = () => this.getRef().off();
 
-  onDelete = () => this.setState({ deleting: true });
+  onEdit = () => setTimeout(() => this.setState({ editing: true }), 450);
+  onEditClose = () => this.setState({ editing: false });
+
+  onDelete = () => setTimeout(() => this.setState({ deleting: true }), 450);
 
   onDeleteConfirm = () => {
     this.setState({ deleting: false });
@@ -76,24 +82,39 @@ export default class Activity extends Component {
     if (this.state.activity == null) return null;
     return (
       <Item>
-        <WithLoadingSpinner loading={this.state.loading}>
-          <Title>{this.state.activity.name}</Title>
-          {this.state.activity.description && (
-            <Description>
-              {this.state.activity.description.slice(0, 40)}
-            </Description>
-          )}
-          <DeleteButton iconStyle={{ color: red500 }} onClick={this.onDelete}>
-            <Close />
-          </DeleteButton>
-          <Confirm
-            title="Confirm activity deletion"
-            msg="After you delete an activity, there's no way back!"
-            open={this.state.deleting}
-            onOk={this.onDeleteConfirm}
-            onCancel={this.onDeleteCancel}
-          />
-        </WithLoadingSpinner>
+        {this.state.loading ? (
+          <LoadingSpinner />
+        ) : (
+          <Aux>
+            <Title>{this.state.activity.name}</Title>
+            {this.state.activity.description && (
+              <Description>
+                {this.state.activity.description.slice(0, 40)}
+              </Description>
+            )}
+            <IconMenu
+              style={{ position: 'initial', display: 'block' }}
+              iconButtonElement={<ActionsButton><MoreVertIcon /></ActionsButton>}
+              useLayerForClickAway
+            >
+              <MenuItem primaryText="Edit" onClick={this.onEdit} />
+              <MenuItem primaryText="Delete" onClick={this.onDelete} />
+            </IconMenu>
+            <EditActivity
+              activity={this.state.activity}
+              activityKey={this.props.activityKey}
+              open={this.state.editing}
+              onClose={this.onEditClose}
+            />
+            <Confirm
+              title="Confirm activity deletion"
+              msg="After you delete an activity, there's no way back!"
+              open={this.state.deleting}
+              onOk={this.onDeleteConfirm}
+              onCancel={this.onDeleteCancel}
+            />
+          </Aux>
+        )}
       </Item>
     );
   };

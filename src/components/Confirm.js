@@ -19,7 +19,6 @@ const Confirm = ({ title, msg, open, onOk, onCancel }) => (
   <Dialog
     title={title}
     actions={actions(onCancel, onOk)}
-    modal={false}
     open={open}
     onRequestClose={onCancel}
   >

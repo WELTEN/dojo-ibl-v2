@@ -111,7 +111,7 @@ export default class Phase extends Component {
         )}
         <Prompt
           title="Rename phase"
-          msg="Enter a new name for the phase"
+          msg="Enter a new name for the phase."
           label="Name"
           value={this.state.phase.name}
           open={this.state.editing}

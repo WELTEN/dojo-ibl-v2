@@ -28,9 +28,9 @@ export default class Prompt extends Component {
     if (!this.state.input.trim()) return this.props.onCancel();
     this.props.onOk(this.state.input);
     if (this.props.emptyOnOk) this.setState({ input: '' });
-  }
+  };
 
-  render() {
+  render = () => {
     const props = this.props;
 
     const actions = [
@@ -49,7 +49,6 @@ export default class Prompt extends Component {
       <Dialog
         title={props.title}
         actions={actions}
-        modal={false}
         open={props.open}
         onRequestClose={props.onCancel}
       >
@@ -64,5 +63,5 @@ export default class Prompt extends Component {
         />
       </Dialog>
     );
-  }
+  };
 }

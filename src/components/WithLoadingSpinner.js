@@ -1,20 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
-import CircularProgress from 'material-ui/CircularProgress';
-
-const SpinnerContainer = glamorous.div({
-  display: 'flex',
-  justifyContent: 'center'
-});
+import LoadingSpinner from './LoadingSpinner';
 
 const WithLoadingSpinner = ({ loading, children }) => {
   if (loading) {
-    return (
-      <SpinnerContainer>
-        <CircularProgress />
-      </SpinnerContainer>
-    );
+    return <LoadingSpinner />;
   } else {
     return children;
   }
