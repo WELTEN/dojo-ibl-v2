@@ -19,15 +19,35 @@ export default class Prompt extends Component {
   };
 
   state = {
-    input: this.props.value || ''
+    input: this.props.value || '',
+    error: ''
+  };
+
+  componentWillReceiveProps = (props) => {
+    const value = props.value;
+    if (
+      typeof value !== 'undefined' &&
+      value !== null &&
+      value !== this.state.input
+    ) {
+      this.setState({ input: value });
+    }
   };
 
   handleChange = e => this.setState({ input: e.target.value });
 
   onOk = () => {
-    if (!this.state.input.trim()) return this.props.onCancel();
+    if (!this.state.input.trim()) {
+      this.setState({ error: 'Value can\'t be empty' });
+      return;
+    }
+    this.setState({ error: '' });
     this.props.onOk(this.state.input);
-    if (this.props.emptyOnOk) this.setState({ input: '' });
+  };
+
+  onCancel = () => {
+    this.setState({ error: '' });
+    this.props.onCancel();
   };
 
   render = () => {
@@ -36,7 +56,7 @@ export default class Prompt extends Component {
     const actions = [
       <FlatButton
         label="Cancel"
-        onClick={props.onCancel}
+        onClick={this.onCancel}
       />,
       <FlatButton
         label="Ok"
@@ -50,7 +70,7 @@ export default class Prompt extends Component {
         title={props.title}
         actions={actions}
         open={props.open}
-        onRequestClose={props.onCancel}
+        onRequestClose={this.onCancel}
       >
         {props.msg}
         <TextField
@@ -58,6 +78,7 @@ export default class Prompt extends Component {
           hintText={props.placeholder}
           value={this.state.input}
           onChange={this.handleChange}
+          errorText={this.state.error}
           multiLine={props.multiLine}
           fullWidth
         />
