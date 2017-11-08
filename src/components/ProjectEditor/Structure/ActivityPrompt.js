@@ -38,13 +38,18 @@ export default class ActivityPrompt extends Component {
     if (this.props.emptyOnOk) this.setState({ name: '', description: '' });
   };
 
+  onCancel = () => {
+    this.setState({ nameError: '' });
+    this.props.onCancel();
+  };
+
   render = () => {
     const props = this.props;
 
     const actions = [
       <FlatButton
         label="Cancel"
-        onClick={this.props.onCancel}
+        onClick={this.onCancel}
       />,
       <FlatButton
         label="Ok"
@@ -58,7 +63,7 @@ export default class ActivityPrompt extends Component {
         title={props.title}
         actions={actions}
         open={props.open}
-        onRequestClose={props.onCancel}
+        onRequestClose={this.onCancel}
       >
         {props.msg}
         <TextField
