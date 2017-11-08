@@ -59,8 +59,8 @@ export default class TemplateChooser extends Component {
     firebase.database().ref(`users/${currentUser.uid}/projects`).child(key).set(true);
     firebase.database().ref(`projects/${key}`).set({
       title: 'No title',
-      creationDate: Date.now(),
-      owner: currentUser.uid
+      owner: currentUser.uid,
+      creationDate: Date.now()
     });
     return key;
   };

@@ -4,7 +4,7 @@ import glamorous from 'glamorous';
 import IconButton from 'material-ui/IconButton';
 import Add from 'material-ui/svg-icons/content/add';
 import * as firebase from 'firebase';
-import ActivityPrompt from './ActivityPrompt';
+import NameDescriptionPrompt from '../../NameDescriptionPrompt';
 
 const ButtonContainer = glamorous.footer({ textAlign: 'center' });
 
@@ -31,7 +31,7 @@ export default class AddActivity extends Component {
       <IconButton onClick={this.onOpen}>
         <Add />
       </IconButton>
-      <ActivityPrompt
+      <NameDescriptionPrompt
         title="Add an activity"
         msg="Enter a name and/or a description for the new activity."
         open={this.state.open}

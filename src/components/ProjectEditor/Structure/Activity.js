@@ -8,7 +8,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import ActivityPrompt from './ActivityPrompt';
+import NameDescriptionPrompt from '../../NameDescriptionPrompt';
 import Confirm from '../../Confirm';
 import Aux from 'react-aux';
 
@@ -109,7 +109,7 @@ export default class Activity extends Component {
               <MenuItem primaryText="Edit" onClick={this.onEdit} />
               <MenuItem primaryText="Delete" onClick={this.onDelete} />
             </IconMenu>
-            <ActivityPrompt
+            <NameDescriptionPrompt
               title="Edit activity"
               msg="Change the activity name/description"
               nameValue={this.state.activity.name}

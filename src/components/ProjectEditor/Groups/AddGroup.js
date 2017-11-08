@@ -40,18 +40,29 @@ export default class AddGroups extends Component {
     const code = this.generateGroupCode();
     const key = firebase.database().ref('groups').push().getKey();
     const projectKey = this.props.project.key;
-    firebase.database().ref(`projects/${projectKey}/groups/${key}`).set(true);
-    firebase.database().ref(`groups/${key}`).set({
-      name: this.state.name,
-      code,
-      project: projectKey
+    Promise.all([
+      firebase.database().ref(`projects/${projectKey}/groups/${key}`).set(true),
+      firebase.database().ref(`groups/${key}`).set({
+        name: this.state.name,
+        code,
+        project: projectKey,
+        creationDate: Date.now()
+      }),
+      firebase.database().ref(`groupCodes/${code}`).set(key)
+    ]).then(() => {
+      this.addCurrentUserToGroup(key);
     });
-    firebase.database().ref(`groupCodes/${code}`).set(key);
     this.setState({ name: '', error: '' });
   };
 
   generateGroupCode = () =>
     randomstring.generate({ length: 6, capitalization: 'uppercase' });
+
+  addCurrentUserToGroup = (key) => {
+    const currentUser = firebase.auth().currentUser;
+    firebase.database().ref(`users/${currentUser.uid}/groups/${key}`).set(true);
+    firebase.database().ref(`groups/${key}/users/${currentUser.uid}`).set(currentUser.photoURL || false);
+  };
 
   render = () => (
     <FormContainer>

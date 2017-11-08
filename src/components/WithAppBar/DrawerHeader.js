@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 import Avatar from 'material-ui/Avatar';
 import { white } from 'material-ui/styles/colors';
 import DrawerHeaderBackground from './DrawerHeaderBackground.png';
-import DefaultPhoto from './DefaultPhoto.png';
+import DefaultProfilePicture from '../DefaultProfilePicture.png';
 
 const Header = glamorous.header({
   position: 'relative',
@@ -39,7 +39,7 @@ const DrawerHeader = () => {
         alt="Drawer header background"
       />
       <Content>
-        <Avatar size={44} src={photoURL || DefaultPhoto} />
+        <Avatar size={44} src={photoURL || DefaultProfilePicture} />
         <Name>{displayName}</Name>
       </Content>
     </Header>
