@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Activity from './Activity';
-import AddActivity from './AddActivity';
 import Aux from 'react-aux';
 
 const Activities = ({ activities, phaseKey }) => (
@@ -13,7 +12,6 @@ const Activities = ({ activities, phaseKey }) => (
         key={activity}
       />
     )}
-    <AddActivity phaseKey={phaseKey} />
   </Aux>
 );
 

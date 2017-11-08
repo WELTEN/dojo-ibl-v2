@@ -10,6 +10,7 @@ import Close from 'material-ui/svg-icons/navigation/close';
 import Activities from './Activities';
 import Prompt from '../../Prompt';
 import Confirm from '../../Confirm';
+import AddActivity from './AddActivity';
 
 const Item = glamorous.div({
   marginTop: 24,
@@ -109,6 +110,7 @@ export default class Phase extends Component {
             phaseKey={this.props.phaseKey}
           />
         )}
+        <AddActivity phaseKey={this.props.phaseKey} />
         <Prompt
           title="Rename phase"
           msg="Enter a new name for the phase."
