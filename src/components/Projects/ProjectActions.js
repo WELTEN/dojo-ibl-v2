@@ -5,21 +5,16 @@ import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui/svg-icons/image/edit';
 import Close from 'material-ui/svg-icons/navigation/close';
 import { red500 } from 'material-ui/styles/colors';
-import NameDescriptionPrompt from '../../NameDescriptionPrompt';
-import Confirm from '../../Confirm';
+import Confirm from '../Confirm';
+import { deleteProject, deleteGroup } from '../../lib/Firebase';
 import * as firebase from 'firebase';
-import { deleteGroup } from '../../../lib/Firebase';
 
 const ActionWrapper = glamorous.div({ display: 'flex' });
 
-export default class GroupActions extends Component {
+export default class ProjectActions extends Component {
   static propTypes = {
-    group: PropTypes.shape({
+    project: PropTypes.shape({
       key: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      code: PropTypes.string.isRequired,
-      project: PropTypes.string.isRequired
     }).isRequired
   };
 
@@ -41,7 +36,26 @@ export default class GroupActions extends Component {
   onEditCancel = () => this.setState({ editing: false });
 
   onDelete = () => this.setState({ deleting: true });
-  onDeleteConfirm = () => deleteGroup(this.props.group);
+
+  onDeleteConfirm = () => {
+    const project = this.props.project;
+    firebase.database().ref(`projects/${project.key}/groups`).once('value').then((snapshot) => {
+      const groups = Object.keys(snapshot.val() || {});
+      return Promise.all(groups.map((groupKey) =>
+        firebase.database().ref(`groups/${groupKey}`).once('value')
+      ));
+    }).then((groups) => {
+      groups.forEach((snapshot) => {
+        const group = snapshot.val();
+        if (!group) return;
+        group.key = snapshot.key;
+        deleteGroup(group);
+      });
+    }).then(() => {
+      deleteProject(project.key);
+    });
+  };
+
   onDeleteCancel = () => this.setState({ deleting: false });
 
   render = () => (
@@ -52,18 +66,9 @@ export default class GroupActions extends Component {
       <IconButton iconStyle={{ color: red500 }} onClick={this.onDelete}>
         <Close />
       </IconButton>
-      <NameDescriptionPrompt
-        title="Edit group"
-        msg="Edit the group name/description"
-        nameValue={this.props.group.name}
-        descriptionValue={this.props.group.description}
-        open={this.state.editing}
-        onOk={this.onEditSave}
-        onCancel={this.onEditCancel}
-      />
       <Confirm
-        title="Confirm group deletion"
-        msg="After you delete a group, there's no way back!"
+        title="Confirm project deletion"
+        msg="After you delete a project, there's no way back!"
         open={this.state.deleting}
         onOk={this.onDeleteConfirm}
         onCancel={this.onDeleteCancel}

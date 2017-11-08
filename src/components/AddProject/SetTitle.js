@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import StepButtons from './StepButtons';
 import TextField from 'material-ui/TextField';
+import { deleteProject } from '../../lib/Firebase';
 
 const Text = glamorous.p({ margin: 0 });
 
@@ -38,21 +39,7 @@ export default class SetTitle extends Component {
 
   onPrev = () => {
     const { onPrev, projectKey } = this.props;
-    const currentUser = firebase.auth().currentUser;
-    firebase.database().ref(`users/${currentUser.uid}/projects/${projectKey}`).remove();
-    firebase.database().ref(`projects/${projectKey}/phases`).once('value', (snapshot) => {
-      Object.keys(snapshot.val() || {}).forEach((key) => {
-        firebase.database().ref(`phases/${key}/activities`).once('value', (snapshot) => {
-          Object.keys(snapshot.val() || {}).forEach((key) => {
-            firebase.database().ref(`activities/${key}`).remove();
-          });
-        }).then(() => {
-          firebase.database().ref(`phases/${key}`).remove();
-        });
-      });
-    }).then(() => {
-      firebase.database().ref(`projects/${projectKey}`).remove();
-    });
+    deleteProject(projectKey);
     onPrev();
   };
 

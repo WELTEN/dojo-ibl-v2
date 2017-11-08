@@ -5,14 +5,11 @@ import LoadingSpinner from '../../LoadingSpinner';
 import GroupUsers from './GroupUsers';
 import GroupActions from './GroupActions';
 import * as firebase from 'firebase';
-import { black, grey400, grey600 } from 'material-ui/styles/colors';
-import moment from 'moment';
+import { grey400, grey600 } from 'material-ui/styles/colors';
+import TitleDateBlock from '../../TitleDateBlock';
+import ListItem from '../../ListItem';
 
-const Item = glamorous.article({
-  marginBottom: 6,
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+const Item = glamorous(ListItem)({
   ':first-child': {
     marginTop: 24
   }
@@ -30,24 +27,6 @@ const Code = glamorous.div({
 });
 
 const Hashtag = glamorous.span({ color: grey400 });
-
-const Info = glamorous.div({ width: 240 });
-
-const Name = glamorous.h4({
-  marginTop: 0,
-  marginBottom: 4,
-  width: '100%',
-  color: black,
-  fontSize: 16,
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap'
-});
-
-const CreationDate = glamorous.div({
-  color: grey600,
-  fontSize: 14
-});
 
 export default class Group extends Component {
   static propTypes = {
@@ -85,12 +64,10 @@ export default class Group extends Component {
             <Hashtag>#</Hashtag>
             {this.state.group.code}
           </Code>
-          <Info>
-            <Name>{this.state.group.name}</Name>
-            <CreationDate>
-              {moment(this.state.group.creationDate).calendar()}
-            </CreationDate>
-          </Info>
+          <TitleDateBlock
+            title={this.state.group.name}
+            date={this.state.group.creationDate}
+          />
         </ContentBlock>
         <ContentBlock>
           <GroupUsers group={this.state.group} />
