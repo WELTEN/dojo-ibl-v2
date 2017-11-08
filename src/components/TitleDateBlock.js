@@ -34,7 +34,7 @@ TitleDateBlock.defaultProps = {
 };
 
 TitleDateBlock.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.any.isRequired,
   date: PropTypes.number.isRequired,
   width: PropTypes.any
 };

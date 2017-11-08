@@ -9,6 +9,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import AddProject from './pages/AddProject';
+import EditProject from './pages/EditProject';
 import NotFound from './pages/NotFound';
 import WithLogin from './components/WithLogin';
 import WithAppBar from './components/WithAppBar';
@@ -35,25 +36,32 @@ const App = () => (
             <WithAppBar title="DojoIBL">
               <Switch>
                 <Route
-                  location={location}
-                  key={location.key}
                   exact
                   path="/"
                   component={Home}
-                />
-                <Route
                   location={location}
                   key={location.key}
+                />
+                <Route
                   exact
                   path="/projects"
                   component={Projects}
-                />
-                <Route
                   location={location}
                   key={location.key}
+                />
+                <Route
                   exact
                   path="/projects/add"
                   component={AddProject}
+                  location={location}
+                  key={location.key}
+                />
+                <Route
+                  exact
+                  path="/projects/:projectKey/edit"
+                  component={EditProject}
+                  location={location}
+                  key={location.key}
                 />
               </Switch>
             </WithAppBar>

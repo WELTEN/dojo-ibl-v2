@@ -35,3 +35,21 @@ export const deleteGroup = (group) => {
     firebase.database().ref(`groups/${group.key}`).remove();
   });
 };
+
+export const deleteProjectAndGroups = (projectKey) => {
+  firebase.database().ref(`projects/${projectKey}/groups`).once('value').then((snapshot) => {
+    const groups = Object.keys(snapshot.val() || {});
+    return Promise.all(groups.map((groupKey) =>
+      firebase.database().ref(`groups/${groupKey}`).once('value')
+    ));
+  }).then((groups) => {
+    groups.forEach((snapshot) => {
+      const group = snapshot.val();
+      if (!group) return;
+      group.key = snapshot.key;
+      deleteGroup(group);
+    });
+  }).then(() => {
+    deleteProject(projectKey);
+  });
+};
