@@ -39,7 +39,11 @@ export default class NameDescriptionPrompt extends Component {
   };
 
   onCancel = () => {
-    this.setState({ nameError: '' });
+    this.setState({
+      name: this.props.nameValue || '',
+      description: this.props.descriptionValue || '',
+      nameError: ''
+    });
     this.props.onCancel();
   };
 

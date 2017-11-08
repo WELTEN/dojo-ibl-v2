@@ -7,6 +7,7 @@ import Close from 'material-ui/svg-icons/navigation/close';
 import { red500 } from 'material-ui/styles/colors';
 import NameDescriptionPrompt from '../../NameDescriptionPrompt';
 import Confirm from '../../Confirm';
+import * as firebase from 'firebase';
 
 const ActionWrapper = glamorous.div({
   width: 96,
@@ -18,7 +19,9 @@ export default class GroupActions extends Component {
     group: PropTypes.shape({
       key: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      description: PropTypes.string
+      description: PropTypes.string,
+      code: PropTypes.string.isRequired,
+      project: PropTypes.string.isRequired
     }).isRequired
   };
 
@@ -30,7 +33,10 @@ export default class GroupActions extends Component {
   onEdit = () => this.setState({ editing: true });
 
   onEditSave = (name, description) => {
-
+    firebase.database().ref(`groups/${this.props.group.key}`).update({
+      name,
+      description
+    });
     this.setState({ editing: false });
   };
 
@@ -39,7 +45,17 @@ export default class GroupActions extends Component {
   onDelete = () => this.setState({ deleting: true });
 
   onDeleteConfirm = () => {
-
+    const group = this.props.group;
+    firebase.database().ref(`groups/${group.key}/users`).once('value').then((snapshot) => {
+      const users = Object.keys(snapshot.val() || {});
+      users.forEach((user) => {
+        firebase.database().ref(`users/${user}/groups/${group.key}`).remove();
+      });
+    }).then(() => {
+      firebase.database().ref(`projects/${group.project}/groups/${group.key}`).remove();
+      firebase.database().ref(`groupCodes/${group.code}`).remove();
+      firebase.database().ref(`groups/${group.key}`).remove();
+    });
     this.setState({ deleting: false });
   };
 
