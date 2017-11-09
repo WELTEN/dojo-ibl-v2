@@ -1,33 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import TitleDateBlock from '../TitleDateBlock';
-import ListItem from '../ListItem';
-import LoadingSpinner from '../LoadingSpinner';
 import Link from '../Link';
 import ProjectActions from './ProjectActions';
-import Paper from 'material-ui/Paper';
+import PaperListItem from '../PaperListItem';
 import injectFirebaseData from '../InjectFirebaseData';
-
-const ItemPaper = glamorous(Paper)({
-  marginBottom: 12,
-  padding: 12,
-  ':last-of-type': {
-    marginBottom: '80px !important'
-  }
-});
-
-const Item = glamorous(ListItem)({ marginBottom: 0 });
+import Aux from 'react-aux';
 
 const Project = ({ loading, data }) => {
   if (data == null) return null;
   return (
-    <ItemPaper>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <Item>
+    <PaperListItem loading={loading}>
+      {!loading &&
+        <Aux>
           <TitleDateBlock
             title={
               <Link to={`projects/${data.key}/edit`} unstyled>
@@ -38,9 +24,9 @@ const Project = ({ loading, data }) => {
             width="calc(100% - 120px)"
           />
           <ProjectActions project={data} />
-        </Item>
-      )}
-    </ItemPaper>
+        </Aux>
+      }
+    </PaperListItem>
   );
 };
 

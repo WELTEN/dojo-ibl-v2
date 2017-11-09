@@ -3,31 +3,31 @@ import PropTypes from 'prop-types';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import NotFoundTitle from '../NotFoundTitle';
 import * as firebase from 'firebase';
-import Project from './Project';
+import Group from './Group';
 import injectFirebaseData from '../InjectFirebaseData';
 
-const getProjectList = projects => Object.keys(projects || {});
+const getGroupList = groups => Object.keys(groups || {});
 
-const ProjectList = ({ loading, data }) => (
+const GroupList = ({ loading, data }) => (
   <WithLoadingSpinner loading={loading}>
-    {getProjectList(data).length === 0 ? (
+    {getGroupList(data).length === 0 ? (
       <NotFoundTitle>
-        {`You don't have any projects`}
+        {`You aren't participating in any groups`}
       </NotFoundTitle>
     ) : (
-      getProjectList(data).map((project) =>
-        <Project projectKey={project} key={project} />
+      getGroupList(data).map((group) =>
+        <Group groupKey={group} key={group} />
       )
     )}
   </WithLoadingSpinner>
 );
 
-ProjectList.propTypes = {
+GroupList.propTypes = {
   loading: PropTypes.bool.isRequired,
   data: PropTypes.any
 };
 
 const getRef = (props, currentUser) =>
-  firebase.database().ref(`users/${currentUser.uid}/projects`);
+  firebase.database().ref(`users/${currentUser.uid}/groups`);
 
-export default injectFirebaseData(ProjectList, getRef);
+export default injectFirebaseData(GroupList, getRef);

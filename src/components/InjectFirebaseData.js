@@ -27,7 +27,7 @@ const injectFirebaseData = (DataComponent, getRef, withKey = false) => {
     componentWillUnmount = () => {
       this.getRef().off();
       this.currentUser = null;
-    }
+    };
 
     render = () => (
       <DataComponent

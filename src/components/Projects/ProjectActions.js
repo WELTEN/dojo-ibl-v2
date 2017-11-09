@@ -8,7 +8,6 @@ import { red500 } from 'material-ui/styles/colors';
 import Confirm from '../Confirm';
 import Link from '../Link';
 import { deleteProjectAndGroups } from '../../lib/Firebase';
-import * as firebase from 'firebase';
 
 const ActionWrapper = glamorous.div({ display: 'flex' });
 
@@ -23,18 +22,6 @@ export default class ProjectActions extends Component {
     editing: false,
     deleting: false
   };
-
-  onEdit = () => this.setState({ editing: true });
-
-  onEditSave = (name, description) => {
-    firebase.database().ref(`groups/${this.props.group.key}`).update({
-      name,
-      description
-    });
-    this.setState({ editing: false });
-  };
-
-  onEditCancel = () => this.setState({ editing: false });
 
   onDelete = () => this.setState({ deleting: true });
   onDeleteConfirm = () => deleteProjectAndGroups(this.props.project.key);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
-import DefaultProfilePicture from '../../DefaultProfilePicture.png';
+import DefaultProfilePicture from './DefaultProfilePicture.png';
 
 const PhotoContainer = glamorous.section({
   marginRight: 24,
