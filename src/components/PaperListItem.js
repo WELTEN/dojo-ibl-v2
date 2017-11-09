@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import Paper from 'material-ui/Paper';
 import ListItem from './ListItem';
-import LoadingSpinner from './LoadingSpinner';
+import WithLoadingSpinner from './WithLoadingSpinner';
 
 const ItemPaper = glamorous(Paper)({
   marginBottom: 12,
@@ -17,13 +17,11 @@ const Item = glamorous(ListItem)({ marginBottom: 0 });
 
 const PaperListItem = ({ loading, children }) => (
   <ItemPaper>
-    {loading ? (
-      <LoadingSpinner />
-    ) : (
+    <WithLoadingSpinner loading={loading}>
       <Item>
         {children}
       </Item>
-    )}
+    </WithLoadingSpinner>
   </ItemPaper>
 );
 

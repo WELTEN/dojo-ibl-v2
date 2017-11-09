@@ -8,6 +8,7 @@ import Link from '../Link';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import { red500 } from 'material-ui/styles/colors';
 import * as firebase from 'firebase';
+import Confirm from '../Confirm';
 import injectFirebaseData from '../InjectFirebaseData';
 
 const ActionWrapper = glamorous.div({ display: 'flex' });
@@ -22,8 +23,20 @@ class GroupActions extends Component {
     }).isRequired,
   };
 
+  state = { leaving: false };
+
   currentUserOwnsProject = () =>
     this.props.data === firebase.auth().currentUser.uid;
+
+  onLeave = () => this.setState({ leaving: true });
+
+  onLeaveConfirm = () => {
+    const currentUser = firebase.auth().currentUser;
+    firebase.database().ref(`users/${currentUser.uid}/groups/${this.props.group.key}`).remove();
+    firebase.database().ref(`groups/${this.props.group.key}/users/${currentUser.uid}`).remove();
+  };
+
+  onLeaveCancel = () => this.setState({ leaving: false });
 
   render = () => (
     <WithLoadingSpinner loading={this.props.loading}>
@@ -34,11 +47,18 @@ class GroupActions extends Component {
           </IconButton>
         </Link>
         {!this.currentUserOwnsProject() &&
-          <IconButton iconStyle={{ color: red500 }}>
+          <IconButton onClick={this.onLeave} iconStyle={{ color: red500 }}>
             <Close />
           </IconButton>
         }
       </ActionWrapper>
+      <Confirm
+        title="Confirm group leaving"
+        msg="Are you sure you want to leave this group?"
+        open={this.state.leaving}
+        onOk={this.onLeaveConfirm}
+        onCancel={this.onLeaveCancel}
+      />
     </WithLoadingSpinner>
   );
 }
