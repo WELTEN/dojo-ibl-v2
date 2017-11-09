@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import WithLoadingSpinner from '../WithLoadingSpinner';
+import NotFoundTitle from '../NotFoundTitle';
 import * as firebase from 'firebase';
 import EditorTabs from './EditorTabs';
 import DeleteProject from './DeleteProject';
 import Aux from 'react-aux';
-
-const NotFound = glamorous.h3({
-  margin: 0,
-  textAlign: 'center'
-});
 
 export default class ProjectEditor extends Component {
   static propTypes = {
@@ -50,7 +45,7 @@ export default class ProjectEditor extends Component {
           }
         </Aux>
       ) : (
-        <NotFound>{`Project doesn't exist`}</NotFound>
+        <NotFoundTitle>{`Project doesn't exist`}</NotFoundTitle>
       )}
     </WithLoadingSpinner>
   );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import WithLoadingSpinner from '../WithLoadingSpinner';
+import NotFoundTitle from '../NotFoundTitle';
 import * as firebase from 'firebase';
 import Project from './Project';
 
@@ -24,10 +25,16 @@ export default class ProjectList extends Component {
 
   componentWillUnmount = () => this.getRef().off();
 
+  getProjectList = () => Object.keys(this.state.projects || {});
+
   render = () => (
     <WithLoadingSpinner loading={this.state.loading}>
-      {Object.keys(this.state.projects || {}).map((project) =>
-        <Project projectKey={project} key={project} />
+      {this.getProjectList().length === 0 ? (
+        <NotFoundTitle>{`You don't have any projects`}</NotFoundTitle>
+      ) : (
+        this.getProjectList().map((project) =>
+          <Project projectKey={project} key={project} />
+        )
       )}
     </WithLoadingSpinner>
   );
