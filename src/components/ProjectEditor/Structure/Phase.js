@@ -11,6 +11,7 @@ import Activities from './Activities';
 import Prompt from '../../Prompt';
 import Confirm from '../../Confirm';
 import AddActivity from './AddActivity';
+import injectFirebaseData from '../../InjectFirebaseData';
 
 const Item = glamorous.div({
   marginTop: 24,
@@ -41,37 +42,26 @@ const Title = glamorous.h3({
   whiteSpace: 'nowrap'
 });
 
-export default class Phase extends Component {
+const getRef = props => firebase.database().ref(`phases/${props.phaseKey}`);
+
+class Phase extends Component {
   static propTypes = {
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.any,
     phaseKey: PropTypes.string.isRequired,
     projectKey: PropTypes.string.isRequired
   };
 
   state = {
-    loading: true,
-    phase: {},
     editing: false,
     deleting: false
   };
-
-  getRef = () => firebase.database().ref(`phases/${this.props.phaseKey}`);
-
-  componentDidMount = () => {
-    this.getRef().on('value', (snapshot) => {
-      this.setState({
-        loading: false,
-        phase: snapshot.val()
-      });
-    });
-  };
-
-  componentWillUnmount = () => this.getRef().off();
 
   onEdit = () => this.setState({ editing: true });
 
   onEditSave = (name) => {
     this.setState({ editing: false });
-    this.getRef().child('name').set(name);
+    getRef(this.props).child('name').set(name);
   };
 
   onEditCancel = () => this.setState({ editing: false });
@@ -82,11 +72,11 @@ export default class Phase extends Component {
     this.setState({ deleting: false });
     const { phaseKey, projectKey } = this.props;
     firebase.database().ref(`projects/${projectKey}/phases/${phaseKey}`).remove();
-    this.getRef().child('activities').once('value').then((snapshot) => {
+    getRef(this.props).child('activities').once('value').then((snapshot) => {
       Object.keys(snapshot.val() || {}).forEach((key) => {
         firebase.database().ref(`activities/${key}`).remove();
       });
-      this.getRef().remove();
+      getRef(this.props).remove();
     });
   };
 
@@ -94,9 +84,9 @@ export default class Phase extends Component {
 
   render = () => (
     <Item>
-      <WithLoadingSpinner loading={this.state.loading}>
+      <WithLoadingSpinner loading={this.props.loading}>
         <Header>
-          <Title>{this.state.phase.name}</Title>
+          <Title>{this.props.data.name}</Title>
           <IconButton onClick={this.onEdit}>
             <Edit />
           </IconButton>
@@ -104,9 +94,9 @@ export default class Phase extends Component {
             <Close />
           </IconButton>
         </Header>
-        {this.state.phase.activities && (
+        {this.props.data.activities && (
           <Activities
-            activities={this.state.phase.activities}
+            activities={this.props.data.activities}
             phaseKey={this.props.phaseKey}
           />
         )}
@@ -115,7 +105,7 @@ export default class Phase extends Component {
           title="Rename phase"
           msg="Enter a new name for the phase."
           label="Name"
-          value={this.state.phase.name}
+          value={this.props.data.name}
           open={this.state.editing}
           onOk={this.onEditSave}
           onCancel={this.onEditCancel}
@@ -131,3 +121,5 @@ export default class Phase extends Component {
     </Item>
   );
 }
+
+export default injectFirebaseData(Phase, getRef);

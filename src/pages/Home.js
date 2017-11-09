@@ -1,10 +1,5 @@
-import React from 'react';
-import PageTitle from '../components/PageTitle';
+import Groups from './Groups';
 
-const Home = () => (
-  <div>
-    <PageTitle>Groups</PageTitle>
-  </div>
-);
+const Home = Groups;
 
 export default Home;

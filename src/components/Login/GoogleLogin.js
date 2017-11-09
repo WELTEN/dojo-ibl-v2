@@ -6,7 +6,7 @@ export default class GoogleLogin extends Component {
   onLogin = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(({ user }) => {
-      firebase.database().ref(`users/${user.uid}`).set({
+      firebase.database().ref(`users/${user.uid}`).update({
         displayName: user.displayName,
         email: user.email
       });

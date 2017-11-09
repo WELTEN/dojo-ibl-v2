@@ -11,6 +11,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NameDescriptionPrompt from '../../NameDescriptionPrompt';
 import Confirm from '../../Confirm';
 import Aux from 'react-aux';
+import injectFirebaseData from '../../InjectFirebaseData';
 
 const Item = glamorous(Paper)({
   position: 'relative',
@@ -38,37 +39,26 @@ const ActionsButton = glamorous(IconButton)({
   right: 0
 });
 
-export default class Activity extends Component {
+const getRef = props => firebase.database().ref(`activities/${props.activityKey}`);
+
+class Activity extends Component {
   static propTypes = {
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.any,
     activityKey: PropTypes.string.isRequired,
     phaseKey: PropTypes.string.isRequired
   };
 
   state = {
-    loading: true,
-    activity: {},
     editing: false,
     deleting: false
   };
-
-  getRef = () => firebase.database().ref(`activities/${this.props.activityKey}`);
-
-  componentDidMount = () => {
-    this.getRef().on('value', (snapshot) => {
-      this.setState({
-        loading: false,
-        activity: snapshot.val()
-      });
-    });
-  };
-
-  componentWillUnmount = () => this.getRef().off();
 
   onEdit = () => setTimeout(() => this.setState({ editing: true }), 450);
 
   onEditSave = (name, description) => {
     this.setState({ editing: false });
-    firebase.database().ref(`activities/${this.props.activityKey}`).update({
+    getRef(this.props).update({
       name,
       description
     });
@@ -82,23 +72,23 @@ export default class Activity extends Component {
     this.setState({ deleting: false });
     const { activityKey, phaseKey } = this.props;
     firebase.database().ref(`phases/${phaseKey}/activities/${activityKey}`).remove();
-    this.getRef().remove();
+    getRef(this.props).remove();
   };
 
   onDeleteCancel = () => this.setState({ deleting: false });
 
   render = () => {
-    if (this.state.activity == null) return null;
+    if (this.props.data === null) return null;
     return (
       <Item>
-        {this.state.loading ? (
+        {this.props.loading ? (
           <LoadingSpinner />
         ) : (
           <Aux>
-            <Title>{this.state.activity.name}</Title>
-            {this.state.activity.description && (
+            <Title>{this.props.data.name}</Title>
+            {this.props.data.description && (
               <Description>
-                {this.state.activity.description.slice(0, 40)}
+                {this.props.data.description.slice(0, 40)}
               </Description>
             )}
             <IconMenu
@@ -112,8 +102,8 @@ export default class Activity extends Component {
             <NameDescriptionPrompt
               title="Edit activity"
               msg="Change the activity name/description"
-              nameValue={this.state.activity.name}
-              descriptionValue={this.state.activity.description}
+              nameValue={this.props.data.name}
+              descriptionValue={this.props.data.description}
               open={this.state.editing}
               onOk={this.onEditSave}
               onCancel={this.onEditCancel}
@@ -131,3 +121,5 @@ export default class Activity extends Component {
     );
   };
 }
+
+export default injectFirebaseData(Activity, getRef);

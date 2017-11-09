@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import * as firebase from 'firebase';
@@ -8,6 +8,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import Link from '../Link';
 import ProjectActions from './ProjectActions';
 import Paper from 'material-ui/Paper';
+import injectFirebaseData from '../InjectFirebaseData';
 
 const ItemPaper = glamorous(Paper)({
   marginBottom: 12,
@@ -19,52 +20,36 @@ const ItemPaper = glamorous(Paper)({
 
 const Item = glamorous(ListItem)({ marginBottom: 0 });
 
-export default class Project extends Component {
-  static propTypes = {
-    projectKey: PropTypes.string.isRequired
-  };
+const Project = ({ loading, data }) => {
+  if (data == null) return null;
+  return (
+    <ItemPaper>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <Item>
+          <TitleDateBlock
+            title={
+              <Link to={`projects/${data.key}/edit`} unstyled>
+                {data.title}
+              </Link>
+            }
+            date={data.creationDate}
+            width="calc(100% - 120px)"
+          />
+          <ProjectActions project={data} />
+        </Item>
+      )}
+    </ItemPaper>
+  );
+};
 
-  state = {
-    loading: true,
-    project: {}
-  };
+Project.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  data: PropTypes.any,
+  projectKey: PropTypes.string.isRequired
+};
 
-  getRef = () => firebase.database().ref(`projects/${this.props.projectKey}`);
+const getRef = props => firebase.database().ref(`projects/${props.projectKey}`);
 
-  componentDidMount = () => {
-    this.getRef().on('value', (snapshot) => {
-      const project = snapshot.val();
-      if (project != null) project.key = this.props.projectKey;
-      this.setState({
-        loading: false,
-        project
-      });
-    });
-  };
-
-  componentWillUnmount = () => this.getRef().off();
-
-  render = () => {
-    if (this.state.project == null) return null;
-    return (
-      <ItemPaper>
-        {this.state.loading ? (
-          <LoadingSpinner />
-        ) : (
-          <Item>
-            <TitleDateBlock
-              title={
-                <Link to={`projects/${this.state.project.key}/edit`} unstyled>
-                  {this.state.project.title}
-                </Link>
-              }
-              date={this.state.project.creationDate}
-              width="calc(100% - 120px)"
-            />
-            <ProjectActions project={this.state.project} />
-          </Item>
-        )}
-      </ItemPaper>
-    );
-  };
-}
+export default injectFirebaseData(Project, getRef, true);

@@ -1,41 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import NotFoundTitle from '../NotFoundTitle';
 import * as firebase from 'firebase';
 import Project from './Project';
+import injectFirebaseData from '../InjectFirebaseData';
 
-export default class ProjectList extends Component {
-  state = {
-    loading: true,
-    projects: {}
-  };
+const getProjectList = projects => Object.keys(projects || {});
 
-  currentUser = firebase.auth().currentUser;
+const ProjectList = ({ loading, data }) => (
+  <WithLoadingSpinner loading={loading}>
+    {getProjectList(data).length === 0 ? (
+      <NotFoundTitle>{`You don't have any projects`}</NotFoundTitle>
+    ) : (
+      getProjectList(data).map((project) =>
+        <Project projectKey={project} key={project} />
+      )
+    )}
+  </WithLoadingSpinner>
+);
 
-  getRef = () => firebase.database().ref(`users/${this.currentUser.uid}/projects`);
+ProjectList.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  data: PropTypes.any
+};
 
-  componentDidMount = () => {
-    this.getRef().on('value', (snapshot) => {
-      this.setState({
-        loading: false,
-        projects: snapshot.val()
-      });
-    });
-  };
+const getRef = (props, currentUser) =>
+  firebase.database().ref(`users/${currentUser.uid}/projects`);
 
-  componentWillUnmount = () => this.getRef().off();
-
-  getProjectList = () => Object.keys(this.state.projects || {});
-
-  render = () => (
-    <WithLoadingSpinner loading={this.state.loading}>
-      {this.getProjectList().length === 0 ? (
-        <NotFoundTitle>{`You don't have any projects`}</NotFoundTitle>
-      ) : (
-        this.getProjectList().map((project) =>
-          <Project projectKey={project} key={project} />
-        )
-      )}
-    </WithLoadingSpinner>
-  );
-}
+export default injectFirebaseData(ProjectList, getRef);

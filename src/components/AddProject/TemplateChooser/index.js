@@ -7,29 +7,18 @@ import StepButtons from '../StepButtons';
 import TemplateOverview from './TemplateOverview';
 import RaisedButton from 'material-ui/RaisedButton';
 import { flattenFirebaseList } from '../../../lib/Firebase';
+import injectFirebaseData from '../../InjectFirebaseData';
 
 const NoTemplateButton = glamorous(RaisedButton)({
   marginBottom: '24px !important'
 });
 
-export default class TemplateChooser extends Component {
+class TemplateChooser extends Component {
   static propTypes = {
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.any,
     onNext: PropTypes.func.isRequired,
     setProjectKey: PropTypes.func.isRequired
-  };
-
-  state = {
-    loading: true,
-    templates: {}
-  };
-
-  componentDidMount = () => {
-    firebase.database().ref('templates').once('value', (snapshot) => {
-      this.setState({
-        loading: false,
-        templates: snapshot.val()
-      });
-    });
   };
 
   onNextWithoutTemplate = () => {
@@ -39,7 +28,7 @@ export default class TemplateChooser extends Component {
   };
 
   onChoose = (templateKey) => {
-    const template = this.state.templates[templateKey];
+    const template = this.props.data[templateKey];
     const phases = Object.values(template.phases);
     const projectKey = this.createProject();
     phases.forEach((phase) => {
@@ -82,17 +71,19 @@ export default class TemplateChooser extends Component {
   };
 
   render = () => (
-    <WithLoadingSpinner loading={this.state.loading}>
+    <WithLoadingSpinner loading={this.props.loading}>
       <NoTemplateButton
         label="Continue without template"
         onClick={this.onNextWithoutTemplate}
         primary
       />
       <TemplateOverview
-        templates={flattenFirebaseList(this.state.templates)}
+        templates={flattenFirebaseList(this.props.data)}
         onChoose={this.onChoose}
       />
       <StepButtons onNext={this.onNextWithoutTemplate} />
     </WithLoadingSpinner>
   );
 }
+
+export default injectFirebaseData(TemplateChooser, () => firebase.database().ref('templates'));

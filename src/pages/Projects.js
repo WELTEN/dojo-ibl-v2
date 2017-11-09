@@ -4,9 +4,10 @@ import ProjectList from '../components/Projects/ProjectList';
 import Add from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from '../components/FloatingActionButton';
 import Link from '../components/Link';
+import Aux from 'react-aux';
 
 const Projects = () => (
-  <div>
+  <Aux>
     <PageTitle>Projects</PageTitle>
     <ProjectList />
     <Link to="/projects/add">
@@ -14,7 +15,7 @@ const Projects = () => (
         <Add />
       </FloatingActionButton>
     </Link>
-  </div>
+  </Aux>
 );
 
 export default Projects;
