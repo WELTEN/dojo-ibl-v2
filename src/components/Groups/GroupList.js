@@ -15,7 +15,7 @@ const GroupList = ({ loading, data }) => (
         {`You aren't participating in any groups`}
       </NotFoundTitle>
     ) : (
-      getGroupList(data).map((group) =>
+      getGroupList(data).reverse().map((group) =>
         <Group groupKey={group} key={group} />
       )
     )}

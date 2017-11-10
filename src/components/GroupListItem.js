@@ -33,7 +33,7 @@ const GroupListItem = ({ group, actions, title }) => (
     </ContentBlock>
     <ContentBlock>
       <GroupUsers group={group} />
-      {actions(group)}
+      {actions ? actions(group) : null}
     </ContentBlock>
   </Aux>
 );
@@ -44,7 +44,7 @@ GroupListItem.propTypes = {
     name: PropTypes.string.isRequired,
     creationDate: PropTypes.number.isRequired
   }).isRequired,
-  actions: PropTypes.func.isRequired,
+  actions: PropTypes.func,
   title: PropTypes.any
 };
 

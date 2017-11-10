@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import IconButton from 'material-ui/IconButton';
-import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 import Close from 'material-ui/svg-icons/navigation/close';
-import Link from '../Link';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import { red500 } from 'material-ui/styles/colors';
 import * as firebase from 'firebase';
 import Confirm from '../Confirm';
 import injectFirebaseData from '../InjectFirebaseData';
 
-const ActionWrapper = glamorous.div({ display: 'flex' });
+const ActionWrapper = glamorous.div({
+  display: 'flex'
+}, ({ hidden }) => {
+  if (hidden) return { marginLeft: -24 };
+});
 
 class GroupActions extends Component {
   static propTypes = {
@@ -40,12 +42,7 @@ class GroupActions extends Component {
 
   render = () => (
     <WithLoadingSpinner loading={this.props.loading}>
-      <ActionWrapper>
-        <Link to={`groups/${this.props.group.key}`}>
-          <IconButton>
-            <RemoveRedEye />
-          </IconButton>
-        </Link>
+      <ActionWrapper hidden={this.currentUserOwnsProject()}>
         {!this.currentUserOwnsProject() &&
           <IconButton onClick={this.onLeave} iconStyle={{ color: red500 }}>
             <Close />

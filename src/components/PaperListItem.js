@@ -11,12 +11,14 @@ const ItemPaper = glamorous(Paper)({
   ':last-of-type': {
     marginBottom: '80px !important'
   }
+}, ({ onClick }) => {
+  if (onClick) return { cursor: 'pointer' };
 });
 
 const Item = glamorous(ListItem)({ marginBottom: 0 });
 
-const PaperListItem = ({ loading, children }) => (
-  <ItemPaper>
+const PaperListItem = ({ loading, onClick, children }) => (
+  <ItemPaper onClick={onClick}>
     <WithLoadingSpinner loading={loading}>
       <Item>
         {children}

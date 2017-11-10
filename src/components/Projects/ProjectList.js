@@ -15,7 +15,7 @@ const ProjectList = ({ loading, data }) => (
         {`You don't have any projects`}
       </NotFoundTitle>
     ) : (
-      getProjectList(data).map((project) =>
+      getProjectList(data).reverse().map((project) =>
         <Project projectKey={project} key={project} />
       )
     )}
