@@ -17,8 +17,8 @@ const ItemPaper = glamorous(Paper)({
 
 const Item = glamorous(ListItem)({ marginBottom: 0 });
 
-const PaperListItem = ({ loading, onClick, children }) => (
-  <ItemPaper onClick={onClick}>
+const PaperListItem = ({ loading, children }) => (
+  <ItemPaper>
     <WithLoadingSpinner loading={loading}>
       <Item>
         {children}

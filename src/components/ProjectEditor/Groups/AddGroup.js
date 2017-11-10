@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import * as firebase from 'firebase';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import randomstring from 'randomstring';
-
-const FormContainer = glamorous.div({
-  marginTop: 10,
-  display: 'flex',
-  alignItems: 'center'
-});
-
-const NameField = glamorous(TextField)({
-  marginTop: '-14px !important'
-});
-
-const AddButton = glamorous(RaisedButton)({ marginLeft: 24 });
+import { FormContainer, InputField, SubmitButton } from '../../BasicForm';
 
 export default class AddGroups extends Component {
   static propTypes = {
@@ -65,15 +51,15 @@ export default class AddGroups extends Component {
   };
 
   render = () => (
-    <FormContainer>
-      <NameField
+    <FormContainer css={{ marginTop: 12 }}>
+      <InputField
         floatingLabelText="Group name"
         value={this.state.name}
         onChange={this.handleNameChange}
         errorText={this.state.error}
         fullWidth
       />
-      <AddButton
+      <SubmitButton
         label="Add"
         onClick={this.onCreate}
         primary
