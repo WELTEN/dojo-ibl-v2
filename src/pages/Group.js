@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import { grey300, grey400 } from 'material-ui/styles/colors';
 import PageTitle from '../components/PageTitle';
 import FormattedText from '../components/FormattedText';
+import GroupPhases from '../components/Group/GroupPhases';
 import WithLoadingSpinner from '../components/WithLoadingSpinner';
 import injectFirebaseData from '../components/InjectFirebaseData';
 
@@ -29,6 +30,7 @@ const Group = ({ loading, data }) => (
         {data.description}
       </FormattedText>
     }
+    <GroupPhases group={data} />
   </WithLoadingSpinner>
 );
 
