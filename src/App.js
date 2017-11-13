@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import AddProject from './pages/AddProject';
 import EditProject from './pages/EditProject';
+import Group from './pages/Group';
 import NotFound from './pages/NotFound';
 import WithLogin from './components/WithLogin';
 import WithAppBar from './components/WithAppBar';
@@ -30,45 +31,38 @@ const muiTheme = getMuiTheme({
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <Router>
-      <Switch>
-        <Route render={({ location }) => (
-          <WithLogin>
-            <WithAppBar title="DojoIBL">
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  component={Home}
-                  location={location}
-                  key={location.key}
-                />
-                <Route
-                  exact
-                  path="/projects"
-                  component={Projects}
-                  location={location}
-                  key={location.key}
-                />
-                <Route
-                  exact
-                  path="/projects/add"
-                  component={AddProject}
-                  location={location}
-                  key={location.key}
-                />
-                <Route
-                  exact
-                  path="/projects/:projectKey/edit"
-                  component={EditProject}
-                  location={location}
-                  key={location.key}
-                />
-              </Switch>
-            </WithAppBar>
-          </WithLogin>
-        )} />
-        <Route component={NotFound} />
-      </Switch>
+      <WithLogin>
+        <WithAppBar title="DojoIBL">
+          <Switch>
+            <Route
+              exact
+              path="/"
+              component={Home}
+            />
+            <Route
+              exact
+              path="/projects"
+              component={Projects}
+            />
+            <Route
+              exact
+              path="/projects/add"
+              component={AddProject}
+            />
+            <Route
+              exact
+              path="/projects/:projectKey/edit"
+              component={EditProject}
+            />
+            <Route
+              exact
+              path="/groups/:groupKey"
+              component={Group}
+            />
+            <Route component={NotFound} />
+          </Switch>
+        </WithAppBar>
+      </WithLogin>
     </Router>
   </MuiThemeProvider>
 );
