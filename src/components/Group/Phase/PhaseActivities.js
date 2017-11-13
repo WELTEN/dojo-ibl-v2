@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as firebase from 'firebase';
+import PhaseStates from '../PhaseStates';
 
 export default class PhaseActivities extends Component {
   static propTypes = {
     phase: PropTypes.shape({
       activities: PropTypes.object
-    }).isRequired
+    }).isRequired,
+    group: PropTypes.object.isRequired
   };
 
   state = {
@@ -64,12 +66,7 @@ export default class PhaseActivities extends Component {
     const activities = Object.values(this.state.activities);
 
     return (
-      <div>
-        {JSON.stringify(activities)}
-{/*        <div>{JSON.stringify(todo)}</div>
-        <div>{JSON.stringify(progress)}</div>
-        <div>{JSON.stringify(done)}</div>*/}
-      </div>
+      <PhaseStates activities={activities} group={this.props.group} />
     );
   }
 }

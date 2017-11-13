@@ -11,7 +11,7 @@ const PhaseList = glamorous.div({ marginTop: 14 });
 
 const getPhaseList = phases => Object.keys(phases || {});
 
-const GroupPhases = ({ loading, data }) => (
+const GroupPhases = ({ loading, data, group }) => (
   <WithLoadingSpinner loading={loading}>
     {getPhaseList(data.phases).length === 0 ? (
       <NotFoundTitle>
@@ -20,7 +20,12 @@ const GroupPhases = ({ loading, data }) => (
     ) : (
       <PhaseList>
         {getPhaseList(data.phases).map((phase, index) =>
-          <Phase phaseKey={phase} isFirst={index === 0} key={phase} />
+          <Phase
+            phaseKey={phase}
+            isFirst={index === 0}
+            group={group}
+            key={phase}
+          />
         )}
       </PhaseList>
     )}

@@ -31,7 +31,8 @@ class Phase extends Component {
     loading: PropTypes.bool.isRequired,
     data: PropTypes.any,
     phaseKey: PropTypes.string.isRequired,
-    isFirst: PropTypes.bool.isRequired
+    isFirst: PropTypes.bool.isRequired,
+    group: PropTypes.object.isRequired,
   };
 
   state = { collapsed: !this.props.isFirst };
@@ -41,7 +42,7 @@ class Phase extends Component {
   getActivityCount = () => Object.keys(this.props.data.activities || {}).length;
 
   render = () => {
-    const { loading, data } = this.props;
+    const { loading, data, group } = this.props;
     const collapsed = this.state.collapsed;
 
     if (loading) return <LoadingSpinner />
@@ -57,7 +58,7 @@ class Phase extends Component {
         />
         {activityCount > 0 &&
           <PhaseContent collapsed={collapsed}>
-            <PhaseActivities phase={data} />
+            <PhaseActivities phase={data} group={group} />
           </PhaseContent>
         }
       </Item>
