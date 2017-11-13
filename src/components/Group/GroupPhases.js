@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import Phase from './Phase';
 import NotFoundTitle from '../NotFoundTitle';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import injectFirebaseData from '../InjectFirebaseData';
+
+const PhaseList = glamorous.div({ marginTop: 14 });
 
 const getPhaseList = phases => Object.keys(phases || {});
 
@@ -15,9 +18,11 @@ const GroupPhases = ({ loading, data }) => (
         {`This group doesn't have any phases`}
       </NotFoundTitle>
     ) : (
-      getPhaseList(data.phases).map((phase, index) =>
-        <Phase phaseKey={phase} isFirst={index === 0} key={phase} />
-      )
+      <PhaseList>
+        {getPhaseList(data.phases).map((phase, index) =>
+          <Phase phaseKey={phase} isFirst={index === 0} key={phase} />
+        )}
+      </PhaseList>
     )}
   </WithLoadingSpinner>
 );

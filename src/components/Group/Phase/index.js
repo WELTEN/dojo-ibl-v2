@@ -1,9 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import PhaseTitle from './PhaseTitle';
 import LoadingSpinner from '../../LoadingSpinner';
 import injectFirebaseData from '../../InjectFirebaseData';
+import { transition } from '../../../styles';
+
+const Item = glamorous.section({
+  marginBottom: 24,
+  ':last-child': {
+    marginBottom: 68
+  }
+}, ({ collapsed }) => {
+  if (collapsed) return { marginBottom: 12 };
+});
+
+const PhaseContent = glamorous.div({
+  height: 'auto',
+  transition,
+  overflow: 'hidden',
+  opacity: 1,
+}, ({ collapsed }) => {
+  if (collapsed) return { height: 0, opacity: 0 };
+});
 
 class Phase extends Component {
   static propTypes = {
@@ -19,18 +39,19 @@ class Phase extends Component {
 
   render = () => {
     const { loading, data } = this.props;
+    const collapsed = this.state.collapsed;
     if (loading) return <LoadingSpinner />
     return (
-      <div>
+      <Item collapsed={collapsed}>
         <PhaseTitle
           title={data.name}
-          collapsed={this.state.collapsed}
+          collapsed={collapsed}
           onCollapseToggle={this.onCollapseToggle}
         />
-        {!this.state.collapsed &&
-          <p>{JSON.stringify(data.activities)}</p>
-        }
-      </div>
+        <PhaseContent collapsed={collapsed}>
+          {JSON.stringify(data.activities)}
+        </PhaseContent>
+      </Item>
     );
   };
 }
