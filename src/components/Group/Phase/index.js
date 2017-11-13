@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import * as firebase from 'firebase';
-import PhaseTitle from './PhaseTitle';
 import LoadingSpinner from '../../LoadingSpinner';
+import PhaseTitle from './PhaseTitle';
+import PhaseActivities from './PhaseActivities';
 import injectFirebaseData from '../../InjectFirebaseData';
 import { transition } from '../../../styles';
 
@@ -37,20 +38,28 @@ class Phase extends Component {
 
   onCollapseToggle = () => this.setState({ collapsed: !this.state.collapsed });
 
+  getActivityCount = () => Object.keys(this.props.data.activities || {}).length;
+
   render = () => {
     const { loading, data } = this.props;
     const collapsed = this.state.collapsed;
+
     if (loading) return <LoadingSpinner />
+
+    const activityCount = this.getActivityCount();
     return (
-      <Item collapsed={collapsed}>
+      <Item collapsed={collapsed && activityCount !== 0}>
         <PhaseTitle
           title={data.name}
           collapsed={collapsed}
           onCollapseToggle={this.onCollapseToggle}
+          activityCount={activityCount}
         />
-        <PhaseContent collapsed={collapsed}>
-          {JSON.stringify(data.activities)}
-        </PhaseContent>
+        {activityCount > 0 &&
+          <PhaseContent collapsed={collapsed}>
+            <PhaseActivities phase={data} />
+          </PhaseContent>
+        }
       </Item>
     );
   };
