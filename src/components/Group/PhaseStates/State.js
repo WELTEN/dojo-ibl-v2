@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import Activity from './Activity';
+import { DropTarget } from 'react-dnd';
 import { TODO, PROGRESS, DONE } from './StateTypes';
+import * as firebase from 'firebase';
 
 const Col = glamorous.section({
   position: 'relative',
@@ -28,23 +30,46 @@ const getStateName = (state) => {
   }
 };
 
-const State = ({ state, activities }) => (
-  <div className="phase">
-    <Col>
-      <Title>{getStateName(state)}</Title>
-      {activities.map((activity) =>
-        <Activity
-          activity={activity}
-          key={activity.key}
-        />
-      )}
-    </Col>
-  </div>
-);
+const State = ({ state, activities, phaseKey, connectDropTarget }) =>
+  connectDropTarget(
+    <div className="state">
+      <Col>
+        <Title>{getStateName(state)}</Title>
+        {activities.map(activity => (
+          <Activity
+            activity={activity}
+            phaseKey={phaseKey}
+            key={activity.key}
+          />
+        ))}
+      </Col>
+    </div>
+  );
 
 State.propTypes = {
   state: PropTypes.string.isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  phaseKey: PropTypes.string.isRequired,
+  groupKey: PropTypes.string.isRequired,
+  connectDropTarget: PropTypes.func.isRequired
 };
 
-export default State;
+const stateTarget = {
+  drop(props, monitor) {
+    const activity = monitor.getItem();
+    const ref = firebase.database().ref(`groups/${props.groupKey}/states//${activity.key}`);
+    if (props.state === TODO) {
+      ref.remove();
+    } else {
+      ref.set(props.state);
+    }
+  }
+};
+
+export default DropTarget(
+  props => props.phaseKey,
+  stateTarget,
+  (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget()
+  })
+)(State);

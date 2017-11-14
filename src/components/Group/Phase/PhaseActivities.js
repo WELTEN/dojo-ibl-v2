@@ -6,6 +6,7 @@ import PhaseStates from '../PhaseStates';
 export default class PhaseActivities extends Component {
   static propTypes = {
     phase: PropTypes.shape({
+      key: PropTypes.string.isRequired,
       activities: PropTypes.object
     }).isRequired,
     group: PropTypes.object.isRequired
@@ -66,7 +67,11 @@ export default class PhaseActivities extends Component {
     const activities = Object.values(this.state.activities);
 
     return (
-      <PhaseStates activities={activities} group={this.props.group} />
+      <PhaseStates
+        activities={activities}
+        group={this.props.group}
+        phaseKey={this.props.phase.key}
+      />
     );
   }
 }

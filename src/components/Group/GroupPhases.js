@@ -6,6 +6,8 @@ import Phase from './Phase';
 import NotFoundTitle from '../NotFoundTitle';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import injectFirebaseData from '../InjectFirebaseData';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 const PhaseList = glamorous.div({ marginTop: 14 });
 
@@ -42,4 +44,6 @@ GroupPhases.propTypes = {
 
 const getRef = props => firebase.database().ref(`projects/${props.group.project}`);
 
-export default injectFirebaseData(GroupPhases, getRef);
+export default DragDropContext(HTML5Backend)(
+  injectFirebaseData(GroupPhases, getRef)
+);

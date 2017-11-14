@@ -39,7 +39,7 @@ const getActivitiesForStates = (activities, states) => {
   return { todo, progress, done };
 };
 
-const PhaseStates = ({ activities, group }) => {
+const PhaseStates = ({ activities, group, phaseKey }) => {
   const {
     todo,
     progress,
@@ -48,9 +48,24 @@ const PhaseStates = ({ activities, group }) => {
 
   return (
     <Container>
-      <State state={TODO} activities={todo} />
-      <State state={PROGRESS} activities={progress} />
-      <State state={DONE} activities={done} />
+      <State
+        state={TODO}
+        activities={todo}
+        phaseKey={phaseKey}
+        groupKey={group.key}
+      />
+      <State
+        state={PROGRESS}
+        activities={progress}
+        phaseKey={phaseKey}
+        groupKey={group.key}
+      />
+      <State
+        state={DONE}
+        activities={done}
+        phaseKey={phaseKey}
+        groupKey={group.key}
+      />
     </Container>
   );
 };
@@ -60,6 +75,7 @@ PhaseStates.propTypes = {
     key: PropTypes.string.isRequired
   })).isRequired,
   group: PropTypes.shape({
+    key: PropTypes.string.isRequired,
     states: PropTypes.object
   }).isRequired
 };

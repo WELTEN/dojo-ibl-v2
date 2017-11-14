@@ -71,4 +71,4 @@ class Phase extends Component {
 
 const getRef = props => firebase.database().ref(`phases/${props.phaseKey}`);
 
-export default injectFirebaseData(Phase, getRef);
+export default injectFirebaseData(Phase, getRef, true);

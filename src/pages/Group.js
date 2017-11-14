@@ -46,4 +46,4 @@ Group.propTypes = {
 
 const getRef = props => firebase.database().ref(`groups/${props.match.params.groupKey}`);
 
-export default injectFirebaseData(Group, getRef);
+export default injectFirebaseData(Group, getRef, true);

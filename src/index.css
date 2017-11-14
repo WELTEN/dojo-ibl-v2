@@ -30,15 +30,15 @@ p {
 }
 
 /* We can't use glamorous for this because of restrictions by react-dnd */
-.phase {
+.state {
   border-left: 2px solid #E0E0E0;
   border-right: 2px solid #E0E0E0;
   flex: 1;
   max-width: calc(33.33333333% - 4px);
 }
 
-.phase:first-child,
-.phase:last-child {
+.state:first-child,
+.state:last-child {
   border: 0;
   max-width: 33.33333333%;
 }

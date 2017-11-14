@@ -5,10 +5,9 @@ import { ellipsis } from '../styles';
 export const Item = glamorous(Paper)({
   position: 'relative',
   marginBottom: 12,
-  padding: 12,
-  ':last-child': {
-    marginBottom: 0
-  }
+  padding: 12
+}, ({ onClick }) => {
+  if (onClick) return { cursor: 'pointer' };
 });
 
 export const Title = glamorous.h4(ellipsis, {
