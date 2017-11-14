@@ -10,6 +10,7 @@ import * as firebase from 'firebase';
 import { connect } from 'react-redux';
 import { transition, ellipsis } from '../../../styles';
 import { grey300 } from 'material-ui/styles/colors';
+import Aux from 'react-aux';
 
 const Activity = glamorous.section({
   position: 'relative',
@@ -38,13 +39,13 @@ const Activity = glamorous.section({
 const CloseButton = glamorous(IconButton)({
   position: 'absolute !important',
   top: 24,
-  right: 48
+  right: 36
 });
 
 const Name = glamorous.h2(ellipsis, {
   marginTop: 0,
   marginBottom: 18,
-  maxWidth: 'calc(100% - 48px)',
+  maxWidth: 'calc(100% - 36px)',
   lineHeight: '48px',
 });
 
@@ -74,7 +75,10 @@ class CollapsibleActivity extends Component {
     if (newActivity === oldActivity) return;
 
     this.setState({ loading: true });
+    this.updateListener(oldActivity, newActivity);
+  };
 
+  updateListener = (oldActivity, newActivity) => {
     this.getRef(oldActivity).off();
     this.getRef(newActivity).on('value', (snapshot) => {
       const activity = snapshot.val();
@@ -113,10 +117,11 @@ class CollapsibleActivity extends Component {
         </NotFoundTitle>
       }
       {!this.state.loading && this.state.activity &&
-        <div>
+        <Aux>
           <Name>{this.state.activity.name}</Name>
           <Description>{this.state.activity.description}</Description>
-        </div>
+          <div>*comment list*</div>
+        </Aux>
       }
       <CloseButton onClick={this.props.onClose}>
         <Close />

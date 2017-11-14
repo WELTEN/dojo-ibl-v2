@@ -5,6 +5,7 @@ const Text = glamorous.textarea({
   margin: 0,
   padding: 0,
   width: '100%',
+  lineHeight: 1.6,
   background: 'none',
   font: 'inherit',
   border: 0,
