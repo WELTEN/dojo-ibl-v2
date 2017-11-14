@@ -20,10 +20,13 @@ const Item = glamorous.section({
 const PhaseContent = glamorous.div({
   height: 'auto',
   transition,
-  overflow: 'hidden',
-  opacity: 1,
+  opacity: 1
 }, ({ collapsed }) => {
-  if (collapsed) return { height: 0, opacity: 0 };
+  if (collapsed) return {
+    height: 0,
+    opacity: 0,
+    overflow: 'hidden'
+  };
 });
 
 class Phase extends Component {

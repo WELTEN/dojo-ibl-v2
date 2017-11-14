@@ -11,27 +11,8 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NameDescriptionPrompt from '../../NameDescriptionPrompt';
 import Confirm from '../../Confirm';
 import Aux from 'react-aux';
+import { Item, Title, Description } from '../../StyledActivity';
 import injectFirebaseData from '../../InjectFirebaseData';
-
-const Item = glamorous(Paper)({
-  position: 'relative',
-  marginBottom: 12,
-  padding: 12,
-  ':last-child': {
-    marginBottom: 0
-  }
-});
-
-const Title = glamorous.h4({
-  margin: 0,
-  lineHeight: '24px',
-  fontSize: 16,
-});
-
-const Description = glamorous.p({
-  margin: 0,
-  fontSize: 14
-});
 
 const ActionsButton = glamorous(IconButton)({
   position: 'absolute !important',
@@ -87,8 +68,8 @@ class Activity extends Component {
           <Aux>
             <Title>{this.props.data.name}</Title>
             {this.props.data.description && (
-              <Description>
-                {this.props.data.description.slice(0, 40)}
+              <Description hasActionButton>
+                {this.props.data.description}
               </Description>
             )}
             <IconMenu

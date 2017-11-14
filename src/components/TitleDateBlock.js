@@ -2,17 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import { black, grey600 } from 'material-ui/styles/colors';
+import { ellipsis } from '../styles';
 import moment from 'moment';
 
-const Name = glamorous.h4({
+const Name = glamorous.h4(ellipsis, {
   marginTop: 0,
   marginBottom: 4,
-  width: '100%',
   color: black,
   fontSize: 16,
-  textOverflow: 'ellipsis',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap'
 });
 
 const CreationDate = glamorous.div({

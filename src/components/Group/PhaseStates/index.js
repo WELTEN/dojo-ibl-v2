@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PROGRESS, DONE } from './StateTypes';
+import glamorous from 'glamorous';
+import { TODO, PROGRESS, DONE } from './StateTypes';
+import State from './State';
+
+const Container = glamorous.section({
+  marginLeft: -20,
+  marginRight: -20,
+  display: 'flex'
+});
 
 const getActivitiesForStates = (activities, states) => {
   if (!states) return {
@@ -39,11 +47,11 @@ const PhaseStates = ({ activities, group }) => {
   } = getActivitiesForStates(activities, group.states);
 
   return (
-    <div>
-      <div>{JSON.stringify(todo)}</div>
-      <div>{JSON.stringify(progress)}</div>
-      <div>{JSON.stringify(done)}</div>
-    </div>
+    <Container>
+      <State state={TODO} activities={todo} />
+      <State state={PROGRESS} activities={progress} />
+      <State state={DONE} activities={done} />
+    </Container>
   );
 };
 
