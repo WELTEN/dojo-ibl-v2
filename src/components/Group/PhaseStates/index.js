@@ -7,7 +7,8 @@ import State from './State';
 const Container = glamorous.section({
   marginLeft: -20,
   marginRight: -20,
-  display: 'flex'
+  display: 'flex',
+  flexWrap: 'wrap'
 });
 
 const getActivitiesForStates = (activities, states) => {

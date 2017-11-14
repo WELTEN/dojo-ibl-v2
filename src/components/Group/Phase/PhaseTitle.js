@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import IconButton from 'material-ui/IconButton';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
-import { grey300 } from 'material-ui/styles/colors';
+import { ellipsis } from '../../../styles';
+import Chip from 'material-ui/Chip';
 
 const TitleContainer = glamorous.header({
   marginTop: 0,
@@ -13,7 +14,7 @@ const TitleContainer = glamorous.header({
   cursor: 'pointer'
 });
 
-const Title = glamorous.h3({ margin: 0 });
+const Title = glamorous.h3(ellipsis, { margin: 0 });
 
 const CustomIconButton = ({ collapsed, children, ...props }) => (
   <IconButton {...props}>{children}</IconButton>
@@ -23,13 +24,7 @@ const CollapseArrow = glamorous(CustomIconButton)(({ collapsed }) => {
   if (collapsed) return { transform: 'rotate(-90deg)' };
 });
 
-const NoActivities = glamorous.h4({
-  margin: 0,
-  marginLeft: 20,
-  padding: '8px 12px',
-  backgroundColor: grey300,
-  borderRadius: 16
-});
+const NoActivities = glamorous(Chip)({ marginLeft: '20px !important' });
 
 const PhaseTitle = ({ title, collapsed, onCollapseToggle, activityCount }) => (
   <TitleContainer onClick={onCollapseToggle}>

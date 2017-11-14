@@ -1,37 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import * as firebase from 'firebase';
-import { grey300, grey400 } from 'material-ui/styles/colors';
-import PageTitle from '../components/PageTitle';
-import FormattedText from '../components/FormattedText';
-import GroupPhases from '../components/Group/GroupPhases';
-import WithLoadingSpinner from '../components/WithLoadingSpinner';
+import LoadingSpinner from '../components/LoadingSpinner';
+import GroupName from '../components/Group/GroupName';
+import GroupDescription from '../components/Group/GroupDescription';
+import GroupContent from '../components/Group/GroupContent';
 import injectFirebaseData from '../components/InjectFirebaseData';
+import Aux from 'react-aux';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-const Code = glamorous.span({
-  marginLeft: 12,
-  color: grey400
-});
+const toggleOpen = (state = { open: false, openActivity: '' }, action) => {
+  switch (action.type) {
+    case 'OPEN': return { open: true, openActivity: action.activity };
+    case 'CLOSE': return { open: false, openActivity: '' };
+    default: return state;
+  }
+};
 
-const Hashtag = glamorous.span({ color: grey300 });
+const store = createStore(toggleOpen);
 
 const Group = ({ loading, data }) => (
-  <WithLoadingSpinner loading={loading}>
-    <PageTitle>
-      {data.name}
-      <Code>
-        <Hashtag>#</Hashtag>
-        {data.code}
-      </Code>
-    </PageTitle>
-    {data.description &&
-      <FormattedText>
-        {data.description}
-      </FormattedText>
-    }
-    <GroupPhases group={data} />
-  </WithLoadingSpinner>
+  <Provider store={store}>
+    {loading ? (
+      <LoadingSpinner />
+    ) : (
+      <Aux>
+        <GroupName group={data} />
+        <GroupDescription group={data} />
+        <GroupContent group={data} />
+      </Aux>
+    )}
+  </Provider>
 );
 
 Group.propTypes = {

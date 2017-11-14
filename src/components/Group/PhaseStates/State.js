@@ -5,6 +5,7 @@ import Activity from './Activity';
 import { DropTarget } from 'react-dnd';
 import { TODO, PROGRESS, DONE } from './StateTypes';
 import * as firebase from 'firebase';
+import { connect } from 'react-redux';
 
 const Col = glamorous.section({
   position: 'relative',
@@ -30,18 +31,18 @@ const getStateName = (state) => {
   }
 };
 
-const State = ({ state, activities, phaseKey, connectDropTarget }) =>
+const State = ({ state, activities, phaseKey, collapsed, connectDropTarget }) =>
   connectDropTarget(
-    <div className="state">
+    <div className={`state ${collapsed ? 'collapsed': ''}`}>
       <Col>
         <Title>{getStateName(state)}</Title>
-        {activities.map(activity => (
+        {activities.map((activity) =>
           <Activity
             activity={activity}
             phaseKey={phaseKey}
             key={activity.key}
           />
-        ))}
+        )}
       </Col>
     </div>
   );
@@ -51,6 +52,7 @@ State.propTypes = {
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   phaseKey: PropTypes.string.isRequired,
   groupKey: PropTypes.string.isRequired,
+  collapsed: PropTypes.bool.isRequired,
   connectDropTarget: PropTypes.func.isRequired
 };
 
@@ -66,10 +68,12 @@ const stateTarget = {
   }
 };
 
+const mapStateToProps = state => ({ collapsed: state.open });
+
 export default DropTarget(
   props => props.phaseKey,
   stateTarget,
   (connect, monitor) => ({
     connectDropTarget: connect.dropTarget()
   })
-)(State);
+)(connect(mapStateToProps)(State));

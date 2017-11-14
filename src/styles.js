@@ -3,7 +3,7 @@ export const primaryColor = '#23C6C8';
 export const accentColor = '#2F4050';
 
 export const ellipsis = {
-  width: '100%',
+  maxWidth: '100%',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis'
