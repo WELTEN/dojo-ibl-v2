@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import * as firebase from 'firebase';
 import LoadingSpinner from '../../LoadingSpinner';
-import Paper from 'material-ui/Paper';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
