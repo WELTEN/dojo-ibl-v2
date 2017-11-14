@@ -42,13 +42,14 @@ export default class FormattedText extends Component {
   getScrollHeight = () => (document.getElementById(this.id) || {}).scrollHeight;
 
   render() {
+    const { children, ...props } = this.props;
     return (
       <Text
         id={this.id}
-        className={this.props.className}
-        value={this.props.children}
+        value={children}
         readOnly
         height={this.state.height}
+        {...props}
       />
     );
   }

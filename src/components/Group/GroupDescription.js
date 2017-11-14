@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import FormattedText from '../FormattedText';
+
+const Description = glamorous(FormattedText)({ marginBottom: 24 });
 
 const GroupDescription = ({ group }) => {
   if (group.description) {
-    return <FormattedText>{group.description}</FormattedText>;
+    return <Description>{group.description}</Description>;
   } else {
     return null;
   }
