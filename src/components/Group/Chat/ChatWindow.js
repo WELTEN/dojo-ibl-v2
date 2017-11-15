@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import Paper from 'material-ui/Paper';
 import ChatHeader from './ChatHeader';
+import ChatForm from './ChatForm';
 
 const CustomPaper = ({ open, children, ...props }) => (
   <Paper {...props}>{children}</Paper>
@@ -21,8 +22,10 @@ const StyledWindow = glamorous(CustomPaper)({
 const ChatWindow = ({ group, open, onClose }) => (
   <StyledWindow open={open} zDepth={2}>
     <ChatHeader group={group} onClose={onClose} />
-    *chat messages*
-    *chat form*
+    <div style={{ maxHeight: 400, overflowY: 'auto' }}>
+      {JSON.stringify(group.messages || {})}
+    </div>
+    <ChatForm group={group} />
   </StyledWindow>
 );
 

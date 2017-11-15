@@ -49,7 +49,6 @@ export default class CommentForm extends Component {
       return;
     }
 
-    this.onCancel();
     const currentUser = firebase.auth().currentUser;
     const key = firebase.database().ref('comments').push().getKey();
     firebase.database().ref(`comments/${key}`).set({
@@ -58,6 +57,7 @@ export default class CommentForm extends Component {
       creationDate: Date.now()
     });
     firebase.database().ref(`groups/${this.props.group.key}/activities/${this.props.activity.key}/comments/${key}`).set(true);
+    this.onCancel();
   };
 
   onCancel = () => this.setState({ value: '', error: '' });
@@ -81,13 +81,13 @@ export default class CommentForm extends Component {
           <ButtonContainer>
             <CancelButton
               label="Cancel"
-              onClick={this.onCancel}
               disabled={this.state.value.length === 0}
+              onClick={this.onCancel}
             />
             <RaisedButton
               label="Comment"
-              onClick={this.onComment}
               disabled={this.state.value.length === 0}
+              onClick={this.onComment}
               primary
             />
           </ButtonContainer>
