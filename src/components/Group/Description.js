@@ -3,20 +3,24 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import FormattedText from '../FormattedText';
 
-const Description = glamorous(FormattedText)({ marginBottom: 24 });
+const GroupDescription = glamorous(FormattedText)({ marginBottom: 24 });
 
-const GroupDescription = ({ group }) => {
+const Description = ({ group }) => {
   if (group.description) {
-    return <Description>{group.description}</Description>;
+    return (
+      <GroupDescription>
+        {group.description}
+      </GroupDescription>
+    );
   } else {
     return null;
   }
 }
 
-GroupDescription.propTypes = {
+Description.propTypes = {
   group: PropTypes.shape({
     description: PropTypes.string
   }).isRequired
 };
 
-export default GroupDescription;
+export default Description;

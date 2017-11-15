@@ -22,7 +22,7 @@ const PhaseList = glamorous.div({
 
 const getPhaseList = phases => Object.keys(phases || {});
 
-const GroupPhases = ({ loading, data, collapsed, group }) => (
+const Phases = ({ loading, data, collapsed, group }) => (
   <WithLoadingSpinner loading={loading}>
     {getPhaseList(data.phases).length === 0 ? (
       <NotFoundTitle>
@@ -43,7 +43,7 @@ const GroupPhases = ({ loading, data, collapsed, group }) => (
   </WithLoadingSpinner>
 );
 
-GroupPhases.propTypes = {
+Phases.propTypes = {
   loading: PropTypes.bool.isRequired,
   data: PropTypes.any,
   collapsed: PropTypes.bool.isRequired,
@@ -57,5 +57,5 @@ const getRef = props => firebase.database().ref(`projects/${props.group.project}
 const mapStateToProps = state => ({ collapsed: state.open });
 
 export default DragDropContext(HTML5Backend)(
-  connect(mapStateToProps)(injectFirebaseData(GroupPhases, getRef))
+  connect(mapStateToProps)(injectFirebaseData(Phases, getRef))
 );

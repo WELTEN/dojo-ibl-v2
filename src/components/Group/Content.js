@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GroupPhases from './GroupPhases';
+import Phases from './Phases';
 import CollapsibleActivity from './CollapsibleActivity';
 
-const GroupContent = ({ group }) => (
+const Content = ({ group }) => (
   <div>
-    <GroupPhases group={group} />
+    <Phases group={group} />
     <CollapsibleActivity group={group} />
   </div>
 );
 
-GroupContent.propTypes = {
+Content.propTypes = {
   group: PropTypes.object.isRequired
 };
 
-export default GroupContent;
+export default Content;

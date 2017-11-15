@@ -11,7 +11,7 @@ const Code = glamorous.span({
 
 const Hashtag = glamorous.span({ color: grey300 });
 
-const GroupName = ({ group }) => (
+const Name = ({ group }) => (
   <PageTitle>
     {group.name}
     <Code>
@@ -21,11 +21,11 @@ const GroupName = ({ group }) => (
   </PageTitle>
 );
 
-GroupName.propTypes = {
+Name.propTypes = {
   group: PropTypes.shape({
     name: PropTypes.string.isRequired,
     code: PropTypes.string.isRequired
   }).isRequired
 };
 
-export default GroupName;
+export default Name;

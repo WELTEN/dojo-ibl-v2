@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as firebase from 'firebase';
 import LoadingSpinner from '../components/LoadingSpinner';
-import GroupName from '../components/Group/GroupName';
-import GroupDescription from '../components/Group/GroupDescription';
-import GroupContent from '../components/Group/GroupContent';
+import Name from '../components/Group/Name';
+import Description from '../components/Group/Description';
+import Content from '../components/Group/Content';
+import Chat from '../components/Group/Chat';
 import injectFirebaseData from '../components/InjectFirebaseData';
 import Aux from 'react-aux';
 import { Provider } from 'react-redux';
@@ -26,9 +27,10 @@ const Group = ({ loading, data }) => (
       <LoadingSpinner />
     ) : (
       <Aux>
-        <GroupName group={data} />
-        <GroupDescription group={data} />
-        <GroupContent group={data} />
+        <Name group={data} />
+        <Description group={data} />
+        <Content group={data} />
+        <Chat group={data} />
       </Aux>
     )}
   </Provider>
