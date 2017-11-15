@@ -5,18 +5,13 @@ import DefaultProfilePicture from '../../DefaultProfilePicture.png';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
 import { grey400 } from 'material-ui/styles/colors';
 import * as firebase from 'firebase';
-
-const Form = glamorous.section({
-  whiteSpace: 'initial',
-  display: 'flex'
-});
-
-const ProfilePicture = glamorous(Avatar)({ marginRight: 12 });
-
-const Content = glamorous.div({ flex: 1 });
+import {
+  CommentContainer,
+  ProfilePicture,
+  Content
+} from '../Comment/WithUserInfo';
 
 const CommentField = glamorous(TextField)({
   marginTop: '-12px !important'
@@ -70,8 +65,8 @@ export default class CommentForm extends Component {
   render = () => {
     const photoURL = firebase.auth().currentUser.photoURL;
     return (
-      <Form>
-        <ProfilePicture size={48} src={photoURL || DefaultProfilePicture} />
+      <CommentContainer>
+        <ProfilePicture src={photoURL || DefaultProfilePicture} />
         <Content>
           <CommentField
             className={this.state.value ? '' : 'fix-textarea'}
@@ -97,7 +92,7 @@ export default class CommentForm extends Component {
             />
           </ButtonContainer>
         </Content>
-      </Form>
+      </CommentContainer>
     );
   };
 }
