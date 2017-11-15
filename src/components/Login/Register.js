@@ -65,7 +65,8 @@ export default class Register extends Component {
       });
       firebase.database().ref(`users/${user.uid}`).set({
         displayName: name,
-        email: user.email
+        email: user.email,
+        photoURL: user.photoURL
       });
     }).catch((error) => {
       this.setState({

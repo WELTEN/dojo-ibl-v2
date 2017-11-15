@@ -10,7 +10,7 @@ import moment from 'moment';
 import { black } from 'material-ui/styles/colors';
 
 export const CommentContainer = glamorous.section({
-  marginBottom: 12,
+  marginBottom: 6,
   display: 'flex',
   whiteSpace: 'initial'
 });
@@ -23,8 +23,10 @@ export const ProfilePicture = glamorous(Avatar)({
 export const Content = glamorous.div({ flex: 1 });
 
 const CommentMeta = glamorous.h4({
-  marginTop: 0,
-  marginBottom: 4
+  marginTop: -6,
+  marginBottom: -6,
+  display: 'flex',
+  alignItems: 'center'
 });
 
 const Name = glamorous.span({
@@ -33,7 +35,13 @@ const Name = glamorous.span({
   fontWeight: 500
 });
 
-const WithUserInfo = ({ loading, data, comment, children }) => (
+const WithUserInfo = ({
+  loading,
+  data,
+  comment,
+  commentActions,
+  children
+}) => (
   <WithLoadingSpinner loading={loading}>
     <CommentContainer>
       <ProfilePicture src={data.photoURL || DefaultProfilePicture} />
@@ -41,6 +49,7 @@ const WithUserInfo = ({ loading, data, comment, children }) => (
         <CommentMeta>
           <Name>{data.displayName}</Name>
           {moment(data.creationDate).calendar()}
+          {commentActions()}
         </CommentMeta>
         {children}
       </Content>

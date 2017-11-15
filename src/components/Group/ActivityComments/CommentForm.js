@@ -44,7 +44,7 @@ export default class CommentForm extends Component {
 
   onComment = () => {
     const comment = this.state.value;
-    if (!comment) {
+    if (!comment.trim()) {
       this.setState({ error: 'Comment can\'t be empty.' });
       return;
     }

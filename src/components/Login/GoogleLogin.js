@@ -8,7 +8,8 @@ export default class GoogleLogin extends Component {
     firebase.auth().signInWithPopup(provider).then(({ user }) => {
       firebase.database().ref(`users/${user.uid}`).update({
         displayName: user.displayName,
-        email: user.email
+        email: user.email,
+        photoURL: user.photoURL
       });
     });
   };

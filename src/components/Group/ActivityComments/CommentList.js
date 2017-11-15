@@ -15,6 +15,7 @@ const CommentList = ({ activity, group }) => (
     {getCommentList(activity, group).reverse().map((comment) =>
       <Comment
         activity={activity}
+        group={group}
         commentKey={comment}
         key={comment}
       />
