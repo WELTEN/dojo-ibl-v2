@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import IconButton from 'material-ui/IconButton';
 import Close from 'material-ui/svg-icons/navigation/close';
-import LoadingSpinner from '../../LoadingSpinner';
-import NotFoundTitle from '../../NotFoundTitle';
-import FormattedText from '../../FormattedText';
+import LoadingSpinner from '../LoadingSpinner';
+import NotFoundTitle from '../NotFoundTitle';
+import FormattedText from '../FormattedText';
 import * as firebase from 'firebase';
 import { connect } from 'react-redux';
-import { transition, ellipsis } from '../../../styles';
+import { transition, ellipsis } from '../../styles';
 import { grey300 } from 'material-ui/styles/colors';
+import ActivityComments from './ActivityComments';
 import Aux from 'react-aux';
 
 const Activity = glamorous.section({
@@ -17,6 +18,7 @@ const Activity = glamorous.section({
   float: 'left',
   marginTop: 14,
   marginLeft: 48,
+  marginBottom: 80,
   padding: '24px 48px',
   width: 'calc(75% - 48px)',
   minHeight: 48,
@@ -50,14 +52,14 @@ const Name = glamorous.h2(ellipsis, {
 });
 
 const Description = glamorous(FormattedText)({
-  marginBottom: 24,
+  marginBottom: 12,
   minWidth: 'calc(75vw - 240px)'
 });
 
 class CollapsibleActivity extends Component {
   static propTypes = {
-    open: PropTypes.bool,
-    openActivity: PropTypes.string,
+    open: PropTypes.bool.isRequired,
+    openActivity: PropTypes.string.isRequired,
     group: PropTypes.object.isRequired
   };
 
@@ -120,7 +122,10 @@ class CollapsibleActivity extends Component {
         <Aux>
           <Name>{this.state.activity.name}</Name>
           <Description>{this.state.activity.description}</Description>
-          <div>*comment list*</div>
+          <ActivityComments
+            activity={this.state.activity}
+            group={this.props.group}
+          />
         </Aux>
       }
       <CloseButton onClick={this.props.onClose}>

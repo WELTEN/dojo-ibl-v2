@@ -59,7 +59,7 @@ State.propTypes = {
 const stateTarget = {
   drop(props, monitor) {
     const activity = monitor.getItem();
-    const ref = firebase.database().ref(`groups/${props.groupKey}/states//${activity.key}`);
+    const ref = firebase.database().ref(`groups/${props.groupKey}/states/${activity.key}`);
     if (props.state === TODO) {
       ref.remove();
     } else {
