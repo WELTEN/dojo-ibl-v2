@@ -73,6 +73,7 @@ export default class Prompt extends Component {
         actions={actions}
         open={props.open}
         onRequestClose={this.onCancel}
+        autoScrollBodyContent
       >
         {props.msg}
         <TextField

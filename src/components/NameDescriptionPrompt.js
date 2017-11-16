@@ -69,6 +69,7 @@ export default class NameDescriptionPrompt extends Component {
         actions={actions}
         open={props.open}
         onRequestClose={this.onCancel}
+        autoScrollBodyContent
       >
         {props.msg}
         <TextField
