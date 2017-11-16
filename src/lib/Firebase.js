@@ -3,6 +3,8 @@ import * as firebase from 'firebase';
 export const flattenFirebaseList = (list = {}) =>
   Object.keys(list).map((key) => ({ key, ...list[key] }));
 
+export const getKeys = (obj = {}) => Object.keys(obj);
+
 export const deleteProject = (projectKey) => {
   const currentUser = firebase.auth().currentUser;
   firebase.database().ref(`users/${currentUser.uid}/projects/${projectKey}`).remove();

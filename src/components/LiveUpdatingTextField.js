@@ -23,7 +23,7 @@ export default class LiveUpdatingTextField extends Component {
     this.updateFirebase(value);
   };
 
-  updateFirebase = debounce((value) => this.props.getRef().set(value));
+  updateFirebase = debounce(value => this.props.getRef().set(value));
 
   render = () => {
     const { value, getRef, ...props } = this.props;

@@ -6,6 +6,7 @@ import { accentColor } from '../../styles';
 import Info from './Info';
 import Structure from './Structure';
 import Groups from './Groups';
+import Editors from './Editors';
 
 export default class EditorTabs extends Component {
   static propTypes = {
@@ -33,6 +34,9 @@ export default class EditorTabs extends Component {
         </Tab>
         <Tab label="Groups" value="groups" style={tabStyle}>
           <Groups project={project} />
+        </Tab>
+        <Tab label="Editors" value="editors" style={tabStyle}>
+          <Editors project={project} />
         </Tab>
       </Tabs>
     );
