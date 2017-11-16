@@ -18,7 +18,7 @@ export default class JoinGroup extends Component {
     code.startsWith('#') ? code.slice(1, code.length) : code;
 
   onJoin = () => {
-    const code = this.removeHashtag(this.state.code);
+    const code = this.removeHashtag(this.state.code).trim();
     if (code.length < 6) {
       this.setState({ error: 'Code must be at least 6 characters.' });
       return;

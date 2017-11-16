@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import NotFoundTitle from '../../NotFoundTitle';
 import ChatMessage from './ChatMessage';
+import { white } from 'material-ui/styles/colors';
 
 const Container = glamorous.div({
   padding: '6px 12px',
+  backgroundColor: white,
   maxHeight: 400,
   overflowY: 'auto',
   boxSizing: 'border-box'

@@ -19,7 +19,8 @@ export default class AddGroups extends Component {
   handleNameChange = e => this.setState({ name: e.target.value });
 
   onCreate = () => {
-    if (!this.state.name.trim()) {
+    const name = this.state.name;
+    if (!name.trim()) {
       this.setState({ error: 'Name can\'t be empty' });
       return;
     }
@@ -29,7 +30,7 @@ export default class AddGroups extends Component {
     Promise.all([
       firebase.database().ref(`projects/${projectKey}/groups/${key}`).set(true),
       firebase.database().ref(`groups/${key}`).set({
-        name: this.state.name,
+        name,
         code,
         project: projectKey,
         creationDate: Date.now()

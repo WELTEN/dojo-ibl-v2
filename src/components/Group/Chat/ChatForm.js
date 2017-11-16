@@ -72,7 +72,7 @@ export default class ChatForm extends Component {
         fullWidth
       />
       <SendButton
-        disabled={this.state.value.length === 0}
+        disabled={!this.state.value.trim()}
         onClick={this.onSend}
       >
         <Send />

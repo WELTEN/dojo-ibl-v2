@@ -37,12 +37,13 @@ export default class Prompt extends Component {
   handleChange = e => this.setState({ input: e.target.value });
 
   onOk = () => {
-    if (!this.state.input.trim()) {
+    const input = this.state.input;
+    if (!input.trim()) {
       this.setState({ error: 'Value can\'t be empty.' });
       return;
     }
     this.setState({ error: '' });
-    this.props.onOk(this.state.input);
+    this.props.onOk(input);
     if (this.props.emptyOnOk) this.setState({ input: '' });
   };
 

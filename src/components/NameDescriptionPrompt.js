@@ -29,12 +29,13 @@ export default class NameDescriptionPrompt extends Component {
   };
 
   onOk = () => {
-    if (!this.state.name.trim()) {
+    const { name, description } = this.state;
+    if (!name.trim()) {
       this.setState({ nameError: 'Name can\'t be empty.' });
       return;
     }
     this.setState({ nameError: '' });
-    this.props.onOk(this.state.name, this.state.description);
+    this.props.onOk(name, description);
     if (this.props.emptyOnOk) this.setState({ name: '', description: '' });
   };
 

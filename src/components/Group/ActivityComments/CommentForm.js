@@ -81,12 +81,12 @@ export default class CommentForm extends Component {
           <ButtonContainer>
             <CancelButton
               label="Cancel"
-              disabled={this.state.value.length === 0}
+              disabled={!this.state.value.trim()}
               onClick={this.onCancel}
             />
             <RaisedButton
               label="Comment"
-              disabled={this.state.value.length === 0}
+              disabled={!this.state.value.trim()}
               onClick={this.onComment}
               primary
             />
