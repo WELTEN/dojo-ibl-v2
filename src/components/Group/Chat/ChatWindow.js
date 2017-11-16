@@ -1,30 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
-import Paper from 'material-ui/Paper';
 import ChatHeader from './ChatHeader';
+import ChatMessages from './ChatMessages';
 import ChatForm from './ChatForm';
 
-const CustomPaper = ({ open, children, ...props }) => (
-  <Paper {...props}>{children}</Paper>
-);
-
-const StyledWindow = glamorous(CustomPaper)({
+const StyledWindow = glamorous.div({
   position: 'fixed',
   bottom: 24,
   right: 24,
   width: 400,
-  display: 'none'
+  display: 'none',
+  boxShadow: '0 20px 50px 0 rgba(0, 0, 0, .3)',
+  borderRadius: 2
 }, ({ open }) => {
   if (open) return { display: 'block' };
 });
 
 const ChatWindow = ({ group, open, onClose }) => (
-  <StyledWindow open={open} zDepth={2}>
+  <StyledWindow open={open}>
     <ChatHeader group={group} onClose={onClose} />
-    <div style={{ maxHeight: 400, overflowY: 'auto' }}>
-      {JSON.stringify(group.messages || {})}
-    </div>
+    <ChatMessages group={group} />
     <ChatForm group={group} />
   </StyledWindow>
 );

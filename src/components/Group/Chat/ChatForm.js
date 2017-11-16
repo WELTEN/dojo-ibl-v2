@@ -43,7 +43,7 @@ export default class ChatForm extends Component {
 
   handleChange = e => this.setState({ value: e.target.value });
 
-  onSend = () => {
+  onSend = async () => {
     const message = this.state.value;
     if (!message.trim()) {
       this.setState({ error: 'Chat message can\'t be empty.'});
