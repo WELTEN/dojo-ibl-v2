@@ -3,22 +3,15 @@ import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import IconButton from 'material-ui/IconButton';
 import Close from 'material-ui/svg-icons/navigation/close';
-import WithLoadingSpinner from '../WithLoadingSpinner';
 import { red500 } from 'material-ui/styles/colors';
 import * as firebase from 'firebase';
 import Confirm from '../Confirm';
-import injectFirebaseData from '../InjectFirebaseData';
+import Aux from 'react-aux';
 
-const ActionWrapper = glamorous.div({
-  display: 'flex'
-}, ({ hidden }) => {
-  if (hidden) return { marginLeft: -24 };
-});
+const ActionWrapper = glamorous.div({ display: 'flex' });
 
 class GroupActions extends Component {
   static propTypes = {
-    loading: PropTypes.bool.isRequired,
-    data: PropTypes.any,
     group: PropTypes.shape({
       key: PropTypes.string.isRequired,
       project: PropTypes.string.isRequired
@@ -27,13 +20,11 @@ class GroupActions extends Component {
 
   state = { leaving: false };
 
-  currentUserOwnsProject = () =>
-    this.props.data === firebase.auth().currentUser.uid;
-
   onLeave = () => this.setState({ leaving: true });
 
   onLeaveConfirm = () => {
     const currentUser = firebase.auth().currentUser;
+    firebase.database().ref(`projects/${this.props.group.project}/users/${currentUser.uid}`).remove();
     firebase.database().ref(`users/${currentUser.uid}/groups/${this.props.group.key}`).remove();
     firebase.database().ref(`groups/${this.props.group.key}/users/${currentUser.uid}`).remove();
   };
@@ -41,13 +32,11 @@ class GroupActions extends Component {
   onLeaveCancel = () => this.setState({ leaving: false });
 
   render = () => (
-    <WithLoadingSpinner loading={this.props.loading}>
-      <ActionWrapper hidden={this.currentUserOwnsProject()}>
-        {!this.currentUserOwnsProject() &&
-          <IconButton onClick={this.onLeave} iconStyle={{ color: red500 }}>
-            <Close />
-          </IconButton>
-        }
+    <Aux>
+      <ActionWrapper>
+        <IconButton onClick={this.onLeave} iconStyle={{ color: red500 }}>
+          <Close />
+        </IconButton>
       </ActionWrapper>
       <Confirm
         title="Confirm group leaving"
@@ -56,10 +45,8 @@ class GroupActions extends Component {
         onOk={this.onLeaveConfirm}
         onCancel={this.onLeaveCancel}
       />
-    </WithLoadingSpinner>
+    </Aux>
   );
 }
 
-const getRef = props => firebase.database().ref(`projects/${props.group.project}/owner`);
-
-export default injectFirebaseData(GroupActions, getRef);
+export default GroupActions;

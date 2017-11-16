@@ -47,6 +47,7 @@ export default class AddGroups extends Component {
 
   addCurrentUserToGroup = (key) => {
     const currentUser = firebase.auth().currentUser;
+    firebase.database().ref(`projects/${this.props.project.key}/users/${currentUser.uid}`).set(true);
     firebase.database().ref(`users/${currentUser.uid}/groups/${key}`).set(true);
     firebase.database().ref(`groups/${key}/users/${currentUser.uid}`).set(currentUser.photoURL || false);
   };

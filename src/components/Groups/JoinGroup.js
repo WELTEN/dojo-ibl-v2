@@ -55,7 +55,17 @@ export default class JoinGroup extends Component {
         return;
       }
 
+      return Promise.all([
+        firebase.database().ref(`groups/${groupKey}/project`).once('value'),
+        groupKey
+      ]);
+    }).then((data) => {
+      if (!data) return;
+      const [ snapshot, groupKey ] = data;
+      const projectKey = snapshot.val();
+
       const currentUser = firebase.auth().currentUser;
+      firebase.database().ref(`projects/${projectKey}/users/${currentUser.uid}`).set(true);
       firebase.database().ref(`users/${currentUser.uid}/groups/${groupKey}`).set(true);
       firebase.database().ref(`groups/${groupKey}/users/${currentUser.uid}`).set(currentUser.photoURL || false);
 

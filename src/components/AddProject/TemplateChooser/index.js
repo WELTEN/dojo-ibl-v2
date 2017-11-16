@@ -48,7 +48,9 @@ class TemplateChooser extends Component {
     firebase.database().ref(`users/${currentUser.uid}/projects`).child(key).set(true);
     firebase.database().ref(`projects/${key}`).set({
       title: 'No title',
-      owner: currentUser.uid,
+      owners: {
+        [currentUser.uid]: true
+      },
       creationDate: Date.now()
     });
     return key;
