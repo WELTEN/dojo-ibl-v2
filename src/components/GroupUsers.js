@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
 import DefaultProfilePicture from './DefaultProfilePicture.png';
+import Avatar from 'material-ui/Avatar';
 
 const PhotoContainer = glamorous.section({
   marginRight: 24,
@@ -9,11 +10,8 @@ const PhotoContainer = glamorous.section({
   alignItems: 'center'
 });
 
-const UserPhoto = glamorous.img({
+const UserPhoto = glamorous(Avatar)({
   marginLeft: 12,
-  width: 36,
-  height: 36,
-  borderRadius: '100%',
   ':first-child': {
     marginLeft: 0
   }
@@ -32,6 +30,7 @@ const GroupUsers = ({ group }) => (
   <PhotoContainer>
     {limitUsers(group.users).map(([ user, photo ]) =>
       <UserPhoto
+        size={36}
         src={photo || DefaultProfilePicture}
         alt="Profile picture"
         key={user}

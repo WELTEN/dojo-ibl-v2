@@ -5,11 +5,7 @@ import { grey400, grey600 } from 'material-ui/styles/colors';
 import GroupUsers from './GroupUsers';
 import TitleDateBlock from './TitleDateBlock';
 import Aux from 'react-aux';
-
-const ContentBlock = glamorous.section({
-  display: 'inline-flex',
-  alignItems: 'center'
-});
+import { ContentBlock } from './ListItem'
 
 const Code = glamorous.div({
   marginRight: 24,

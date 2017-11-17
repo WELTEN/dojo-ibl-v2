@@ -1,6 +1,11 @@
 import glamorous from 'glamorous';
 import { grey300 } from 'material-ui/styles/colors';
 
+export const ContentBlock = glamorous.section({
+  display: 'inline-flex',
+  alignItems: 'center'
+});
+
 const ListItem = glamorous.article({
   marginBottom: 6,
   display: 'flex',
