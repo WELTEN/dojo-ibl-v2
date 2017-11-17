@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+
+const ContentBeforeInputs = glamorous.div({ marginTop: 14 });
 
 export default class NameDescriptionPrompt extends Component {
   static propTypes = {
@@ -12,6 +15,7 @@ export default class NameDescriptionPrompt extends Component {
     descriptionValue: PropTypes.string,
     open: PropTypes.bool.isRequired,
     emptyOnOk: PropTypes.bool,
+    contentBeforeInputs: PropTypes.func,
     onOk: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired
   };
@@ -72,6 +76,11 @@ export default class NameDescriptionPrompt extends Component {
         autoScrollBodyContent
       >
         {props.msg}
+        {props.contentBeforeInputs &&
+          <ContentBeforeInputs>
+            {props.contentBeforeInputs()}
+          </ContentBeforeInputs>
+        }
         <TextField
           floatingLabelText="Name"
           value={this.state.name}

@@ -55,3 +55,25 @@ export const deleteProjectAndGroups = (projectKey) => {
     deleteProject(projectKey);
   });
 };
+
+export const createInputInActivity = (activityKey) => {
+  const key = firebase.database().ref('inputs').push().getKey();
+  firebase.database().ref(`inputs/${key}`).set('');
+  firebase.database().ref(`activities/${activityKey}/input`).set(key);
+};
+
+export const removeInputFromActivity = (activityKey, inputKey) => {
+  firebase.database().ref(`activities/${activityKey}/input`).remove();
+  firebase.database().ref(`inputs/${inputKey}`).remove();
+};
+
+export const createChecklistInActivity = (activityKey) => {
+  const key = firebase.database().ref('checklists').push().getKey();
+  firebase.database().ref(`checklists/${key}`).set({ items: {} });
+  firebase.database().ref(`activities/${activityKey}/checklist`).set(key);
+};
+
+export const removeChecklistFromActivity = (activityKey, checklistKey) => {
+  firebase.database().ref(`activities/${activityKey}/checklist`).remove();
+  firebase.database().ref(`checklists/${checklistKey}`).remove();
+};

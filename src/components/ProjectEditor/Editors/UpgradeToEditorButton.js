@@ -12,7 +12,7 @@ const UpgradeToEditorButton = ({ user, projectKey }) => (
   <FlatButton
     label="Upgrade to editor"
     onClick={() => onUpgrade(user, projectKey)}
-    secondary
+    primary
   />
 );
 
