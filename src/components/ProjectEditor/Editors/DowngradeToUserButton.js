@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 
 const onDowngrade = (user, projectKey) => {
   firebase.database().ref(`projects/${projectKey}/owners/${user.key}`).remove();
+  firebase.database().ref(`users/${user.key}/projects/${projectKey}`).remove();
   firebase.database().ref(`projects/${projectKey}/users/${user.key}`).set(true);
 };
 
