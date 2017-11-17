@@ -108,31 +108,35 @@ class CollapsibleActivity extends Component {
 
   fixDescriptionHeight = () => window.dispatchEvent(new Event('resize'));
 
-  render = () => (
-    <Activity open={this.props.open}>
-      {this.state.loading &&
-        <LoadingSpinner css={{ marginTop: 4 }} />
-      }
-      {!this.state.loading && !this.state.activity &&
-        <NotFoundTitle css={{ lineHeight: '48px' }}>
-          {`Activity doesn't exist`}
-        </NotFoundTitle>
-      }
-      {!this.state.loading && this.state.activity &&
-        <Aux>
-          <Name>{this.state.activity.name}</Name>
-          <Description>{this.state.activity.description}</Description>
-          <ActivityComments
-            activity={this.state.activity}
-            group={this.props.group}
-          />
-        </Aux>
-      }
-      <CloseButton onClick={this.props.onClose}>
-        <Close />
-      </CloseButton>
-    </Activity>
-  );
+  render = () => {
+    const { open, group, onClose } = this.props;
+    const { loading, activity } = this.state;
+    return (
+      <Activity open={this.props.open}>
+        {loading &&
+          <LoadingSpinner css={{ marginTop: 4 }} />
+        }
+        {!loading && !activity &&
+          <NotFoundTitle css={{ lineHeight: '48px' }}>
+            {`Activity doesn't exist`}
+          </NotFoundTitle>
+        }
+        {!loading && activity &&
+          <Aux>
+            <Name>{activity.name}</Name>
+            <Description>{activity.description}</Description>
+            <ActivityComments
+              activity={activity}
+              group={group}
+            />
+          </Aux>
+        }
+        <CloseButton onClick={onClose}>
+          <Close />
+        </CloseButton>
+      </Activity>
+    );
+  }
 }
 
 const mapStateToProps = state => ({ ...state });
