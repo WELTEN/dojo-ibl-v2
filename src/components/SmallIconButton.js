@@ -3,7 +3,7 @@ import glamorous from 'glamorous';
 import IconButton from 'material-ui/IconButton';
 
 const Button = glamorous(IconButton)({
-  padding: '6px !important',
+  padding: '9px !important',
   width: '36px !important',
   height: '36px !important'
 });

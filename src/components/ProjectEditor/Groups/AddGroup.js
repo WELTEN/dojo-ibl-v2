@@ -4,7 +4,7 @@ import * as firebase from 'firebase';
 import randomstring from 'randomstring';
 import { FormContainer, InputField, SubmitButton } from '../../BasicForm';
 
-export default class AddGroups extends Component {
+export default class AddGroup extends Component {
   static propTypes = {
     project: PropTypes.shape({
       key: PropTypes.string.isRequired

@@ -12,7 +12,7 @@ const LiveUpdatingInput = glamorous(LiveUpdatingTextField)({
   marginBottom: 24
 });
 
-const Input = ({ loading, data, input }) => {
+const ActivityInput = ({ loading, data, input }) => {
   if (loading) return <LoadingSpinner />;
   return (
     <div>
@@ -29,7 +29,7 @@ const Input = ({ loading, data, input }) => {
   );
 };
 
-Input.propTypes = {
+ActivityInput.propTypes = {
   loading: PropTypes.bool.isRequired,
   data: PropTypes.any,
   input: PropTypes.string.isRequired
@@ -37,4 +37,4 @@ Input.propTypes = {
 
 const getRef = props => firebase.database().ref(`inputs/${props.input}`);
 
-export default injectFirebaseData(Input, getRef);
+export default injectFirebaseData(ActivityInput, getRef);

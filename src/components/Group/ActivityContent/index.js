@@ -5,7 +5,8 @@ import FormattedText from '../../FormattedText';
 import { ellipsis } from '../../../styles';
 import Aux from 'react-aux';
 import { NORMAL, INPUT, CHECKLIST, MULTI } from '../../../lib/activityTypes';
-import Input from './Input';
+import ActivityInput from './ActivityInput';
+import ActivityChecklist from '../ActivityChecklist';
 
 const Name = glamorous.h2(ellipsis, {
   marginTop: 0,
@@ -29,10 +30,10 @@ const ActivityContent = ({ activity }) => (
       <Description>{activity.description}</Description>
     }
     {activity.type === INPUT &&
-      <Input input={activity.input} />
+      <ActivityInput input={activity.input} />
     }
     {activity.type === CHECKLIST &&
-      <div>*checklist*</div>
+      <ActivityChecklist checklist={activity.checklist} />
     }
   </Aux>
 );
