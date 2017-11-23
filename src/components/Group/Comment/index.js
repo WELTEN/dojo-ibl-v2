@@ -16,16 +16,16 @@ const Comment = ({ loading, data, activity, group }) => (
   <WithLoadingSpinner loading={loading}>
     <WithUserInfo
       comment={data}
-      commentActions={() =>
+      commentActions={() => (
         <CommentActions
           comment={data}
           activity={activity}
           group={group}
         />
-      }
+      )}
     >
       <CommentText>
-        {data.comment}
+        {(data.comment || '').trim()}
       </CommentText>
     </WithUserInfo>
   </WithLoadingSpinner>

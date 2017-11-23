@@ -27,6 +27,8 @@ const CommentMeta = glamorous.h4({
   marginBottom: -6,
   display: 'flex',
   alignItems: 'center'
+}, ({ hasActions }) => {
+  if (!hasActions) return { lineHeight: '36px' };
 });
 
 const Name = glamorous.span({
@@ -34,6 +36,8 @@ const Name = glamorous.span({
   color: black,
   fontWeight: 500
 });
+
+const isOwned = comment => comment.user === firebase.auth().currentUser.uid;
 
 const WithUserInfo = ({
   loading,
@@ -46,10 +50,10 @@ const WithUserInfo = ({
     <CommentContainer>
       <ProfilePicture src={data.photoURL || DefaultProfilePicture} />
       <Content>
-        <CommentMeta>
+        <CommentMeta hasActions={isOwned(comment)}>
           <Name>{data.displayName}</Name>
           {moment(data.creationDate).calendar()}
-          {commentActions()}
+          {isOwned(comment) && commentActions()}
         </CommentMeta>
         {children}
       </Content>

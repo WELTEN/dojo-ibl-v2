@@ -35,7 +35,7 @@ export default class ChatForm extends Component {
   componentDidMount = () => {
     window.onkeyup = (e) => {
       const key = e.keyCode ? e.keyCode : e.which;
-      if (key === 13) this.onSend();
+      if (key === 13 && this.state.value.trim()) this.onSend();
     };
   };
 

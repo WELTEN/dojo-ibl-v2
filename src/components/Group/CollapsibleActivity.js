@@ -5,11 +5,11 @@ import IconButton from 'material-ui/IconButton';
 import Close from 'material-ui/svg-icons/navigation/close';
 import LoadingSpinner from '../LoadingSpinner';
 import NotFoundTitle from '../NotFoundTitle';
-import FormattedText from '../FormattedText';
 import * as firebase from 'firebase';
 import { connect } from 'react-redux';
-import { transition, ellipsis } from '../../styles';
+import { transition } from '../../styles';
 import { grey300 } from 'material-ui/styles/colors';
+import ActivityContent from './ActivityContent';
 import ActivityComments from './ActivityComments';
 import Aux from 'react-aux';
 
@@ -42,18 +42,6 @@ const CloseButton = glamorous(IconButton)({
   position: 'absolute !important',
   top: 24,
   right: 36
-});
-
-const Name = glamorous.h2(ellipsis, {
-  marginTop: 0,
-  marginBottom: 18,
-  maxWidth: 'calc(100% - 36px)',
-  lineHeight: '48px',
-});
-
-const Description = glamorous(FormattedText)({
-  marginBottom: 12,
-  minWidth: 'calc(75vw - 240px)'
 });
 
 class CollapsibleActivity extends Component {
@@ -112,7 +100,7 @@ class CollapsibleActivity extends Component {
     const { open, group, onClose } = this.props;
     const { loading, activity } = this.state;
     return (
-      <Activity open={this.props.open}>
+      <Activity open={open}>
         {loading &&
           <LoadingSpinner css={{ marginTop: 4 }} />
         }
@@ -123,8 +111,7 @@ class CollapsibleActivity extends Component {
         }
         {!loading && activity &&
           <Aux>
-            <Name>{activity.name}</Name>
-            <Description>{activity.description}</Description>
+            <ActivityContent activity={activity} />
             <ActivityComments
               activity={activity}
               group={group}
