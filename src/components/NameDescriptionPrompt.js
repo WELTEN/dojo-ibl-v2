@@ -53,7 +53,15 @@ export default class NameDescriptionPrompt extends Component {
   };
 
   render = () => {
-    const props = this.props;
+    const {
+      title,
+      open,
+      msg,
+      contentBeforeInputs,
+      width,
+      inputContainerWidth,
+      ...props
+    } = this.props;
 
     const actions = [
       <FlatButton
@@ -67,35 +75,44 @@ export default class NameDescriptionPrompt extends Component {
       />
     ];
 
+    const contentStyle = {
+      width: width || 768,
+      maxWidth: 'none'
+    };
+
     return (
       <Dialog
-        title={props.title}
+        title={title}
         actions={actions}
-        open={props.open}
+        open={open}
         onRequestClose={this.onCancel}
         autoScrollBodyContent
+        contentStyle={contentStyle}
+        {...props}
       >
-        {props.msg}
-        {props.contentBeforeInputs &&
+        {msg}
+        {contentBeforeInputs &&
           <ContentBeforeInputs>
-            {props.contentBeforeInputs()}
+            {contentBeforeInputs()}
           </ContentBeforeInputs>
         }
-        <TextField
-          floatingLabelText="Name"
-          value={this.state.name}
-          onChange={this.handleNameChange}
-          errorText={this.state.nameError}
-          fullWidth
-        />
-        <TextField
-          floatingLabelText="Description"
-          value={this.state.description}
-          onChange={this.handleDescriptionChange}
-          fullWidth
-          rows={5}
-          multiLine
-        />
+        <section style={{ width: inputContainerWidth }}>
+          <TextField
+            floatingLabelText="Name"
+            value={this.state.name}
+            onChange={this.handleNameChange}
+            errorText={this.state.nameError}
+            fullWidth
+          />
+          <TextField
+            floatingLabelText="Description"
+            value={this.state.description}
+            onChange={this.handleDescriptionChange}
+            fullWidth
+            rows={5}
+            multiLine
+          />
+        </section>
       </Dialog>
     );
   };

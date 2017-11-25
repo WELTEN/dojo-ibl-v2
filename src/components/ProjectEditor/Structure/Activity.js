@@ -9,7 +9,8 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NameDescriptionPrompt from '../../NameDescriptionPrompt';
 import Confirm from '../../Confirm';
-import SelectField from 'material-ui/SelectField';
+import ActivityTypeSelect from './ActivityTypeSelect';
+import ActivitySelector from '../ActivitySelector';
 import Aux from 'react-aux';
 import { Item, Title, Description } from '../../StyledActivity';
 import injectFirebaseData from '../../InjectFirebaseData';
@@ -19,8 +20,7 @@ import {
   createChecklistInActivity,
   removeChecklistFromActivity
 } from '../../../lib/Firebase';
-import { NORMAL, INPUT, CHECKLIST } from '../../../lib/activityTypes';
-import { primaryColor } from '../../../styles';
+import { NORMAL, INPUT, CHECKLIST, MULTI } from '../../../lib/activityTypes';
 
 const ActionsButton = glamorous(IconButton)({
   position: 'absolute !important',
@@ -39,26 +39,45 @@ class Activity extends Component {
   state = {
     editing: false,
     deleting: false,
-    type: NORMAL
+    type: NORMAL,
+    childActivitiesKey: null
   };
 
   getRef = () => firebase.database().ref(`activities/${this.props.activityKey}`);
 
   componentWillReceiveProps = (props) => {
-    this.setState({ type: props.data.type || NORMAL });
+    this.setState({
+      type: props.data.type || NORMAL,
+      childActivitiesKey: props.data.childActivitiesKey || null
+    });
   };
 
-  handleTypeChange = (e, index, value) => this.setState({ type: value });
+  handleTypeChange = (e, index, value) => {
+    if (value === MULTI) {
+      const childActivitiesKey = this.createChildActivitiesKey();
+      this.setState({ type: value, childActivitiesKey });
+    } else {
+      if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
+      this.setState({ type: value, childActivitiesKey: null });
+    }
+  };
+
+  createChildActivitiesKey = () =>
+    firebase.database().ref(`childActivities`).push().getKey();
+
+  deleteChildActivitiesKey = () =>
+    firebase.database().ref(`childActivities/${this.state.childActivitiesKey}`).remove();
 
   onEdit = () => setTimeout(() => this.setState({ editing: true }), 450);
 
   onEditSave = (name, description) => {
     this.setState({ editing: false });
-    const type = this.state.type;
+    const { type, childActivitiesKey } = this.state;
     this.getRef().update({
       name,
       description,
-      type
+      type,
+      childActivitiesKey
     });
 
     const { activityKey, data } = this.props;
@@ -87,10 +106,11 @@ class Activity extends Component {
   };
 
   onEditCancel = () => {
+    if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
     this.setState({
       editing: false,
-      hasInputChecked: false,
-      hasChecklistChecked: false
+      type: this.props.data.type || NORMAL,
+      childActivitiesKey: null
     });
   };
 
@@ -135,18 +155,23 @@ class Activity extends Component {
               nameValue={this.props.data.name}
               descriptionValue={this.props.data.description}
               open={this.state.editing}
+              width={this.state.type === MULTI && 1152}
+              inputContainerWidth={this.state.type === MULTI && 'calc(100% - 600px)'}
               contentBeforeInputs={() =>
-                <SelectField
-                  floatingLabelText="Activity type"
-                  value={this.state.type}
-                  onChange={this.handleTypeChange}
-                  selectedMenuItemStyle={{ color: primaryColor }}
-                  fullWidth
-                >
-                  <MenuItem value={NORMAL} primaryText="Normal" />
-                  <MenuItem value={INPUT} primaryText="With input" />
-                  <MenuItem value={CHECKLIST} primaryText="With checklist" />
-                </SelectField>
+                <div>
+                  <ActivityTypeSelect
+                    value={this.state.type}
+                    onChange={this.handleTypeChange}
+                    width={this.state.type === MULTI && 'calc(100% - 600px)'}
+                  />
+                  {this.state.type === MULTI &&
+                    <ActivitySelector
+                      phaseKey={this.props.phaseKey}
+                      activityKey={this.props.activityKey}
+                      childActivitiesKey={this.state.childActivitiesKey}
+                    />
+                  }
+                </div>
               }
               onOk={this.onEditSave}
               onCancel={this.onEditCancel}

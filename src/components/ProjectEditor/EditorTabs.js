@@ -19,7 +19,13 @@ export default class EditorTabs extends Component {
 
   render = () => {
     const project = this.props.project;
-    const tabStyle = { backgroundColor: grey300, color: accentColor };
+
+    const tabStyle = {
+      color: accentColor,
+      backgroundColor: grey300,
+      borderRadius: 0
+    };
+
     return (
       <Tabs
         style={{ marginLeft: -14, marginRight: -14 }}

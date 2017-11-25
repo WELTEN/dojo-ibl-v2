@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 
 const Items = ({ loading, data, checklist }) => {
   if (loading) return <LoadingSpinner />
-  return Object.entries(data.items || {}).map(([ key, item ]) =>
+  return Object.entries((data || {}).items || {}).map(([ key, item ]) =>
     <Item itemKey={key} item={item} checklist={checklist} key={key} />
   );
 };

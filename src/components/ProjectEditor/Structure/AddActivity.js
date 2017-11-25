@@ -4,15 +4,14 @@ import glamorous from 'glamorous';
 import IconButton from 'material-ui/IconButton';
 import Add from 'material-ui/svg-icons/content/add';
 import NameDescriptionPrompt from '../../NameDescriptionPrompt';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import ActivityTypeSelect from './ActivityTypeSelect';
+import ActivitySelector from '../ActivitySelector';
 import * as firebase from 'firebase';
 import {
   createInputInActivity,
   createChecklistInActivity
 } from '../../../lib/Firebase';
-import { NORMAL, INPUT, CHECKLIST } from '../../../lib/activityTypes';
-import { primaryColor } from '../../../styles';
+import { NORMAL, INPUT, CHECKLIST, MULTI } from '../../../lib/activityTypes';
 
 const ButtonContainer = glamorous.footer({ textAlign: 'center' });
 
@@ -23,21 +22,37 @@ export default class AddActivity extends Component {
 
   state = {
     open: false,
-    type: NORMAL
+    type: NORMAL,
+    childActivitiesKey: null
   };
 
-  handleTypeChange = (e, index, value) => this.setState({ type: value });
+  handleTypeChange = (e, index, value) => {
+    if (value === MULTI) {
+      const childActivitiesKey = this.createChildActivitiesKey();
+      this.setState({ type: value, childActivitiesKey });
+    } else {
+      if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
+      this.setState({ type: value, childActivitiesKey: null });
+    }
+  };
+
+  createChildActivitiesKey = () =>
+    firebase.database().ref(`childActivities`).push().getKey();
+
+  deleteChildActivitiesKey = () =>
+    firebase.database().ref(`childActivities/${this.state.childActivitiesKey}`).remove();
 
   onOpen = () => this.setState({ open: true });
 
   onSave = (name, description) => {
-    const type = this.state.type;
+    const { type, childActivitiesKey } = this.state;
     const key = firebase.database().ref('activities').push().getKey();
     firebase.database().ref(`phases/${this.props.phaseKey}/activities/${key}`).set(true);
     firebase.database().ref(`activities/${key}`).set({
       name,
       description,
-      type
+      type,
+      childActivitiesKey
     });
 
     // eslint-disable-next-line
@@ -55,10 +70,16 @@ export default class AddActivity extends Component {
     this.onClose();
   };
 
+  onCancel = () => {
+    if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
+    this.onClose();
+  };
+
   onClose = () => {
     this.setState({
       open: false,
-      type: NORMAL
+      type: NORMAL,
+      childActivitiesKey: null
     });
   };
 
@@ -71,21 +92,25 @@ export default class AddActivity extends Component {
         title="Add an activity"
         msg="Enter a name and/or a description for the new activity."
         open={this.state.open}
+        width={this.state.type === MULTI && 1152}
+        inputContainerWidth={this.state.type === MULTI && 'calc(100% - 600px)'}
         contentBeforeInputs={() =>
-          <SelectField
-            floatingLabelText="Activity type"
-            value={this.state.type}
-            onChange={this.handleTypeChange}
-            selectedMenuItemStyle={{ color: primaryColor }}
-            fullWidth
-          >
-            <MenuItem value={NORMAL} primaryText="Normal" />
-            <MenuItem value={INPUT} primaryText="With input" />
-            <MenuItem value={CHECKLIST} primaryText="With checklist" />
-          </SelectField>
+          <div>
+            <ActivityTypeSelect
+              value={this.state.type}
+              onChange={this.handleTypeChange}
+              width={this.state.type === MULTI && 'calc(100% - 600px)'}
+            />
+            {this.state.type === MULTI &&
+              <ActivitySelector
+                phaseKey={this.props.phaseKey}
+                childActivitiesKey={this.state.childActivitiesKey}
+              />
+            }
+          </div>
         }
         onOk={this.onSave}
-        onCancel={this.onClose}
+        onCancel={this.onCancel}
         emptyOnOk
       />
     </ButtonContainer>
