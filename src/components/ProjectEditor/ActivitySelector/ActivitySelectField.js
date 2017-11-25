@@ -24,6 +24,8 @@ class ActivitySelectField extends Component {
     childActivitiesKey: PropTypes.string.isRequired
   };
 
+  componentWillReceiveProps = () => window.dispatchEvent(new Event('resize'));
+
   handleChange = (e, index, values) => {
     const oldActivities = Object.keys(this.props.childActivities || {});
     this.addNewActivities(oldActivities, values);

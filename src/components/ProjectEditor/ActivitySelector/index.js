@@ -6,8 +6,10 @@ import LoadingSpinner from '../../LoadingSpinner';
 import ActivitySelectField from './ActivitySelectField';
 import * as firebase from 'firebase';
 import injectFirebaseData from '../../InjectFirebaseData';
+import ActivityContainer from './ActivityContainer';
+import Aux from 'react-aux';
 
-const Container = glamorous.section({
+const Wrapper = glamorous.section({
   float: 'right',
   marginLeft: 24,
   padding: 24,
@@ -31,19 +33,22 @@ const ActivitySelector = ({
   activityKey,
   childActivitiesKey
 }) => (
-  <Container>
+  <Wrapper>
     <Title>Select child activities</Title>
     {loading ? (
       <LoadingSpinner />
     ) : (
-      <ActivitySelectField
-        phaseKey={phaseKey}
-        activityKey={activityKey}
-        childActivities={data}
-        childActivitiesKey={childActivitiesKey}
-      />
+      <Aux>
+        <ActivitySelectField
+          phaseKey={phaseKey}
+          activityKey={activityKey}
+          childActivities={data}
+          childActivitiesKey={childActivitiesKey}
+        />
+        <ActivityContainer />
+      </Aux>
     )}
-  </Container>
+  </Wrapper>
 );
 
 ActivitySelector.propTypes = {
