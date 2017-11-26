@@ -40,7 +40,8 @@ class Activity extends Component {
     editing: false,
     deleting: false,
     type: NORMAL,
-    childActivitiesKey: null
+    childActivitiesKey: null,
+    deletedChildActivitiesKey: null
   };
 
   getRef = () => firebase.database().ref(`activities/${this.props.activityKey}`);
@@ -57,16 +58,27 @@ class Activity extends Component {
       const childActivitiesKey = this.createChildActivitiesKey();
       this.setState({ type: value, childActivitiesKey });
     } else {
-      if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
+      if (this.state.childActivitiesKey) {
+        this.fakeDeleteChildActivitiesKey(this.state.childActivitiesKey);
+      }
       this.setState({ type: value, childActivitiesKey: null });
     }
   };
 
-  createChildActivitiesKey = () =>
-    firebase.database().ref(`childActivities`).push().getKey();
+  createChildActivitiesKey = () => {
+    const deletedChildActivitiesKey = this.state.deletedChildActivitiesKey;
+    if (deletedChildActivitiesKey) {
+      this.setState({ deletedChildActivitiesKey: null });
+      return deletedChildActivitiesKey;
+    }
+    return firebase.database().ref(`childActivities`).push().getKey();
+  };
 
-  deleteChildActivitiesKey = () =>
-    firebase.database().ref(`childActivities/${this.state.childActivitiesKey}`).remove();
+  fakeDeleteChildActivitiesKey = () =>
+    this.setState({ deletedChildActivitiesKey: this.state.childActivitiesKey });
+
+  deleteChildActivitiesKey = (key) =>
+    firebase.database().ref(`childActivities/${key}`).remove();
 
   onEdit = () => setTimeout(() => this.setState({ editing: true }), 450);
 
@@ -103,15 +115,29 @@ class Activity extends Component {
         }
       }
     }
+
+    if (this.state.deletedChildActivitiesKey) {
+      this.deleteChildActivitiesKey(this.state.deletedChildActivitiesKey);
+    }
   };
 
   onEditCancel = () => {
-    if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
     this.setState({
       editing: false,
-      type: this.props.data.type || NORMAL,
-      childActivitiesKey: null
+      type: this.props.data.type || NORMAL
     });
+
+    if (this.state.childActivitiesKey && this.props.data.type !== MULTI) {
+      this.setState({ childActivitiesKey: null });
+      this.deleteChildActivitiesKey(this.state.childActivitiesKey);
+    }
+
+    if (this.state.deletedChildActivitiesKey && this.props.data.type === MULTI) {
+      this.setState({
+        childActivitiesKey: this.state.deletedChildActivitiesKey,
+        deletedChildActivitiesKey: null
+      });
+    }
   };
 
   onDelete = () => setTimeout(() => this.setState({ deleting: true }), 450);
@@ -122,6 +148,9 @@ class Activity extends Component {
     firebase.database().ref(`phases/${phaseKey}/activities/${activityKey}`).remove();
     if (data.input) removeInputFromActivity(activityKey, data.input);
     if (data.checklist) removeChecklistFromActivity(activityKey, data.checklist);
+    if (data.childActivitiesKey) {
+      this.deleteChildActivitiesKey(data.childActivitiesKey);
+    }
     this.getRef().remove();
   };
 

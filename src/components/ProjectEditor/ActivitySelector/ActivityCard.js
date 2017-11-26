@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from './ItemTypes';
-import { Item, Title, Description } from '../../StyledActivity';
+import ActivityCardContent from './ActivityCardContent';
+import * as firebase from 'firebase';
 
 const activityCardSource = {
   beginDrag(props) {
@@ -23,8 +24,7 @@ const activityCardTarget = {
       nextActivity,
       index,
       activities,
-      sortedActivityKeys,
-      updateActivityIndex
+      sortedActivityKeys
     } = props;
     const dragActivity = monitor.getItem().activity;
     const dragIndex = monitor.getItem().index;
@@ -69,7 +69,7 @@ const activityCardTarget = {
       newIndex = lastActivity + 1;
     }
 
-    updateActivityIndex(dragActivity, newIndex);
+    firebase.database().ref(`childActivities/${props.childActivitiesKey}/${dragActivity}`).set(newIndex);
     monitor.getItem().index = newIndex;
   }
 };
@@ -78,9 +78,7 @@ const ActivityCard = ({ activity, isDragging, connectDragSource, connectDropTarg
   connectDragSource(
     connectDropTarget(
       <div style={{ opacity: isDragging ? 0 : 1 }}>
-        <Item draggable>
-          <Title>{activity}</Title>
-        </Item>
+        <ActivityCardContent activity={activity} />
       </div>
     )
   );
@@ -92,7 +90,7 @@ ActivityCard.propTypes = {
   index: PropTypes.number.isRequired,
   sortedActivityKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   activities: PropTypes.object.isRequired,
-  updateActivityIndex: PropTypes.func.isRequired,
+  childActivitieskey: PropTypes.string,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,

@@ -1,29 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import ActivityCard from './ActivityCard';
 
 class ActivityContainer extends Component {
-  state = {
-    activities: {
-      a: 1,
-      b: 4,
-      c: 3,
-      d: 5,
-      e: 7,
-      f: 6,
-      g: 2
-    }
-  };
-
-  updateActivityIndex = (id, index) => {
-    const activities = this.state.activities;
-    if (activities[id]) activities[id] = index;
-    this.setState({ activities });
+  static propTypes = {
+    childActivities: PropTypes.object,
+    childActivitiesKey: PropTypes.string.isRequired
   };
 
   render = () => {
-    const activities = this.state.activities;
+    const activities = this.props.childActivities;
 
     const sortedActivityKeys = Object.keys(activities || {}).sort(
       (a, b) => activities[a] - activities[b]
@@ -43,7 +31,7 @@ class ActivityContainer extends Component {
             index={activityIndex}
             sortedActivityKeys={sortedActivityKeys}
             activities={activities}
-            updateActivityIndex={this.updateActivityIndex}
+            childActivitiesKey={this.props.childActivitiesKey}
             key={key}
           />
         ))}

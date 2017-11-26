@@ -24,7 +24,21 @@ class ActivitySelectField extends Component {
     childActivitiesKey: PropTypes.string.isRequired
   };
 
-  componentWillReceiveProps = () => window.dispatchEvent(new Event('resize'));
+  componentWillReceiveProps = (props) => {
+    window.dispatchEvent(new Event('resize'));
+    if (Object.keys(this.props.data || {}).length) this.cleanDeletedActivities();
+  };
+
+  cleanDeletedActivities = () => {
+    const existingActivities = Object.keys(this.props.data || {});
+    const childActivities = Object.keys(this.props.childActivities || {});
+    const deletedActivities = childActivities.filter(
+      item => existingActivities.indexOf(item) === -1
+    );
+    deletedActivities.forEach(
+      item => firebase.database().ref(`childActivities/${this.props.childActivitiesKey}/${item}`).remove()
+    );
+  };
 
   handleChange = (e, index, values) => {
     const oldActivities = Object.keys(this.props.childActivities || {});
@@ -37,7 +51,7 @@ class ActivitySelectField extends Component {
       oldActivities,
       selectedActivities
     );
-    let lastItemIndex = oldActivities.length;
+    let lastItemIndex = oldActivities.length + 1;
     const updates = {};
     newActivities.forEach((item) => {
       updates[item] = lastItemIndex;

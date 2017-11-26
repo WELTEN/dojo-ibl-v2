@@ -45,7 +45,10 @@ const ActivitySelector = ({
           childActivities={data}
           childActivitiesKey={childActivitiesKey}
         />
-        <ActivityContainer />
+        <ActivityContainer
+          childActivities={data}
+          childActivitiesKey={childActivitiesKey}
+        />
       </Aux>
     )}
   </Wrapper>
