@@ -63,8 +63,12 @@ export default class PhaseActivities extends Component {
   cleanListeners = () => this.getListenerKeys().forEach(this.cleanListener);
   cleanListener = key => firebase.database().ref(`activities/${key}`).off();
 
+  removeChildActivities = activity => !activity.isChildActivity;
+
   render() {
-    const activities = Object.values(this.state.activities);
+    const activities = Object.values(this.state.activities).filter(
+      this.removeChildActivities
+    );
 
     return (
       <PhaseStates

@@ -55,7 +55,8 @@ class ActivitySelectField extends Component {
     const updates = {};
     newActivities.forEach((item) => {
       updates[item] = lastItemIndex;
-      lastItemIndex++
+      lastItemIndex++;
+      firebase.database().ref(`activities/${item}/isChildActivity`).set(true);
     });
     firebase.database().ref(`childActivities/${this.props.childActivitiesKey}`).update(updates);
   };
@@ -66,6 +67,7 @@ class ActivitySelectField extends Component {
   deleteRemovedActivities = (oldActivities, selectedActivities) => {
     const removedActivities = this.getRemovedActivities(oldActivities, selectedActivities);
     removedActivities.forEach((item) => {
+      firebase.database().ref(`activities/${item}/isChildActivity`).remove();
       firebase.database().ref(`childActivities/${this.props.childActivitiesKey}/${item}`).remove();
     });
   };

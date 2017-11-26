@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import ActivityCard from './ActivityCard';
+
+const Container = glamorous.div({ marginBottom: -12 });
 
 class ActivityContainer extends Component {
   static propTypes = {
@@ -22,7 +25,7 @@ class ActivityContainer extends Component {
     );
 
     return (
-      <div style={{ width: '100%' }}>
+      <Container>
         {sortedActivities.map(([ key, activityIndex ], i) => (
           <ActivityCard
             activity={key}
@@ -35,7 +38,7 @@ class ActivityContainer extends Component {
             key={key}
           />
         ))}
-      </div>
+      </Container>
     );
   };
 }

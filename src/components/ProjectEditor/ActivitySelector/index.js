@@ -9,7 +9,7 @@ import injectFirebaseData from '../../InjectFirebaseData';
 import ActivityContainer from './ActivityContainer';
 import Aux from 'react-aux';
 
-const Wrapper = glamorous.section({
+const Container = glamorous.section({
   float: 'right',
   marginLeft: 24,
   padding: 24,
@@ -33,7 +33,7 @@ const ActivitySelector = ({
   activityKey,
   childActivitiesKey
 }) => (
-  <Wrapper>
+  <Container>
     <Title>Select child activities</Title>
     {loading ? (
       <LoadingSpinner />
@@ -51,7 +51,7 @@ const ActivitySelector = ({
         />
       </Aux>
     )}
-  </Wrapper>
+  </Container>
 );
 
 ActivitySelector.propTypes = {
