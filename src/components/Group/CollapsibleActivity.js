@@ -10,7 +10,9 @@ import { connect } from 'react-redux';
 import { transition } from '../../styles';
 import { grey300 } from 'material-ui/styles/colors';
 import ActivityContent from './ActivityContent';
+import ChildActivities from './ChildActivities';
 import ActivityComments from './ActivityComments';
+import { MULTI } from '../../lib/activityTypes';
 import Aux from 'react-aux';
 
 const Activity = glamorous.section({
@@ -69,23 +71,25 @@ class CollapsibleActivity extends Component {
   };
 
   updateListener = (oldActivity, newActivity) => {
-    this.getRef(oldActivity).off();
-    this.getRef(newActivity).on('value', (snapshot) => {
-      const activity = snapshot.val();
-      if (!activity) {
+    this.setState({ loading: true, activity: null }, () => {
+      this.getRef(oldActivity).off();
+      this.getRef(newActivity).on('value', (snapshot) => {
+        const activity = snapshot.val();
+        if (!activity) {
+          this.setState({
+            loading: false,
+            activity: null
+          });
+          return;
+        }
+        activity.key = snapshot.key;
         this.setState({
           loading: false,
-          activity: null
+          activity
         });
-        return;
-      }
-      activity.key = snapshot.key;
-      this.setState({
-        loading: false,
-        activity
-      });
 
-      this.fixDescriptionHeight();
+        this.fixDescriptionHeight();
+      });
     });
   };
 
@@ -112,6 +116,9 @@ class CollapsibleActivity extends Component {
         {!loading && activity &&
           <Aux>
             <ActivityContent activity={activity} />
+            {activity.type === MULTI &&
+              <ChildActivities childActivitiesKey={activity.childActivitiesKey} />
+            }
             <ActivityComments
               activity={activity}
               group={group}

@@ -14,13 +14,13 @@ class ActivityContainer extends Component {
   };
 
   render = () => {
-    const activities = this.props.childActivities;
+    const activities = this.props.childActivities || {};
 
-    const sortedActivityKeys = Object.keys(activities || {}).sort(
+    const sortedActivityKeys = Object.keys(activities).sort(
       (a, b) => activities[a] - activities[b]
     );
 
-    const sortedActivities = Object.entries(activities || {}).sort(
+    const sortedActivities = Object.entries(activities).sort(
       (a, b) => a[1] - b[1]
     );
 

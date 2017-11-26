@@ -16,6 +16,12 @@ const Name = glamorous.h2(ellipsis, {
   ':last-child': {
     marginBottom: 12
   }
+}, ({ childActivity }) => {
+  if (childActivity) return {
+    marginBottom: 12,
+    fontSize: 24,
+    lineHeight: '38px'
+  };
 });
 
 const Description = glamorous(FormattedText)({
@@ -23,9 +29,9 @@ const Description = glamorous(FormattedText)({
   minWidth: 'calc(75vw - 240px)'
 });
 
-const ActivityContent = ({ activity }) => (
+const ActivityContent = ({ activity, childActivity }) => (
   <Aux>
-    <Name>{activity.name}</Name>
+    <Name childActivity={childActivity}>{activity.name}</Name>
     {activity.description &&
       <Description>{activity.description}</Description>
     }
@@ -38,14 +44,19 @@ const ActivityContent = ({ activity }) => (
   </Aux>
 );
 
+ActivityContent.defaultProps = {
+  childActivity: false
+};
+
 ActivityContent.propTypes = {
   activity: PropTypes.shape({
     name: PropTypes.string.isRequired,
     description: PropTypes.string,
-    type: PropTypes.oneOf([NORMAL, INPUT, CHECKLIST, MULTI]).isRequired,
+    type: PropTypes.oneOf([NORMAL, INPUT, CHECKLIST, MULTI]),
     input: PropTypes.string,
     checklist: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  childActivity: PropTypes.bool
 };
 
 export default ActivityContent;
