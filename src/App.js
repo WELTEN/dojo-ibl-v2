@@ -1,94 +1,70 @@
-import React, { Component } from 'react';
-
-import Main from './components/layouts/Main';
-import Login from './components/layouts/Login';
-import LandingLex from './components/layouts/LandingLex';
-
-import Projects from './components/views/Projects';
-import Project from './components/views/Project';
-import ProjectsCatalogue from './components/views/ProjectsCatalogue';
-import Groups from './components/views/Groups';
-
-import './../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import './../node_modules/font-awesome/css/font-awesome.css'
-import './../node_modules/animate.css/animate.min.css'
-
-import './styles/App.css';
-import './styles/dojoStyle.css';
-
-import { firebaseAuth } from './fire.js'
-
+import React from 'react';
 import {
-  BrowserRouter, Switch,
-  Route, Redirect
-} from 'react-router-dom'
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import Home from './pages/Home';
+import Projects from './pages/Projects';
+import AddProject from './pages/AddProject';
+import EditProject from './pages/EditProject';
+import Group from './pages/Group';
+import NotFound from './pages/NotFound';
+import WithLogin from './components/WithLogin';
+import WithAppBar from './components/WithAppBar';
+import { primaryColor, accentColor } from './styles';
+import { white, black } from 'material-ui/styles/colors';
 
-function PrivateRoute ({component: Component, authed, ...rest}) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === true
-        ? <Component {...props} />
-        : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
-    />
-  )
-}
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: primaryColor,
+    accent1Color: accentColor
+  },
+  appBar: {
+    color: white,
+    textColor: black
+  }
+});
 
-function PublicRoute ({component: Component, authed, ...rest}) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === false
-        ? <Component {...props} />
-        : <Redirect to='/' />}
-    />
-  )
-}
-
-class App extends Component {
-  state = {
-    authed: false,
-    loading: true,
-  }
-  componentDidMount () {
-    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({
-          authed: true,
-          loading: false,
-        })
-      } else {
-        this.setState({
-          authed: false,
-          loading: false
-        })
-      }
-    })
-  }
-  componentWillUnmount () {
-    this.removeListener()
-  }
-  render() {
-    return this.state.loading === true ? <h1>Loading</h1> : (
-      <BrowserRouter>
-        <div>
+const App = () => (
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <Router>
+      <WithLogin>
+        <WithAppBar title="DojoIBL">
           <Switch>
-            <Route path='/home' component={LandingLex} />
-            <Route path='/login' component={Login} />
-              <Main>
-                <Switch>
-                  <PrivateRoute authed={this.state.authed} path="/projects" component={Projects}> </PrivateRoute>
-                  <PrivateRoute authed={this.state.authed} path="/project/:projectId" component={Project}> </PrivateRoute>
-                  <PrivateRoute authed={this.state.authed} path="/catalogue" component={ProjectsCatalogue}> </PrivateRoute>
-                  <PrivateRoute authed={this.state.authed} path="/groups" component={Groups}> </PrivateRoute>
-                </Switch>
-              </Main>
-            <Route render={() => <h3>No Match</h3>} />
+            <Route
+              exact
+              path="/"
+              component={Home}
+            />
+            <Route
+              exact
+              path="/projects"
+              component={Projects}
+            />
+            <Route
+              exact
+              path="/projects/add"
+              component={AddProject}
+            />
+            <Route
+              exact
+              path="/projects/:projectKey/edit"
+              component={EditProject}
+            />
+            <Route
+              exact
+              path="/groups/:groupKey"
+              component={Group}
+            />
+            <Route component={NotFound} />
           </Switch>
-        </div>
-      </BrowserRouter>
-    );
-  }
-}
+        </WithAppBar>
+      </WithLogin>
+    </Router>
+  </MuiThemeProvider>
+);
 
 export default App;
