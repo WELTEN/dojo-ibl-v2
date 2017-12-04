@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../../LoadingSpinner';
-import DatePicker from 'material-ui/DatePicker';
 import { TODO, PROGRESS, DONE } from '../PhaseStates/StateTypes';
-import DateField, { Field, FieldTitle } from './DateField';
+import DateField from './DateField';
 import * as firebase from 'firebase';
 import injectFirebaseData from '../../InjectFirebaseData';
 
@@ -30,16 +29,6 @@ const ItemDates = ({ loading, data, activityKey, group, creationDate }) => {
   if (loading) return <LoadingSpinner />;
   return (
     <div>
-      <Field>
-        <FieldTitle>Creation date</FieldTitle>
-        <DatePicker
-          hintText="Creation date"
-          defaultDate={new Date(creationDate)}
-          group={group}
-          fullWidth
-          disabled
-        />
-      </Field>
       <DateField
         fieldName="startDate"
         fieldTitle="Start date"
@@ -53,11 +42,11 @@ const ItemDates = ({ loading, data, activityKey, group, creationDate }) => {
           return false;
         }}
         afterChange={(date) => {
-          firebase.database().ref(`groups/${group}/states/${activity.key}`).once('value').then((snapshot) => {
+          firebase.database().ref(`groups/${group}/states/${activityKey}`).once('value').then((snapshot) => {
             const state = snapshot.val();
-            if (state === TODO) {
-              firebase.database().ref(`groups/${group}/activities/${activity.key}`).child('startDate').set(date);
-              firebase.database().ref(`groups/${group}/states/${activity.key}`).set(PROGRESS);
+            if (state === TODO || !state) {
+              firebase.database().ref(`groups/${group}/activities/${activityKey}`).child('startDate').set(date);
+              firebase.database().ref(`groups/${group}/states/${activityKey}`).set(PROGRESS);
             }
           });
         }}
@@ -75,13 +64,13 @@ const ItemDates = ({ loading, data, activityKey, group, creationDate }) => {
           return false;
         }}
         afterChange={(date) => {
-          firebase.database().ref(`groups/${group}/states/${activity.key}`).once('value').then((snapshot) => {
+          firebase.database().ref(`groups/${group}/states/${activityKey}`).once('value').then((snapshot) => {
             const state = snapshot.val();
             if (state !== DONE) {
               if (!activity.startDate) {
-                firebase.database().ref(`groups/${group}/activities/${activity.key}`).child('startDate').set(date);
+                firebase.database().ref(`groups/${group}/activities/${activityKey}`).child('startDate').set(date);
               }
-              firebase.database().ref(`groups/${group}/states/${activity.key}`).set(DONE);
+              firebase.database().ref(`groups/${group}/states/${activityKey}`).set(DONE);
             }
           });
         }}

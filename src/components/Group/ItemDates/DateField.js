@@ -5,9 +5,9 @@ import * as firebase from 'firebase';
 import DatePicker from 'material-ui/DatePicker';
 import { grey500 } from 'material-ui/styles/colors';
 
-export const Field = glamorous.section({ marginBottom: 12 });
+const Field = glamorous.section({ marginBottom: 12 });
 
-export const FieldTitle = glamorous.h4({
+const FieldTitle = glamorous.h4({
   marginBottom: -8,
   color: grey500,
   fontWeight: 400
