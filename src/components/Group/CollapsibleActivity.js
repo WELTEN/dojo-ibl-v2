@@ -12,6 +12,7 @@ import { grey300 } from 'material-ui/styles/colors';
 import ActivityContent from './ActivityContent';
 import ChildActivities from './ChildActivities';
 import ActivityComments from './ActivityComments';
+import ItemDates from './ItemDates';
 import { MULTI } from '../../lib/activityTypes';
 import Aux from 'react-aux';
 
@@ -38,6 +39,13 @@ const Activity = glamorous.section({
     width: 0,
     opacity: 0
   };
+});
+
+const ContentWrapper = glamorous.div({ display: 'flex' });
+
+const Content = glamorous.div({
+  flex: 1,
+  display: 'inline-block'
 });
 
 const CloseButton = glamorous(IconButton)({
@@ -101,7 +109,7 @@ class CollapsibleActivity extends Component {
   fixDescriptionHeight = () => window.dispatchEvent(new Event('resize'));
 
   render = () => {
-    const { open, group, onClose } = this.props;
+    const { open, openActivity, group, onClose } = this.props;
     const { loading, activity } = this.state;
     return (
       <Activity open={open}>
@@ -115,7 +123,16 @@ class CollapsibleActivity extends Component {
         }
         {!loading && activity &&
           <Aux>
-            <ActivityContent activity={activity} />
+            <ContentWrapper>
+              <Content>
+                <ActivityContent activity={activity} />
+              </Content>
+              <ItemDates
+                activityKey={openActivity}
+                group={group.key}
+                creationDate={activity.creationDate}
+              />
+            </ContentWrapper>
             {activity.type === MULTI &&
               <ChildActivities childActivitiesKey={activity.childActivitiesKey} />
             }

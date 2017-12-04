@@ -52,20 +52,12 @@ export default class AddActivity extends Component {
       name,
       description,
       type,
-      childActivitiesKey
+      childActivitiesKey,
+      creationDate: Date.now()
     });
 
-    // eslint-disable-next-line
-    switch (type) {
-      case INPUT: {
-        createInputInActivity(key);
-        break;
-      }
-      case CHECKLIST: {
-        createChecklistInActivity(key);
-        break;
-      }
-    }
+    if (type === INPUT) createInputInActivity(key);
+    if (type === CHECKLIST) createChecklistInActivity(key);
 
     this.onClose();
   };

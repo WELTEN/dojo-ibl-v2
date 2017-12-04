@@ -52,3 +52,7 @@ p {
 .fix-textarea textarea:last-child {
   height: 24px !important;
 }
+
+.fix-border * {
+  border-color: #BDBDBD !important;
+}
