@@ -12,24 +12,17 @@ import { grey300 } from 'material-ui/styles/colors';
 import ActivityContent from './ActivityContent';
 import ChildActivities from './ChildActivities';
 import ActivityComments from './ActivityComments';
+import ItemDates from './ItemDates';
 import { MULTI } from '../../lib/activityTypes';
 import Aux from 'react-aux';
 
-const Activity = glamorous.section({
+const ActivityWrapper = glamorous.section({
   position: 'relative',
   float: 'left',
   marginTop: 14,
   marginLeft: 48,
   marginBottom: 80,
-  padding: '24px 48px',
   width: 'calc(75% - 48px)',
-  minHeight: 48,
-  backgroundColor: grey300,
-  borderRadius: 2,
-  boxSizing: 'border-box',
-  overflow: 'hidden',
-  opacity: 1,
-  whiteSpace: 'nowrap',
   transition
 }, ({ open }) => {
   if (!open) return {
@@ -38,6 +31,18 @@ const Activity = glamorous.section({
     width: 0,
     opacity: 0
   };
+});
+
+const Activity = glamorous.section({
+  position: 'relative',
+  padding: '24px 48px',
+  minHeight: 48,
+  backgroundColor: grey300,
+  borderRadius: 2,
+  boxSizing: 'border-box',
+  overflow: 'hidden',
+  opacity: 1,
+  whiteSpace: 'nowrap'
 });
 
 const CloseButton = glamorous(IconButton)({
@@ -101,34 +106,43 @@ class CollapsibleActivity extends Component {
   fixDescriptionHeight = () => window.dispatchEvent(new Event('resize'));
 
   render = () => {
-    const { open, group, onClose } = this.props;
+    const { open, openActivity, group, onClose } = this.props;
     const { loading, activity } = this.state;
     return (
-      <Activity open={open}>
-        {loading &&
-          <LoadingSpinner css={{ marginTop: 4 }} />
-        }
-        {!loading && !activity &&
-          <NotFoundTitle css={{ lineHeight: '48px' }}>
-            {`Activity doesn't exist`}
-          </NotFoundTitle>
-        }
+      <ActivityWrapper open={open}>
         {!loading && activity &&
-          <Aux>
-            <ActivityContent activity={activity} />
-            {activity.type === MULTI &&
-              <ChildActivities childActivitiesKey={activity.childActivitiesKey} />
-            }
-            <ActivityComments
-              activity={activity}
-              group={group}
-            />
-          </Aux>
+          <ItemDates
+            activityKey={openActivity}
+            group={group.key}
+            creationDate={activity.creationDate}
+          />
         }
-        <CloseButton onClick={onClose}>
-          <Close />
-        </CloseButton>
-      </Activity>
+        <Activity>
+          {loading &&
+            <LoadingSpinner css={{ marginTop: 4 }} />
+          }
+          {!loading && !activity &&
+            <NotFoundTitle css={{ lineHeight: '48px' }}>
+              {`Activity doesn't exist`}
+            </NotFoundTitle>
+          }
+          {!loading && activity &&
+            <Aux>
+              <ActivityContent activity={activity} />
+              {activity.type === MULTI &&
+                <ChildActivities childActivitiesKey={activity.childActivitiesKey} />
+              }
+              <ActivityComments
+                activity={activity}
+                group={group}
+              />
+            </Aux>
+          }
+          <CloseButton onClick={onClose}>
+            <Close />
+          </CloseButton>
+        </Activity>
+      </ActivityWrapper>
     );
   }
 }

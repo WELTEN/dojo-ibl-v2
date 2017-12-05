@@ -65,6 +65,32 @@ const stateTarget = {
     } else {
       ref.set(props.state);
     }
+
+    const activityRef = firebase.database().ref(`groups/${props.groupKey}/activities/${activity.key}`);
+
+    switch (props.state) {
+      case PROGRESS: {
+        activityRef.child('startDate').once('value').then((snapshot) => {
+          const startDate = snapshot.val();
+          if (!startDate) activityRef.child('startDate').set(Date.now());
+          activityRef.child('endDate').remove();
+        });
+        break;
+      }
+      case DONE: {
+        activityRef.child('startDate').once('value').then((snapshot) => {
+          const startDate = snapshot.val();
+          if (!startDate) activityRef.child('startDate').set(Date.now());
+          activityRef.child('endDate').set(Date.now());
+        })
+        break;
+      }
+      default: {
+        activityRef.child('startDate').remove();
+        activityRef.child('endDate').remove();
+        break;
+      }
+    }
   }
 };
 
