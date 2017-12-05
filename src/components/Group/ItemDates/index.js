@@ -1,10 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import glamorous from 'glamorous';
 import LoadingSpinner from '../../LoadingSpinner';
 import { TODO, PROGRESS, DONE } from '../PhaseStates/StateTypes';
 import DateField from './DateField';
 import * as firebase from 'firebase';
 import injectFirebaseData from '../../InjectFirebaseData';
+
+const FieldWrapper = glamorous.header({
+  marginBottom: 12,
+  marginLeft: -12,
+  marginRight: -12,
+  display: 'flex'
+});
 
 const isEarlier = (dateOne, dateTwo) => {
   if (dateOne.getYear() > dateTwo.getYear()) return false;
@@ -28,10 +36,36 @@ const ItemDates = ({ loading, data, activityKey, group, creationDate }) => {
   const activity = data || {};
   if (loading) return <LoadingSpinner />;
   return (
-    <div>
+    <FieldWrapper>
+      <DateField
+        fieldName="plannedStartDate"
+        fieldTitle="Planned start"
+        activityKey={activityKey}
+        activity={activity}
+        group={group}
+        shouldDisableDate={(date) => {
+          if (activity.plannedEndDate) {
+            return isLater(date, new Date(activity.plannedEndDate));
+          }
+          return false;
+        }}
+      />
+      <DateField
+        fieldName="plannedEndDate"
+        fieldTitle="Planned end"
+        activityKey={activityKey}
+        activity={activity}
+        group={group}
+        shouldDisableDate={(date) => {
+          if (activity.plannedStartDate) {
+            return isEarlier(date, new Date(activity.plannedStartDate));
+          }
+          return false;
+        }}
+      />
       <DateField
         fieldName="startDate"
-        fieldTitle="Start date"
+        fieldTitle="Start"
         activityKey={activityKey}
         activity={activity}
         group={group}
@@ -53,7 +87,7 @@ const ItemDates = ({ loading, data, activityKey, group, creationDate }) => {
       />
       <DateField
         fieldName="endDate"
-        fieldTitle="End date"
+        fieldTitle="End"
         activityKey={activityKey}
         activity={activity}
         group={group}
@@ -75,33 +109,7 @@ const ItemDates = ({ loading, data, activityKey, group, creationDate }) => {
           });
         }}
       />
-      <DateField
-        fieldName="plannedStartDate"
-        fieldTitle="Planned start date"
-        activityKey={activityKey}
-        activity={activity}
-        group={group}
-        shouldDisableDate={(date) => {
-          if (activity.plannedEndDate) {
-            return isLater(date, new Date(activity.plannedEndDate));
-          }
-          return false;
-        }}
-      />
-      <DateField
-        fieldName="plannedEndDate"
-        fieldTitle="Planned end date"
-        activityKey={activityKey}
-        activity={activity}
-        group={group}
-        shouldDisableDate={(date) => {
-          if (activity.plannedStartDate) {
-            return isEarlier(date, new Date(activity.plannedStartDate));
-          }
-          return false;
-        }}
-      />
-    </div>
+    </FieldWrapper>
   );
 };
 

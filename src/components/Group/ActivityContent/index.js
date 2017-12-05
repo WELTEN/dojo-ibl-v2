@@ -49,7 +49,7 @@ ActivityContent.defaultProps = {
 
 ActivityContent.propTypes = {
   activity: PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     description: PropTypes.string,
     type: PropTypes.oneOf([NORMAL, INPUT, CHECKLIST, MULTI]),
     input: PropTypes.string,

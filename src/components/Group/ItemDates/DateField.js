@@ -5,9 +5,15 @@ import * as firebase from 'firebase';
 import DatePicker from 'material-ui/DatePicker';
 import { grey500 } from 'material-ui/styles/colors';
 
-const Field = glamorous.section({ marginBottom: 12 });
+const Field = glamorous.section({
+  marginBottom: 4,
+  marginLeft: 12,
+  marginRight: 12,
+  flex: 1
+});
 
 const FieldTitle = glamorous.h4({
+  marginTop: 0,
   marginBottom: -8,
   color: grey500,
   fontWeight: 400
@@ -58,11 +64,9 @@ export default class DateField extends Component {
     const date = this.dateIfPossible(this.state.date);
     return (
       <Field>
-        {date &&
-          <FieldTitle>{this.props.fieldTitle}</FieldTitle>
-        }
+        <FieldTitle>{this.props.fieldTitle}</FieldTitle>
         <DatePicker
-          hintText={date ? 'Click to set' : this.props.fieldTitle}
+          hintText="Click to set date"
           value={date}
           onChange={this.handleChange}
           shouldDisableDate={this.props.shouldDisableDate}
