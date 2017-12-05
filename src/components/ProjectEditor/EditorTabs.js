@@ -7,8 +7,10 @@ import Info from './Info';
 import Structure from './Structure';
 import Groups from './Groups';
 import Editors from './Editors';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-export default class EditorTabs extends Component {
+class EditorTabs extends Component {
   static propTypes = {
     project: PropTypes.object.isRequired
   };
@@ -48,3 +50,5 @@ export default class EditorTabs extends Component {
     );
   };
 }
+
+export default DragDropContext(HTML5Backend)(EditorTabs);

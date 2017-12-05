@@ -1,3 +1,3 @@
 export default {
-  ACTIVITYCARD: 'activitycard',
-}
+  ACTIVITY_CARD: 'activity_card'
+};

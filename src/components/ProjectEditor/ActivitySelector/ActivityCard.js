@@ -7,13 +7,10 @@ import ActivityCardContent from './ActivityCardContent';
 import * as firebase from 'firebase';
 
 const activityCardSource = {
-  beginDrag(props) {
-    return {
-      activity: props.activity,
-      previousActivity: props.previousActivity,
-      index: props.index
-    };
-  }
+  beginDrag: (props) => ({
+    activity: props.activity,
+    index: props.index
+  })
 };
 
 const activityCardTarget = {
@@ -37,7 +34,7 @@ const activityCardTarget = {
     // Determine rectangle on screen
     const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
-    // Get vertical mactivitydle
+    // Get vertical middle
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
     // Determine mouse position
@@ -46,14 +43,7 @@ const activityCardTarget = {
     // Get pixels to the top
     const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-    // Only perform the move when the mouse has crossed half of the items height
-    // When dragging downwards, only move when the cursor is below 50%
-    // When dragging upwards, only move when the cursor is above 50%
-
-    // Dragging downwards
     if (draggingDown && hoverClientY < hoverMiddleY) return;
-
-    // Dragging upwards
     if (draggingUp && hoverClientY > hoverMiddleY) return;
 
     const previousActivityIndex = activities[previousActivity] || 0;
@@ -93,13 +83,13 @@ ActivityCard.propTypes = {
   childActivitieskey: PropTypes.string,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
-  connectDropTarget: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired
 };
 
-export default DropTarget(ItemTypes.ACTIVITYCARD, activityCardTarget, connect => ({
+export default DropTarget(ItemTypes.ACTIVITY_CARD, activityCardTarget, (connect) => ({
   connectDropTarget: connect.dropTarget()
 }))(
-  DragSource(ItemTypes.ACTIVITYCARD, activityCardSource, (connect, monitor) => ({
+  DragSource(ItemTypes.ACTIVITY_CARD, activityCardSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   }))(ActivityCard)

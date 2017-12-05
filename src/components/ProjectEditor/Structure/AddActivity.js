@@ -31,13 +31,22 @@ export default class AddActivity extends Component {
       const childActivitiesKey = this.createChildActivitiesKey();
       this.setState({ type: value, childActivitiesKey });
     } else {
-      if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
+      if (this.state.childActivitiesKey) this.deleteChildActivities();
       this.setState({ type: value, childActivitiesKey: null });
     }
   };
 
   createChildActivitiesKey = () =>
     firebase.database().ref(`childActivities`).push().getKey();
+
+  deleteChildActivities = () => {
+    firebase.database().ref(`childActivities/${this.state.childActivitiesKey}`).once('value').then((snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        firebase.database().ref(`activities/${childSnapshot.key}/isChildActivity`).remove();
+      });
+      this.deleteChildActivitiesKey();
+    });
+  };
 
   deleteChildActivitiesKey = () =>
     firebase.database().ref(`childActivities/${this.state.childActivitiesKey}`).remove();
@@ -63,7 +72,7 @@ export default class AddActivity extends Component {
   };
 
   onCancel = () => {
-    if (this.state.childActivitiesKey) this.deleteChildActivitiesKey();
+    if (this.state.childActivitiesKey) this.deleteChildActivities();
     this.onClose();
   };
 

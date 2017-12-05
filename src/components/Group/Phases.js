@@ -20,7 +20,11 @@ const PhaseList = glamorous.div({
   if (collapsed) return { width: '25%' };
 });
 
-const getPhaseList = phases => Object.keys(phases || {});
+const getPhaseList = (phases) => {
+  if (!phases) return [];
+  const phaseKeys = Object.keys(phases);
+  return phaseKeys.sort((a, b) => phases[a] - phases[b]);
+};
 
 const Phases = ({ loading, data, collapsed, group }) => (
   <WithLoadingSpinner loading={loading}>

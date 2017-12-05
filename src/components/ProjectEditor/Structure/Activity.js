@@ -77,8 +77,18 @@ class Activity extends Component {
   fakeDeleteChildActivitiesKey = () =>
     this.setState({ deletedChildActivitiesKey: this.state.childActivitiesKey });
 
-  deleteChildActivitiesKey = (key) =>
-    firebase.database().ref(`childActivities/${key}`).remove();
+  deleteChildActivitiesKey = (key) => {
+    this.deleteChildActivities(key).then(() => {
+      firebase.database().ref(`childActivities/${key}`).remove();
+    });
+  };
+
+  deleteChildActivities = (key) =>
+    firebase.database().ref(`childActivities/${key}`).once('value').then((snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        firebase.database().ref(`activities/${childSnapshot.key}/isChildActivity`).remove();
+      });
+    });
 
   onEdit = () => setTimeout(() => this.setState({ editing: true }), 450);
 

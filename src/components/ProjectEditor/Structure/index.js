@@ -21,20 +21,37 @@ const PhaseContainer = glamorous.section({
   flexWrap: 'wrap'
 });
 
-const Structure = ({ project }) => (
-  <OverflowFix>
-    <PhaseContainer>
-      {Object.keys(project.phases || {}).map((phase) =>
-        <Phase
-          phaseKey={phase}
-          projectKey={project.key}
-          key={phase}
-        />
-      )}
-      <AddPhase projectKey={project.key} />
-    </PhaseContainer>
-  </OverflowFix>
-);
+const Structure = ({ project }) => {
+  const phases = project.phases || {};
+
+  const sortedPhaseKeys = Object.keys(phases).sort(
+    (a, b) => phases[a] - phases[b]
+  );
+
+  const sortedPhases = Object.entries(phases).sort(
+    (a, b) => a[1] - b[1]
+  );
+
+  return (
+    <OverflowFix>
+      <PhaseContainer>
+        {sortedPhases.map(([ key, phaseIndex ], index) =>
+          <Phase
+            phaseKey={key}
+            previousPhase={sortedPhaseKeys[index - 1]}
+            nextPhase={sortedPhaseKeys[index + 1]}
+            index={phaseIndex}
+            sortedPhaseKeys={sortedPhaseKeys}
+            phases={phases}
+            projectKey={project.key}
+            key={key}
+          />
+        )}
+        <AddPhase projectKey={project.key} />
+      </PhaseContainer>
+    </OverflowFix>
+  );
+};
 
 Structure.propTypes = {
   project: PropTypes.shape({

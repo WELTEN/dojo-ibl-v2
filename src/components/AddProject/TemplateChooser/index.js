@@ -31,11 +31,11 @@ class TemplateChooser extends Component {
     const template = this.props.data[templateKey];
     const phases = Object.values(template.phases);
     const projectKey = this.createProject();
-    phases.forEach((phase) => {
-      const phaseKey = this.createPhase(phase, projectKey);
+    phases.forEach((phase, index) => {
+      const phaseKey = this.createPhase(phase, projectKey, index + 1);
       const activities = Object.values(phase.activities || {});
-      activities.forEach((activity) => {
-        this.createActivity(activity, phaseKey);
+      activities.forEach((activity, index) => {
+        this.createActivity(activity, phaseKey, index + 1);
       });
     });
     this.props.setProjectKey(projectKey);
@@ -56,19 +56,22 @@ class TemplateChooser extends Component {
     return key;
   };
 
-  createPhase = (phase, projectKey) => {
+  createPhase = (phase, projectKey, index) => {
     const key = firebase.database().ref('phases').push().getKey();
-    firebase.database().ref(`projects/${projectKey}/phases`).child(key).set(true);
+    firebase.database().ref(`projects/${projectKey}/phases`).child(key).set(index);
     firebase.database().ref(`phases/${key}`).set({
       name: phase.name
     });
     return key;
   };
 
-  createActivity = (activity, phaseKey) => {
+  createActivity = (activity, phaseKey, index) => {
     const key = firebase.database().ref('activities').push().getKey();
-    firebase.database().ref(`phases/${phaseKey}/activities`).child(key).set(true);
-    firebase.database().ref(`activities/${key}`).set(activity);
+    firebase.database().ref(`phases/${phaseKey}/activities`).child(key).set(index);
+    firebase.database().ref(`activities/${key}`).set({
+      ...activity,
+      creationDate: Date.now()
+    });
     return key;
   };
 
