@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
 import * as firebase from 'firebase';
-import WithLoadingSpinner from '../../WithLoadingSpinner';
-import { red500 } from 'material-ui/styles/colors';
-import IconButton from 'material-ui/IconButton';
-import Edit from 'material-ui/svg-icons/image/edit';
-import Close from 'material-ui/svg-icons/navigation/close';
+import LoadingSpinner from '../../LoadingSpinner';
 import Activities from './Activities';
 import Prompt from '../../Prompt';
 import Confirm from '../../Confirm';
@@ -15,29 +10,19 @@ import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from './ItemTypes';
 import injectFirebaseData from '../../InjectFirebaseData';
-
-const Header = glamorous.header({
-  marginTop: -10,
-  marginBottom: 2,
-  display: 'flex',
-  alignItems: 'center'
-});
-
-const Title = glamorous.h3({
-  margin: 0,
-  maxWidth: 'calc(100% - 96px)',
-  fontSize: 20,
-  flex: 1,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap'
-});
+import PhaseHeader from './PhaseHeader';
+import Aux from 'react-aux';
 
 class Phase extends Component {
   static propTypes = {
     loading: PropTypes.bool.isRequired,
     data: PropTypes.any,
     phaseKey: PropTypes.string.isRequired,
+    previousPhase: PropTypes.string,
+    nextPhase: PropTypes.string,
+    index: PropTypes.number.isRequired,
+    sortedPhaseKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+    phases: PropTypes.object.isRequired,
     projectKey: PropTypes.string.isRequired,
     isDragging: PropTypes.bool.isRequired,
     connectDragSource: PropTypes.func.isRequired,
@@ -74,26 +59,33 @@ class Phase extends Component {
 
   onDeleteCancel = () => this.setState({ deleting: false });
 
-  render = () => this.props.connectDragSource(
-    this.props.connectDropTarget(
-      <div className="phase">
-        <WithLoadingSpinner loading={this.props.loading}>
-          <Header>
-            <Title>{this.props.data.name}</Title>
-            <IconButton onClick={this.onEdit}>
-              <Edit />
-            </IconButton>
-            <IconButton iconStyle={{ color: red500 }} onClick={this.onDelete}>
-              <Close />
-            </IconButton>
-          </Header>
+  getLastActivityIndex = () => {
+    const indexes = Object.values(this.props.data.activities || {});
+    return indexes.pop() || 0;
+  };
+
+  render = () => this.props.connectDropTarget(
+    <div className="phase" style={{ opacity: this.props.isDragging ? .5 : 1 }}>
+      {this.props.loading ? (
+        <LoadingSpinner />
+      ) : (
+        <Aux>
+          <PhaseHeader
+            phase={this.props.data}
+            onEdit={this.onEdit}
+            onDelete={this.onDelete}
+            connectDragSource={this.props.connectDragSource}
+          />
           {this.props.data.activities && (
             <Activities
               activities={this.props.data.activities}
               phaseKey={this.props.phaseKey}
             />
           )}
-          <AddActivity phaseKey={this.props.phaseKey} />
+          <AddActivity
+            phaseKey={this.props.phaseKey}
+            lastIndex={this.getLastActivityIndex()}
+          />
           <Prompt
             title="Rename phase"
             msg="Enter a new name for the phase."
@@ -110,9 +102,9 @@ class Phase extends Component {
             onOk={this.onDeleteConfirm}
             onCancel={this.onDeleteCancel}
           />
-        </WithLoadingSpinner>
-      </div>
-    )
+        </Aux>
+      )}
+    </div>
   );
 }
 

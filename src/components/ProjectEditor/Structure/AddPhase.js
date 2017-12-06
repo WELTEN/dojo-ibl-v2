@@ -11,7 +11,8 @@ const AddButton = glamorous(IconButton)({ marginTop: '12px !important' });
 
 export default class AddPhase extends Component {
   static propTypes = {
-    projectKey: PropTypes.string.isRequired
+    projectKey: PropTypes.string.isRequired,
+    lastIndex: PropTypes.number.isRequired
   };
 
   state = { open: false };
@@ -21,7 +22,7 @@ export default class AddPhase extends Component {
   onSave = (name) => {
     this.setState({ open: false });
     const key = firebase.database().ref('phases').push().getKey();
-    firebase.database().ref(`projects/${this.props.projectKey}/phases/${key}`).set(true);
+    firebase.database().ref(`projects/${this.props.projectKey}/phases/${key}`).set(this.props.lastIndex + 1);
     firebase.database().ref(`phases/${key}`).set({ name });
   };
 

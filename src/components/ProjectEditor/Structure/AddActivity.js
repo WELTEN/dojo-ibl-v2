@@ -17,7 +17,8 @@ const ButtonContainer = glamorous.footer({ textAlign: 'center' });
 
 export default class AddActivity extends Component {
   static propTypes = {
-    phaseKey: PropTypes.string.isRequired
+    phaseKey: PropTypes.string.isRequired,
+    lastIndex: PropTypes.number.isRequired
   };
 
   state = {
@@ -56,7 +57,7 @@ export default class AddActivity extends Component {
   onSave = (name, description) => {
     const { type, childActivitiesKey } = this.state;
     const key = firebase.database().ref('activities').push().getKey();
-    firebase.database().ref(`phases/${this.props.phaseKey}/activities/${key}`).set(true);
+    firebase.database().ref(`phases/${this.props.phaseKey}/activities/${key}`).set(this.props.lastIndex + 1);
     firebase.database().ref(`activities/${key}`).set({
       name,
       description,

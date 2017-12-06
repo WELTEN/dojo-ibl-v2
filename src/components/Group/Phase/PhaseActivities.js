@@ -32,13 +32,17 @@ export default class PhaseActivities extends Component {
     if (!props.phase.activities) return;
     this.cleanListeners();
     this.setState({ activities: {} });
-    this.handleActivityKeys();
+    this.handleActivityKeys(props.phase.activities);
   };
 
-  getActivityKeys = () => Object.keys(this.props.phase.activities || {});
+  getActivityKeys = (activities) => {
+    if (!activities) return [];
+    const activityKeys = Object.keys(activities)
+    return activityKeys.sort((a, b) => activities[a] - activities[b]);
+  };
 
-  handleActivityKeys = () => {
-    this.getActivityKeys().forEach(this.handleActivityKey);
+  handleActivityKeys = (activities) => {
+    this.getActivityKeys(activities).forEach(this.handleActivityKey);
   };
 
   handleActivityKey = (key) => {

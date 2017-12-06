@@ -1,7 +1,9 @@
 body {
   margin: 0;
+  width: 100%;
   background-color: #F5F5F5;
   font-family: 'Roboto', sans-serif;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5 {

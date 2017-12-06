@@ -47,7 +47,10 @@ const Structure = ({ project }) => {
             key={key}
           />
         )}
-        <AddPhase projectKey={project.key} />
+        <AddPhase
+          projectKey={project.key}
+          lastIndex={sortedPhases[sortedPhases.length - 1][1]}
+        />
       </PhaseContainer>
     </OverflowFix>
   );
