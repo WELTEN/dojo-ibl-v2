@@ -4,8 +4,8 @@ import NotFoundTitle from '../NotFoundTitle';
 import * as firebase from 'firebase';
 
 const currentUserHasAccess = (project) => {
-  const currentUser = firebase.auth().currentUser.uid;
-  return !!project.owners[currentUser];
+  const currentUser = firebase.auth().currentUser;
+  return typeof project.owners[currentUser.uid] !== 'undefined';
 };
 
 const AccessVerifier = ({ project, children }) => {

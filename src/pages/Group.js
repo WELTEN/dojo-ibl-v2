@@ -6,8 +6,9 @@ import Name from '../components/Group/Name';
 import Description from '../components/Group/Description';
 import Content from '../components/Group/Content';
 import Chat from '../components/Group/Chat';
-import injectFirebaseData from '../components/InjectFirebaseData';
+import AccessVerifier from '../components/Group/AccessVerifier';
 import Aux from 'react-aux';
+import injectFirebaseData from '../components/InjectFirebaseData';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
@@ -29,8 +30,10 @@ const Group = ({ loading, data }) => (
       <Aux>
         <Name group={data} />
         <Description group={data} />
-        <Content group={data} />
-        <Chat group={data} />
+        <AccessVerifier group={data}>
+          <Content group={data} />
+          <Chat group={data} />
+        </AccessVerifier>
       </Aux>
     )}
   </Provider>

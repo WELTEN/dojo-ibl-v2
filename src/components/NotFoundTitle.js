@@ -1,7 +1,8 @@
 import glamorous from 'glamorous';
 
 const NotFoundTitle = glamorous.h3({
-  margin: 0,
+  marginTop: 0,
+  marginBottom: 12,
   textAlign: 'center'
 });
 

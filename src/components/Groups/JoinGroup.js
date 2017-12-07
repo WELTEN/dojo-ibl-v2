@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { FormContainer, InputField, SubmitButton } from '../BasicForm';
+import { addCurrentUserToGroup } from '../../lib/Firebase';
 
 export default class JoinGroup extends Component {
   state = {
@@ -64,10 +65,7 @@ export default class JoinGroup extends Component {
       const [ snapshot, groupKey ] = data;
       const projectKey = snapshot.val();
 
-      const currentUser = firebase.auth().currentUser;
-      firebase.database().ref(`projects/${projectKey}/users/${currentUser.uid}`).set(true);
-      firebase.database().ref(`users/${currentUser.uid}/groups/${groupKey}`).set(true);
-      firebase.database().ref(`groups/${groupKey}/users/${currentUser.uid}`).set(currentUser.photoURL || false);
+      addCurrentUserToGroup(groupKey, projectKey)
 
       this.setState({
         code: '',
