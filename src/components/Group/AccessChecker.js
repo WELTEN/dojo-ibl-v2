@@ -13,7 +13,7 @@ const currentUserHasAccess = (group) => {
   return typeof group.users[currentUser.uid] !== 'undefined';
 };
 
-const AccessVerifier = ({ group, children }) => {
+const AccessChecker = ({ group, children }) => {
   if (currentUserHasAccess(group)) return children;
   return (
     <Content>
@@ -27,7 +27,7 @@ const AccessVerifier = ({ group, children }) => {
   );
 };
 
-AccessVerifier.propTypes = {
+AccessChecker.propTypes = {
   group: PropTypes.shape({
     key: PropTypes.string.isRequired,
     project: PropTypes.string.isRequired
@@ -35,4 +35,4 @@ AccessVerifier.propTypes = {
   children: PropTypes.node
 };
 
-export default AccessVerifier;
+export default AccessChecker;

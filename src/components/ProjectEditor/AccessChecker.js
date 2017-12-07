@@ -8,16 +8,16 @@ const currentUserHasAccess = (project) => {
   return typeof project.owners[currentUser.uid] !== 'undefined';
 };
 
-const AccessVerifier = ({ project, children }) => {
+const AccessChecker = ({ project, children }) => {
   if (currentUserHasAccess(project)) return children;
   return <NotFoundTitle>{`Project doesn't exist`}</NotFoundTitle>;
 };
 
-AccessVerifier.propTypes = {
+AccessChecker.propTypes = {
   project: PropTypes.shape({
     owners: PropTypes.object
   }).isRequired,
   children: PropTypes.node
 };
 
-export default AccessVerifier;
+export default AccessChecker;

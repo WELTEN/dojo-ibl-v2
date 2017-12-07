@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import NotFoundTitle from '../NotFoundTitle';
 import * as firebase from 'firebase';
-import AccessVerifier from './AccessVerifier';
+import AccessChecker from './AccessChecker';
 import EditorTabs from './EditorTabs';
 import DeleteProject from './DeleteProject';
 import injectFirebaseData from '../InjectFirebaseData';
@@ -11,12 +11,12 @@ import injectFirebaseData from '../InjectFirebaseData';
 const ProjectEditor = ({ loading, data, projectKey, withDelete }) => (
   <WithLoadingSpinner loading={loading}>
     {data ? (
-      <AccessVerifier project={data}>
+      <AccessChecker project={data}>
         <EditorTabs project={data} />
         {withDelete &&
           <DeleteProject projectKey={projectKey} />
         }
-      </AccessVerifier>
+      </AccessChecker>
     ) : (
       <NotFoundTitle>{`Project doesn't exist`}</NotFoundTitle>
     )}
