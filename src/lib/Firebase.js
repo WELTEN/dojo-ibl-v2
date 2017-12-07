@@ -15,7 +15,14 @@ export const deleteProject = (projectKey) => {
       firebase.database().ref(`phases/${key}/activities`).once('value', (snapshot) => {
         const activities = Object.keys(snapshot.val() || {});
         activities.forEach((key) => {
-          firebase.database().ref(`activities/${key}`).remove();
+          const ref = firebase.database().ref(`activities/${key}`);
+          ref.once('value').then((snapshot) => {
+            const activity = snapshot.val();
+            if (activity && activity.childActivitiesKey) {
+              firebase.database().ref(`childActivities/${activity.childActivitiesKey}`).remove();
+            }
+            ref.remove();
+          });
         });
       }).then(() => {
         firebase.database().ref(`phases/${key}`).remove();
