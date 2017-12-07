@@ -5,7 +5,11 @@ import * as firebase from 'firebase';
 import WithLoadingSpinner from '../WithLoadingSpinner';
 import StepButtons from './StepButtons';
 import TextField from 'material-ui/TextField';
-import { deleteProject } from '../../lib/Firebase';
+import {
+  createGroup,
+  addCurrentUserToGroup,
+  deleteProjectAndGroups
+} from '../../lib/Firebase';
 
 const Text = glamorous.p({ margin: 0 });
 
@@ -19,8 +23,7 @@ export default class SetTitle extends Component {
   state = {
     loading: true,
     project: null,
-    value: '',
-    hasTyped: false
+    value: ''
   };
 
   componentDidMount = () => {
@@ -39,7 +42,7 @@ export default class SetTitle extends Component {
 
   onPrev = () => {
     const { onPrev, projectKey } = this.props;
-    deleteProject(projectKey);
+    deleteProjectAndGroups(projectKey);
     onPrev();
   };
 
@@ -47,7 +50,12 @@ export default class SetTitle extends Component {
 
   onNext = () => {
     const { onNext, projectKey } = this.props;
-    firebase.database().ref(`projects/${projectKey}/title`).set(this.state.value);
+    const projectTitle = this.state.value;
+    firebase.database().ref(`projects/${projectKey}/title`).set(projectTitle);
+
+    const [ groupKey, creationPromise ] = createGroup(projectTitle, projectKey);
+    creationPromise.then(() => addCurrentUserToGroup(groupKey, projectKey));
+
     onNext();
   };
 

@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import randomstring from 'randomstring';
 
 export const flattenFirebaseList = (list = {}) =>
   Object.keys(list).map((key) => ({ key, ...list[key] }));
@@ -54,6 +55,31 @@ export const deleteProjectAndGroups = (projectKey) => {
   }).then(() => {
     deleteProject(projectKey);
   });
+};
+
+export const createGroup = (name, projectKey) => {
+  const code = generateGroupCode();
+  const key = firebase.database().ref('groups').push().getKey();
+  return [key, Promise.all([
+    firebase.database().ref(`projects/${projectKey}/groups/${key}`).set(true),
+    firebase.database().ref(`groups/${key}`).set({
+      name,
+      code,
+      project: projectKey,
+      creationDate: Date.now()
+    }),
+    firebase.database().ref(`groupCodes/${code}`).set(key)
+  ])];
+};
+
+export const generateGroupCode = () =>
+  randomstring.generate({ length: 6, capitalization: 'uppercase' });
+
+export const addCurrentUserToGroup = (key, projectKey) => {
+  const currentUser = firebase.auth().currentUser;
+  firebase.database().ref(`projects/${projectKey}/users/${currentUser.uid}`).set(true);
+  firebase.database().ref(`users/${currentUser.uid}/groups/${key}`).set(true);
+  firebase.database().ref(`groups/${key}/users/${currentUser.uid}`).set(currentUser.photoURL || false);
 };
 
 export const createInputInActivity = (activityKey) => {

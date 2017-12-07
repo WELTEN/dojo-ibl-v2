@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as firebase from 'firebase';
-import randomstring from 'randomstring';
 import { FormContainer, InputField, SubmitButton } from '../../BasicForm';
+import { createGroup, addCurrentUserToGroup } from '../../../lib/Firebase';
 
 export default class AddGroup extends Component {
   static propTypes = {
@@ -24,32 +23,11 @@ export default class AddGroup extends Component {
       this.setState({ error: 'Name can\'t be empty' });
       return;
     }
-    const code = this.generateGroupCode();
-    const key = firebase.database().ref('groups').push().getKey();
+
     const projectKey = this.props.project.key;
-    Promise.all([
-      firebase.database().ref(`projects/${projectKey}/groups/${key}`).set(true),
-      firebase.database().ref(`groups/${key}`).set({
-        name,
-        code,
-        project: projectKey,
-        creationDate: Date.now()
-      }),
-      firebase.database().ref(`groupCodes/${code}`).set(key)
-    ]).then(() => {
-      this.addCurrentUserToGroup(key);
-    });
+    const [ key, creationPromise ] = createGroup(name, projectKey);
+    creationPromise.then(() => addCurrentUserToGroup(key, projectKey));
     this.setState({ name: '', error: '' });
-  };
-
-  generateGroupCode = () =>
-    randomstring.generate({ length: 6, capitalization: 'uppercase' });
-
-  addCurrentUserToGroup = (key) => {
-    const currentUser = firebase.auth().currentUser;
-    firebase.database().ref(`projects/${this.props.project.key}/users/${currentUser.uid}`).set(true);
-    firebase.database().ref(`users/${currentUser.uid}/groups/${key}`).set(true);
-    firebase.database().ref(`groups/${key}/users/${currentUser.uid}`).set(currentUser.photoURL || false);
   };
 
   render = () => (
