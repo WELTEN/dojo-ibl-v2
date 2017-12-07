@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous';
+import Link from '../../Link';
 import IconButton from 'material-ui/IconButton';
+import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye';
 import Edit from 'material-ui/svg-icons/image/edit';
 import Close from 'material-ui/svg-icons/navigation/close';
 import { red500 } from 'material-ui/styles/colors';
@@ -46,6 +48,11 @@ export default class GroupActions extends Component {
 
   render = () => (
     <ActionWrapper>
+      <Link to={`/groups/${this.props.group.key}`}>
+        <IconButton>
+          <RemoveRedEye />
+        </IconButton>
+      </Link>
       <IconButton onClick={this.onEdit}>
         <Edit />
       </IconButton>

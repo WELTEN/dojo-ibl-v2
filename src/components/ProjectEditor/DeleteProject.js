@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import glamorous from 'glamorous';
+import { withRouter } from 'react-router-dom';
 import FlatButton from 'material-ui/FlatButton';
 import { red500 } from 'material-ui/styles/colors';
 import Confirm from '../Confirm';
